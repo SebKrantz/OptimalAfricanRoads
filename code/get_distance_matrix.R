@@ -75,7 +75,7 @@ library(osrm)
 # Set maximum header size to a large number !!
 # export CURL_MAX_HTTP_HEADER=10240000000
 
-# Open a new terminal, run R, and set 
+# (3) Open a new terminal, run R, and set 
 options(osrm.server = "http://0.0.0.0:5000/",
         osrm.profile = "car")
 
