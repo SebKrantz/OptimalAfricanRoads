@@ -8,7 +8,7 @@
 # in R: install.packages("osrm")
 
 library(fastverse)
-library(osrm)
+fastverse_extend(osrm, qs, install = TRUE)
 
 # ------------------------------------------------------------------
 # Option 1: Run your own OSRM Server (Fastest, but need 50-60GB RAM)
@@ -96,12 +96,15 @@ osrmTable(loc = madagascar_to_mainland, measure = c('duration', 'distance'))
 osrmTable(loc = nowhere_to_cape_town, measure = c('duration', 'distance'))
 
 # Load Grid centroids
-calib_data <- qDF(fread("data/QSE/QSE_model_calibration_data_harm.csv"))
+calib_data <- qDF(fread("data/QSE/QSE_model_calibration_data.csv"))
 rownames(calib_data) <- calib_data$cell
 source("code/helpers.R")
 
+# Should be only a few seconds with your own server...
 result <- split_large_dist_matrix(fselect(calib_data, lon, lat), chunk_size = 3000, verbose = TRUE)
-qs::qsave(result, "data/africa_full_distance_matrix_r9_new.qs")
+
+result$centroids <- fselect(calib_data, cell, ISO3, lon, lat, pop_gpw4, pop_wpop)
+qsave(result, "data/africa_full_distance_matrix_r9.qs")
 
 
 # ----------------------------------------------------------------------------------
@@ -109,9 +112,12 @@ qs::qsave(result, "data/africa_full_distance_matrix_r9_new.qs")
 # ----------------------------------------------------------------------------------
 
 # Load Grid centroids
-calib_data <- qDF(fread("data/QSE/QSE_model_calibration_data_harm.csv"))
+calib_data <- qDF(fread("data/QSE/QSE_model_calibration_data.csv"))
 rownames(calib_data) <- calib_data$cell
 source("code/helpers.R")
 
+# Probably takes at least 1 hour...
 result <- split_large_dist_matrix(fselect(calib_data, lon, lat), chunk_size = 100, verbose = TRUE)
-qs::qsave(result, "data/africa_full_distance_matrix_r9_new.qs")
+
+result$centroids <- fselect(calib_data, cell, ISO3, lon, lat, pop_gpw4, pop_wpop)
+qsave(result, "data/africa_full_distance_matrix_r9.qs")
