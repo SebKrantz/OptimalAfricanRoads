@@ -27,6 +27,12 @@ string.(calib_data.cell) == names(durations)
 # end
 durations = Matrix{Float64}(durations)
 # nanmean(durations_borders ./ durations)
+# See also: https://truckingresearch.org/wp-content/uploads/2022/08/ATRI-Operational-Cost-of-Trucking-2022.pdf
+# Xu and Yang 2021 for China: We find that an hour reduction in travel time between capital cities reduces domestic trade costs by 1–1.2%.
+# From Ragjelbaum and Schall: 
+# Hummels and Schaur (2013) quantifiedthat one additional day in transit is equivalent to 0.6 to 2.1 percent tariff, and 
+# Djankov, Freund, and Pham (2010) argued that each additional day of delay is equivalent to a country distancing 70 km from its trade partner. 
+
 
 # Descriptives & Plot
 describe(calib_data)
@@ -52,11 +58,6 @@ extrema(dist)
 # Own iceberg transport costs are one
 dist .+= 1.0 
 
-# See also: https://truckingresearch.org/wp-content/uploads/2022/08/ATRI-Operational-Cost-of-Trucking-2022.pdf
-# Xu and Yang 2021 for China: We find that an hour reduction in travel time between capital cities reduces domestic trade costs by 1–1.2%.
-# From Ragjelbaum and Schall: 
-# Hummels and Schaur (2013) quantifiedthat one additional day in transit is equivalent to 0.6 to 2.1 percent tariff, and 
-# Djankov, Freund, and Pham (2010) argued that each additional day of delay is equivalent to a country distancing 70 km from its trade partner. 
 
 # **** Parameters ****
 
