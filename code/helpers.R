@@ -58,7 +58,7 @@ split_large_dist_matrix <- function(data, chunk_size = 100, verbose = FALSE) {
   )
   
   rn = rownames(res$sources)
-  if(length(rn) && (is.character(rn) || !identical(rn, seq_along(rn)))) {
+  if(length(rn) && (is.character(rn) || !identical(as.integer(rn), seq_along(rn)))) {
     dimnames(res$durations) <- dimnames(res$distances) <- list(rn, rn)
   }
   
