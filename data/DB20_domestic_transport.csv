@@ -1,0 +1,47 @@
+country,variable,product,trade_partner,border,distance_km,time_hours,cost_usd
+Kenya,Export,"HS 09 : Coffee, tea, matï and spices",Uganda,Malaba border crossing,440,9,967
+Botswana,Export,HS 75 : Nickel and articles thereof,Norway,Ramatlabama border crossing,123,13,422
+Burkina Faso,Export,HS 10: Cereals,Switzerland,Burkina Faso-Côte d'Ivoire border crossing,512,17,408
+Burundi,Export,"HS 09 : Coffee, tea, matï and spices",Switzerland,Kobero-Kabanga border crossing,225,20,261
+Central African Republic,Export,"HS 09 : Coffee, tea, matï and spices",France,Garoua-Boulai border crossing,595,70,2106
+Chad,Export,HS 52 : Cotton,China,Touboro border crossing,650,28,1750
+"Congo, Dem. Rep.",Export,HS 74 : Copper and articles thereof,China,Matadi port,327,6,1200
+"Congo, Rep.",Export,"HS 84 : Nuclear reactors, boilers, machinery and mechanical appliances; parts thereof",Angola,Pointe-Noire port,560,120,1694
+Eswatini,Export,"HS 22 : Beverages, spirits and vinegar",South Africa,Ngwenya border crossing,36,2,93
+Ethiopia,Export,"HS 09 : Coffee, tea, matï and spices",Germany,Galafi-Awshaf border crossing,698,48,550
+Madagascar,Export,"HS 61 :  Articles of apparel and clothing accessories, knitted or crocheted",Germany,Toamasina port,356,13,610
+Malawi,Export,HS 24 : Tobacco and manufactured tobacco substitutes,Belgium,Mwanza border crossing,105,3,197
+Mali,Export,HS 41: Raw hides and skins (other than fur skins) and leather,China,Diboly-Kidira border crossing,708,72,429
+Morocco,Export,"HS 85 : Electrical machinery and equipment and parts thereof; sound recorders and reproducers, television image and sound recorders and reproducers, and parts and accessories of such articles",France,Port of Tanger,337,5,360
+Namibia,Export,"HS 03 : Fish & crustacean, mollusc & other aquatic invertebrate",Spain,Walvis Bay port,394,6,1000
+Niger,Export,HS 07 : Edible vegetables and certain roots and tubers,Ghana,Torodi border crossing,109,7,374
+Rwanda,Export,"HS 09 : Coffee, tea, matï and spices",Kenya,Gatuna border crossing,83,3,293
+South Africa,Export,"HS 87 : Vehicles other than railway or tramway rolling-stock, and parts and accessories thereof",United States,Durban port,570,16,1100
+South Sudan,Export,HS 44 : Wood and articles of wood; wood charcoal,Uganda,Nimule border crossing,194,12,871
+Sudan,Export,"HS 12 : Oil seeds and oleaginous fruits; miscellaneous grains, seeds and fruit; industrial or medicinal plants; straw and fodder",China,Port Sudan port,831,60,980
+Uganda,Export,"HS 09 : Coffee, tea, matï and spices",Switzerland,Malaba border crossing,220,10,200
+Zambia,Export,HS 74 : Copper and articles thereof,Switzerland,Chirundu border crossing,137,7,283
+Zimbabwe,Export,HS 24 : Tobacco and manufactured tobacco substitutes,South Africa,Beitbridge border crossing,580,36,862
+Kenya,Import,HS 8708: Parts and accessories of motor vehicles,Japan,Mombasa port,481,7,1100
+Botswana,Import,HS 8708: Parts and accessories of motor vehicles,South Africa,Tlokweng Gate border crossing,25,6,89
+Burkina Faso,Import,HS 8708: Parts and accessories of motor vehicles,Japan,Cinkasse border crossing,293,17,635
+Burundi,Import,HS 8708: Parts and accessories of motor vehicles,Belgium,Kobero-Kabanga border crossing,225,26,361
+Central African Republic,Import,HS 8708: Parts and accessories of motor vehicles,France,Garoua-Boulai border crossing,595,65,2057
+Chad,Import,HS 8708: Parts and accessories of motor vehicles,France,Touboro border crossing,650,28,1810
+"Congo, Dem. Rep.",Import,HS 8708: Parts and accessories of motor vehicles,South Africa,Matadi port,327,7,1500
+"Congo, Rep.",Import,HS 8708: Parts and accessories of motor vehicles,France,Pointe-Noire port,560,136,2033
+Eswatini,Import,HS 8708: Parts and accessories of motor vehicles,South Africa,Ngwenya border crossing,36,2,93
+Ethiopia,Import,HS 8708: Parts and accessories of motor vehicles,Japan,Galafi-Awshaf border crossing,698,48,529
+Madagascar,Import,HS 8708: Parts and accessories of motor vehicles,China,Toamasina port,356,14,680
+Malawi,Import,HS 8708: Parts and accessories of motor vehicles,South Africa,Mwanza border crossing,105,3,276
+Mali,Import,HS 8708: Parts and accessories of motor vehicles,France,Diboly-Kidira border crossing,708,72,932
+Morocco,Import,HS 8708: Parts and accessories of motor vehicles,France,Port of Tanger,337,5,360
+Namibia,Import,HS 8708: Parts and accessories of motor vehicles,South Africa,Mamuno border crossing,315,6,765
+Niger,Import,HS 8708: Parts and accessories of motor vehicles,China,Gaya border crossing,290,24,618
+Rwanda,Import,HS 8708: Parts and accessories of motor vehicles,United Arab Emirates,Rusomo border crossing,152,11,363
+South Africa,Import,HS 8708: Parts and accessories of motor vehicles,Germany,Durban port,570,16,1100
+South Sudan,Import,HS 8708: Parts and accessories of motor vehicles,China,Nimule border crossing,194,12,871
+Sudan,Import,HS 8708: Parts and accessories of motor vehicles,United Kingdom,Port Sudan port,831,96,1100
+Uganda,Import,HS 8708: Parts and accessories of motor vehicles,United Arab Emirates,Malaba border crossing,220,10,200
+Zambia,Import,HS 8708: Parts and accessories of motor vehicles,South Africa,Chirundu border crossing,137,7,325
+Zimbabwe,Import,HS 8708: Parts and accessories of motor vehicles,South Africa,Beitbridge border crossing,580,36,1669
