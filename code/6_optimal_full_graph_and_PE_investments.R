@@ -110,6 +110,12 @@ calib_data |> fwrite("data/QSE/QSE_model_calibration_data_ctry_min_imp_full_grap
 
 # Read graphs data!
 graphs_df <- fread("data/full_graph_df.csv")
+# Check
+descr(africa_dist$durations[with(graphs_df, cbind(from, to))] - graphs_df$duration)
+# Add original distances
+graphs_df$distance_nosphere <- africa_dist$distances_nosphere[with(graphs_df, cbind(from, to))]
+descr(with(graphs_df, distance / distance_nosphere))
+graphs_df$distance_nosphere |> replace_na(Inf, set = TRUE)
 
 # Calculating Shortest path 
 dist_mat_from_df <- function(df, ...) {
@@ -227,7 +233,7 @@ centroids %<>% join(calib_data, on = "cell", drop = "y")
 # best_param$par <- c(30, 1)
 
 optimized_graph <- compute_weighted_graph(best_param$par[1], best_param$par[2]) |>
-  join(graphs_df |> select(from = from_cell, to = to_cell, sp_distance:duration))
+  join(graphs_df |> select(from = from_cell, to = to_cell, sp_distance:distance_nosphere))
 
 # Check
 identical(unique(optimized_graph$from), centroids$cell)
@@ -244,10 +250,14 @@ objective_graph <- function(graph, weights = NULL) {
 }
 
 # How many times longer are the shortest paths versus the real routes?
-objective_graph(select(optimized_graph, from, to, duration)) # Simple graph
-objective_graph(select(optimized_graph, from, to, cost))     # Optimal graph
-# objective_graph(select(optimized_graph, from, to, duration), weights)
+objective_graph(select(optimized_graph, from, to, cost))
 # objective_graph(select(optimized_graph, from, to, cost), weights)
+# Distance
+objective_graph(compute(optimized_graph, cost = distance_nosphere, keep = .c(from, to)))
+# objective_graph(compute(optimized_graph, cost = distance_nosphere, keep = .c(from, to)), weights)
+# Times
+objective_graph(select(optimized_graph, from, to, duration))
+# objective_graph(select(optimized_graph, from, to, duration), weights)
 
 # Plot Optimal Graph
 settfm(optimized_graph, from_ind = ckmatch(from, calib_data$cell), to_ind = ckmatch(to, calib_data$cell))
@@ -290,15 +300,16 @@ print(MA)
 # Route Efficiency: use only if cost is distance (road_distances variable on line 141 is a distance measure)
 descr(optimized_graph$sp_distance)
 local_nre <- optimized_graph |> with(sp_distance/cost)
-descr(local_nre) # Max US route efficiency is 0.843. I use 0.8
+descr(local_nre) # Max US route efficiency is 0.843. I use 0.85
+quantile(local_nre, seq(0.99, 1, 0.0005))
 optimized_graph %$% all.equal(sp_distance/local_nre, cost)
-optimized_graph |> with(pmin(sp_distance/0.8, cost)) |> descr()
+optimized_graph |> with(pmin(sp_distance/0.85, cost)) |> descr()
 rm(local_nre)
 
 # This can take ~10-24h
 MA_new <- sapply(centroids$cell, function(i) {
   graph <- compute(optimized_graph, 
-                   cost = iif(from == i | to == i, pmin(sp_distance/0.8, cost), cost), 
+                   cost = iif(from == i | to == i, pmin(sp_distance/0.85, cost), cost), 
                    keep = .c(from, to))
   c(N_Edges = sum(graph$from == i | graph$to == i),
     MA = compute_MA(graph), 
@@ -312,7 +323,7 @@ MA_new$MA_growth = (MA_new$MA_ratio - 1)*100
 descr(MA_new$Reduction)
 descr(MA_new$MA_growth * 100)
 
-qsave(MA_new, "results/full_network/africa_full_MA_0.8_NRE.qs")
+qsave(MA_new, "results/full_network/africa_full_MA_0.85_NRE.qs")
 
 # Time efficiency: use only if cost is duration (road_distances variable on line 141 is a travel time measure)
 descr(optimized_graph$sp_distance)
