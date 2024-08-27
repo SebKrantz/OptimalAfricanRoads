@@ -434,6 +434,7 @@ sym_time_mat <- (dist_ttime_mats$durations + t(dist_ttime_mats$durations)) / 2
 
 # Add average distance and travel time to edges
 edges_ind <- edges |> qDF() |> select(from, to) |> qM()
+edges$sp_distance <- st_length(edges)
 edges$distance <- sym_dist_mat[edges_ind]
 edges$duration <- sym_time_mat[edges_ind]
 
@@ -565,10 +566,20 @@ sum(nodes$population) / sum(WC24_Africa$population)
 
 # Saving all necessary objects in an RData file ---------------------------------------------------
 
-save(nodes, edges, net, add_routes, WC24_Africa, 
+# First adding info to edges
+tmp <- net |> st_as_sf("edges") |> atomic_elem() |> qDT() |> 
+  join(atomic_elem(edges), overid = 2L) |> 
+  select(-from, -to, -.tidygraph_edge_index)
+
+net %<>% activate("edges") %>% dplyr::mutate(tmp)
+rm(tmp)
+
+save(nodes, edges, edges_ind, nodes_coord, net, add_routes, WC24_Africa, 
      cities_ports, cities_ports_sf, cities_ports_rsp_sf, 
      dist_ttime_mats, sym_dist_mat, sym_time_mat, 
      file = "data/transport_network/trans_africa_network.RData")
+
+
 
 
 ########################################################
@@ -596,7 +607,6 @@ tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
 # Now: Load Simplified Routes
 edges_real <- edges |> qDT() |> 
   transform(geometry = list(NULL), distance = NA_real_, duration = NA_real_)
-edges_ind <- edges |> qDF() |> select(from, to) |> qM()
 nodes_coord <- st_coordinates(nodes) |> qDF() |> setNames(c("lon", "lat"))
 
 # Fetch Routes
@@ -637,9 +647,12 @@ dev.off()
 # Part 2.2: Identifying Major Transport Routes
 ########################################################
 
-load("data/transport_network/trans_africa_network_param.RData")
+# TODO: Keep here? Or separate file??
+
+load("data/transport_network/trans_africa_network.RData")
 edges_real <- qread("data/transport_network/edges_real_simplified.qs")
-# nodes %<>% join(cities_ports_rsp_sf, on = c("population", "city_country"), drop = "y")
+nodes %<>% join(atomic_elem(cities_ports_rsp_sf), on = c("population", "city_country"), drop = "y")
+
 
 # Plot high gravity roads
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
@@ -656,13 +669,14 @@ tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_layout(frame = FALSE) 
 
 # 47 largest port-cities
-large_cities <- nodes_param %$% which(population > 2e6 | outflows > 1e6)
+large_cities <- nodes %$% which(population > 2e6 | outflows > 1e6)
+length(large_cities)
 
-large_city_paths <- lapply(large_cities, function(i) 
-  st_network_paths(net_param, from = i, to = large_cities, weights = "duration", mode = "all")) |>
-  rowbind()
-
+# Fastest Routes between them
 # igraph::all_shortest_paths(net, large_cities[1], large_cities)
+large_city_paths <- lapply(large_cities, function(i) 
+  st_network_paths(net, from = i, to = large_cities, weights = "duration", mode = "all")) |>
+  rowbind()
 
 large_city_paths <- list(nodes = unique(unlist(large_city_paths$node_paths)), 
                          edges = unique(unlist(large_city_paths$edge_paths)))
@@ -671,25 +685,20 @@ tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(subset(edges, large_city_paths$edges)) +
   tm_lines(col = "gravity_rd",
            col.scale = tm_scale_intervals(values = "inferno", breaks = c(0, 5, 25, 125, 625, Inf)),
-           col.legend = tm_legend("Sum of Gravity"), lwd = 2) +
+           col.legend = tm_legend("Sum of Gravity", position = c("left", "bottom"), frame = FALSE, 
+                                  text.size = 1.5, title.size = 2), lwd = 2) +
   tm_shape(subset(edges, -large_city_paths$edges)) +
   tm_lines(col = "grey70", lwd = 2) +
   tm_shape(subset(nodes, large_city_paths$nodes)) + tm_dots(size = 0.2) +
   tm_shape(subset(nodes, -large_city_paths$nodes)) + tm_dots(size = 0.1, fill = "grey50") +
   tm_shape(subset(nodes, large_cities)) + tm_dots(size = 0.2, fill = "red") +
-  tm_legend(position = c("left", "bottom"), frame = FALSE, 
-            text.size = 1.5, title.size = 2) +
   tm_layout(frame = FALSE) 
 
-
-net_main_routes <- as_sfnetwork(subset(edges_param, large_city_paths$edges) |> 
-                                  mutate(ug_cost = distance / 1000 * ug_cost_km), 
+net_main_routes <- as_sfnetwork(subset(edges, large_city_paths$edges), 
                                 directed = FALSE, edges_as_lines = TRUE)
 
 filter_smooth2 <- function(net, funs = list(passes = "mean", gravity = "mean", gravity_rd = "mean", gravity_dur = "mean", 
-                                            distance = "sum", duration = "sum", duration_imp = "sum", 
-                                            border_dist = "sum", border_time = "sum", total_dist = "sum", total_time = "sum",
-                                            ug_cost = "sum", "ignore")) {
+                                            distance = "sum", duration = "sum", "ignore")) {
   net |> 
     tidygraph::activate("edges") |> 
     dplyr::filter(!tidygraph::edge_is_multiple()) |> 
@@ -711,11 +720,10 @@ tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(st_as_sf(activate(net_main_routes, "edges"))) +
   tm_lines(col = "gravity_rd",
            col.scale = tm_scale_intervals(values = "inferno", breaks = c(0, 5, 25, 125, 625, Inf)),
-           col.legend = tm_legend("Sum of Gravity"), lwd = 2) +
+           col.legend = tm_legend("Sum of Gravity", position = c("left", "bottom"), frame = FALSE, 
+                                  text.size = 1.5, title.size = 2), lwd = 2) +
   tm_shape(st_as_sf(activate(net_main_routes, "nodes"))) + tm_dots(size = 0.2) +
   tm_shape(subset(nodes, large_cities)) + tm_dots(size = 0.3, fill = "red") +
-  tm_legend(position = c("left", "bottom"), frame = FALSE, 
-            text.size = 1.5, title.size = 2) +
   tm_layout(frame = FALSE) #, inner.margins = c(0.1, 0.1, 0.1, 0.1))
 
 dev.copy(pdf, "figures/transport_network/trans_africa_network_reduced_47_duration.pdf", 
@@ -725,7 +733,7 @@ dev.off()
 # Join nodes
 nodes_sf <- st_as_sf(net_main_routes, "nodes")
 nodes_sf %<>% transform(qDF(st_coordinates(.))) %>% 
-  join(transform(nodes_param, qDF(st_coordinates(geometry))), on  = c("X", "Y"), drop = TRUE) %>%
+  join(transform(nodes, qDF(st_coordinates(geometry))), on  = c("X", "Y"), drop = TRUE) %>%
   select(-X, -Y, -.tidygraph_node_index)
 net_main_routes %<>% activate("nodes") %>% dplyr::mutate(qDF(atomic_elem(nodes_sf)))
 
@@ -735,7 +743,7 @@ results <- list(
 
 # Now With All Routes, incl. new ones ---------------------------------------
 
-identical(st_geometry(net_param, "edges"), edges_param$geometry)
+identical(st_geometry(net, "edges"), edges$geometry)
 
 net_ext_data <- rowbind(select(edges_param, from, to, add, gravity_rd, distance, duration, duration_imp, 
                                border_dist, border_time, total_time, cost_per_km = ug_cost_km, geometry) |>
