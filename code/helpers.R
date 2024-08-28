@@ -233,3 +233,9 @@ contract_segments <- function(segments, nodes_clustered, attrib = "passes") {
     fmutate(row = NULL) 
 }
 
+total_MA <- function(distances, weights) {
+  inv_distance <- 1 / unclass(distances) 
+  diag(inv_distance) <- 0 
+  market_access <- inv_distance %*% weights
+  sum(market_access)
+}
