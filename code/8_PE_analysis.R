@@ -1406,7 +1406,7 @@ qsu(edges)
 graph_orig <- edges |> qDT() |> 
   select(from, from_ctry, to, to_ctry, sp_distance, distance, duration, speed_kmh, 
          speed_kmh_imp, duration_imp, border_dist, border_time, total_time, total_time_imp, 
-         rugg, pop_wpop, pop_wpop_km2, cost_km, cost_km_adj, upgrade_cat, ug_cost_km)
+         rugg, pop_wpop, pop_wpop_km2, cost_km, cost_km_adj = cost_km, upgrade_cat, ug_cost_km)
 
 
 settfm(add_routes, total_time_100kmh = duration_100kmh + border_time, total_time_65kmh = duration_65kmh + border_time)
@@ -1434,17 +1434,9 @@ identical(graph_orig$to_ctry, graph_nodes$iso3c[graph_orig$to])
 identical(graph_add$from_ctry, graph_nodes$iso3c[graph_add$from])
 identical(graph_add$to_ctry, graph_nodes$iso3c[graph_add$to])
 
-# # Adding Ruggedness
-# # TODO: Better estimate for existing routes !!
-# rugg <- terra::rast("/Users/sebastiankrantz/Documents/Data/Ruggedness/tri.txt")
-# max(rugg)
-# add_routes$rugg <- exactextractr::exact_extract(rugg, st_buffer(add_routes, as_units(3000, "m")), fun = "mean")
-# edges$rugg <- exactextractr::exact_extract(rugg, st_buffer(edges, as_units(3000, "m")), fun = "mean")
-# # mapview::mapview(select(add_routes, rugg)) + mapview::mapview(select(edges, rugg))
-
 # Saving
 for (name in .c(graph_orig, graph_add, graph_nodes)) {
-  sprintf("data/transport_network/%s.csv", name) |> 
+  sprintf("data/transport_network/csv/%s.csv", name) |> 
     fwrite(x = get(name))
 }
 
@@ -1453,7 +1445,7 @@ load("data/transport_network/trans_africa_network.RData")
 
 # Load previous saved graphs
 graphs <- sapply(.c(graph_orig, graph_add, graph_nodes), function(name)
-  sprintf("data/transport_network/%s.csv", name) |> fread())
+  sprintf("data/transport_network/csv/%s.csv", name) |> fread())
 graphs$graph_orig$add <- FALSE
 graphs$graph_add$add <- TRUE
 
@@ -1479,14 +1471,14 @@ TAN_env$nodes_param <- nodes
 TAN_env$edges_param <- edges
 TAN_env$add_routes_param <- add_routes
 TAN_env$net_param <- net
-save(list = ls(TAN_env), file = "data/transport_network/trans_africa_network.RData", envir = TAN_env)
+save(list = ls(TAN_env), file = "data/transport_network/trans_africa_network_param_new.RData", envir = TAN_env)
 
 
 
-# Plot population and productivity ------------------------------------------------------
+# Plot population and productivity (for GE Calibration) ------------------------------------------------------
 
-graph_nodes <- fread("data/transport_network/graph_nodes.csv") 
-graph_edges <- fread("data/transport_network/graph_orig.csv") 
+graph_nodes <- fread("data/transport_network/csv/graph_nodes.csv") 
+graph_edges <- fread("data/transport_network/csv/graph_orig.csv") 
 
 # Now: Plotting Productivity
 graph_nodes %<>%
@@ -1504,14 +1496,13 @@ with(graph_nodes, sum(prod*population)/sum(IWI*population))
 # Table
 table(graph_nodes$citys)
 graph_nodes |> qDT() |> 
-  collap( prod_in ~ citys, list(fsum, fmean, fmedian), give.names = FALSE) |> 
+  collap(prod_in ~ citys, list(fsum, fmean, fmedian), give.names = FALSE) |> 
   transpose(make.names = "citys", keep.names = "stat") |> 
   tfmv(is.numeric, scales::label_number(scale_cut = scales::cut_short_scale(), accuracy = 0.01)) |>
   xtable::xtable() |> print(include.r = FALSE, booktabs = TRUE)
 
-
-load("data/transport_network/trans_africa_network.RData")
-edges_real <- qread("~/Documents/IFW Kiel/Africa-Infrastructure/data/transport_network/edges_real_simplified.qs")
+# load("data/transport_network/trans_africa_network.RData")
+edges_real <- qread("data/transport_network/edges_real_simplified.qs")
 
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(mutate(edges_real, speed_kmh = (edges$distance/1000)/(edges$duration/60)) |> 
@@ -1538,6 +1529,6 @@ tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(subset(nodes, population <= 0)) + tm_dots(size = 0.1, fill = "grey70") +
   tm_layout(frame = FALSE)
 
-dev.copy(pdf, "figures/trans_africa_network_GE_parameterization_latest.pdf", width = 12, height = 12)
+dev.copy(pdf, "figures/transport_network/trans_africa_network_GE_parameterization_latest.pdf", width = 12, height = 12)
 dev.off()
 
