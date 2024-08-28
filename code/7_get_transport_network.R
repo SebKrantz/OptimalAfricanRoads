@@ -410,6 +410,7 @@ dev.off()
 # Recalculating Routes Matrix for Network ----------------------------------------------------------
 
 nrow(nodes_coord)
+all.equal(unattrib(nodes_coord), mctl(st_coordinates(nodes)))
 dist_ttime_mats <- split_large_dist_matrix(nodes_coord, verbose = TRUE)
 
 # Checks
@@ -427,6 +428,9 @@ dist_ttime_mats |> qsave("data/transport_network/dist_ttime_mats_network_30km.qs
 
 # Loading again -----------------------------------
 dist_ttime_mats <- qread("data/transport_network/dist_ttime_mats_network_30km.qs")
+
+# Check
+all.equal(st_as_sf(net, "nodes")$geometry, nodes$geometry)
 
 # Making symmetric
 sym_dist_mat <- (dist_ttime_mats$distances + t(dist_ttime_mats$distances)) / 2
