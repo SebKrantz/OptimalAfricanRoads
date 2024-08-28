@@ -1,0 +1,50 @@
+Country,Country_ISO,ISO2,ISO3,ISO3N,IMF,Region,Region_Detailed,Currency
+Algeria,Algeria,DZ,DZA,12,612,Northern Africa,Northern Africa,Algerian Dinar
+Egypt,Egypt,EG,EGY,818,469,Northern Africa,Northern Africa,Egyptian Pound
+Libya,Libya,LY,LBY,434,672,Northern Africa,Northern Africa,Libyan Dinar
+Morocco,Morocco,MA,MAR,504,686,Northern Africa,Northern Africa,Moroccan Dirham
+Tunisia,Tunisia,TN,TUN,788,744,Northern Africa,Northern Africa,Tunisian Dinar
+Angola,Angola,AO,AGO,24,614,Sub-Saharan Africa,Middle Africa,Kwanza
+Benin,Benin,BJ,BEN,204,638,Sub-Saharan Africa,Western Africa,CFA Franc BCEAO
+Botswana,Botswana,BW,BWA,72,616,Sub-Saharan Africa,Southern Africa,Pula
+Burkina Faso,Burkina Faso,BF,BFA,854,748,Sub-Saharan Africa,Western Africa,CFA Franc BCEAO
+Burundi,Burundi,BI,BDI,108,618,Sub-Saharan Africa,Eastern Africa,Burundi Franc
+Cameroon,Cameroon,CM,CMR,120,622,Sub-Saharan Africa,Middle Africa,CFA Franc BEAC
+Central African Republic,Central African Republic (the),CF,CAF,140,626,Sub-Saharan Africa,Middle Africa,CFA Franc BEAC
+Chad,Chad,TD,TCD,148,628,Sub-Saharan Africa,Middle Africa,CFA Franc BEAC
+Congo - Brazzaville,Congo (the),CG,COG,178,634,Sub-Saharan Africa,Middle Africa,CFA Franc BEAC
+Congo - Kinshasa,Congo (the Democratic Republic of the),CD,COD,180,636,Sub-Saharan Africa,Middle Africa,Congolese Franc
+Côte d’Ivoire,Côte d'Ivoire,CI,CIV,384,662,Sub-Saharan Africa,Western Africa,CFA Franc BCEAO
+Djibouti,Djibouti,DJ,DJI,262,611,Sub-Saharan Africa,Eastern Africa,Djibouti Franc
+Equatorial Guinea,Equatorial Guinea,GQ,GNQ,226,642,Sub-Saharan Africa,Middle Africa,CFA Franc BEAC
+Eritrea,Eritrea,ER,ERI,232,643,Sub-Saharan Africa,Eastern Africa,Nakfa
+Eswatini,Eswatini,SZ,SWZ,748,734,Sub-Saharan Africa,Southern Africa,Lilangeni
+Ethiopia,Ethiopia,ET,ETH,231,644,Sub-Saharan Africa,Eastern Africa,Ethiopian Birr
+Gabon,Gabon,GA,GAB,266,646,Sub-Saharan Africa,Middle Africa,CFA Franc BEAC
+Gambia,Gambia (the),GM,GMB,270,648,Sub-Saharan Africa,Western Africa,Dalasi
+Ghana,Ghana,GH,GHA,288,652,Sub-Saharan Africa,Western Africa,Ghana Cedi
+Guinea,Guinea,GN,GIN,324,656,Sub-Saharan Africa,Western Africa,Guinean Franc
+Guinea-Bissau,Guinea-Bissau,GW,GNB,624,654,Sub-Saharan Africa,Western Africa,CFA Franc BCEAO
+Kenya,Kenya,KE,KEN,404,664,Sub-Saharan Africa,Eastern Africa,Kenyan Shilling
+Lesotho,Lesotho,LS,LSO,426,666,Sub-Saharan Africa,Southern Africa,Loti
+Liberia,Liberia,LR,LBR,430,668,Sub-Saharan Africa,Western Africa,Liberian Dollar
+Madagascar,Madagascar,MG,MDG,450,674,Sub-Saharan Africa,Eastern Africa,Malagasy Ariary
+Malawi,Malawi,MW,MWI,454,676,Sub-Saharan Africa,Eastern Africa,Malawi Kwacha
+Mali,Mali,ML,MLI,466,678,Sub-Saharan Africa,Western Africa,CFA Franc BCEAO
+Mauritania,Mauritania,MR,MRT,478,682,Sub-Saharan Africa,Western Africa,Ouguiya
+Mozambique,Mozambique,MZ,MOZ,508,688,Sub-Saharan Africa,Eastern Africa,Mozambique Metical
+Namibia,Namibia,NA,NAM,516,728,Sub-Saharan Africa,Southern Africa,Namibia Dollar
+Niger,Niger (the),NE,NER,562,692,Sub-Saharan Africa,Western Africa,CFA Franc BCEAO
+Nigeria,Nigeria,NG,NGA,566,694,Sub-Saharan Africa,Western Africa,Naira
+Rwanda,Rwanda,RW,RWA,646,714,Sub-Saharan Africa,Eastern Africa,Rwanda Franc
+Senegal,Senegal,SN,SEN,686,722,Sub-Saharan Africa,Western Africa,CFA Franc BCEAO
+Sierra Leone,Sierra Leone,SL,SLE,694,724,Sub-Saharan Africa,Western Africa,Leone
+Somalia,Somalia,SO,SOM,706,726,Sub-Saharan Africa,Eastern Africa,Somali Shilling
+South Africa,South Africa,ZA,ZAF,710,199,Sub-Saharan Africa,Southern Africa,Rand
+South Sudan,South Sudan,SS,SSD,728,733,Sub-Saharan Africa,Eastern Africa,South Sudanese Pound
+Sudan,Sudan (the),SD,SDN,729,732,Sub-Saharan Africa,Middle Africa,Sudanese Pound
+Tanzania,"Tanzania, the United Republic of",TZ,TZA,834,738,Sub-Saharan Africa,Eastern Africa,Tanzanian Shilling
+Togo,Togo,TG,TGO,768,742,Sub-Saharan Africa,Western Africa,CFA Franc BCEAO
+Uganda,Uganda,UG,UGA,800,746,Sub-Saharan Africa,Eastern Africa,Uganda Shilling
+Zambia,Zambia,ZM,ZMB,894,754,Sub-Saharan Africa,Eastern Africa,Zambian Kwacha
+Zimbabwe,Zimbabwe,ZW,ZWE,716,698,Sub-Saharan Africa,Eastern Africa,Zimbabwe Dollar
