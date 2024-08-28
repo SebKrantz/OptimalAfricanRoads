@@ -1471,7 +1471,7 @@ TAN_env$nodes_param <- nodes
 TAN_env$edges_param <- edges
 TAN_env$add_routes_param <- add_routes
 TAN_env$net_param <- net
-save(list = ls(TAN_env), file = "data/transport_network/trans_africa_network_param_new.RData", envir = TAN_env)
+save(list = ls(TAN_env), file = "data/transport_network/trans_africa_network_param.RData", envir = TAN_env)
 
 
 
