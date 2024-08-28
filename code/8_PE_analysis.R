@@ -438,7 +438,7 @@ tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
 dev.copy(pdf, "figures/transport_network/trans_africa_network_pop_wpop_km2.pdf", width = 10, height = 10)
 dev.off()
 
-## Loading Updated ROCKS Database: ----------------------------
+# Loading Updated ROCKS Database: ----------------------------
 # fastverse_extend(africamonitor)
 # US_DEFL <- am_data("USA", "NY_GDP_DEFL_ZS", expand.date = TRUE, gen = "Year", keep.date = FALSE) |> rename(tolower)
 # # G(c(US_DEFL[year == 2006, ny_gdp_defl_zs], US_DEFL[year == 2015, ny_gdp_defl_zs]))
@@ -1351,7 +1351,7 @@ ma_gain_per_min_cons / sum(with(subset(all_cb_ratios, consensus), cost_km * dist
 
 
 
-## Macroeconomic Cost-Benefit Analysis (Minimal Required Growth Returns) --------------------------------------------
+# Macroeconomic Cost-Benefit Analysis (Minimal Required Growth Returns) --------------------------------------------
 
 AFRGDP22 <- 2811259831806 # Affrica GDP 2022 in constant 2015 USD
 
@@ -1398,7 +1398,7 @@ sapply(packages, calc_rates, 3) |> t() |> round(4)
 
 
 #############################################
-# Part 4: Saving Graphs for OTN (GE Analysis)
+# Saving Graphs for OTN (GE Analysis)
 #############################################
 
 qsu(edges)
