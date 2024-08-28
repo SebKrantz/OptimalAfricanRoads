@@ -121,3 +121,10 @@ result <- split_large_dist_matrix(fselect(calib_data, lon, lat), chunk_size = 10
 
 result$centroids <- fselect(calib_data, cell, ISO3, lon, lat, pop_gpw4, pop_wpop)
 qsave(result, "data/africa_full_distance_matrix_r9.qs")
+
+
+# ----------------------------------------------------------------------------------
+# Option 3: Simply Download my Matrix from Google Drive
+# ----------------------------------------------------------------------------------
+
+# Link: https://drive.google.com/file/d/1oE_9i3SdqvYKcdl880uS9q774dD9KXmS/view?usp=sharing
