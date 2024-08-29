@@ -2,10 +2,13 @@
 # Obtaining Distance and Travel Time Matrix
 ###########################################
 
-# OPEN SOURCE ROUTING MACHINE: http://project-osrm.org/
+# OPEN SOURCE ROUTING MACHINE (OSRM): http://project-osrm.org/
 # High-Performance Routing Service based on OSM
-# https://map.project-osrm.org
-# in R: install.packages("osrm")
+
+# This file generates a large 12092 x 12092 road distance/travel time matrix using OSRM
+# You can download my version using the following
+# Link: https://drive.google.com/file/d/1oE_9i3SdqvYKcdl880uS9q774dD9KXmS/view?usp=sharing
+# Or follow one of the two options below to generate an updated version. 
 
 library(fastverse)
 fastverse_extend(osrm, qs, install = TRUE)
@@ -123,8 +126,3 @@ result$centroids <- fselect(calib_data, cell, ISO3, lon, lat, pop_gpw4, pop_wpop
 qsave(result, "data/africa_full_distance_matrix_r9.qs")
 
 
-# ----------------------------------------------------------------------------------
-# Option 3: Simply Download my Matrix from Google Drive
-# ----------------------------------------------------------------------------------
-
-# Link: https://drive.google.com/file/d/1oE_9i3SdqvYKcdl880uS9q774dD9KXmS/view?usp=sharing
