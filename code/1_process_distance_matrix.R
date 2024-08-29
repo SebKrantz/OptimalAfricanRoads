@@ -5,6 +5,7 @@
 library(fastverse)
 fastverse_extend(qs, s2, install = TRUE)
 
+# Note: need to generate using '0_get_distance_matrix.R' or download from https://drive.google.com/file/d/1oE_9i3SdqvYKcdl880uS9q774dD9KXmS/view?usp=sharing
 africa_dist <- qread("data/africa_full_distance_matrix_r9.qs")
 fnobs.default(africa_dist$durations)
 fnobs.default(africa_dist$distances)
