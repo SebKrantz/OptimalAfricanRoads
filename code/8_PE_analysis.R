@@ -1297,13 +1297,15 @@ for (v in .c(pusd, pusd_bt, pusd_bt_opt)) {
   dev.off()
 }; rm(v)
 
+for (i in c(1:2, 4L)) {
+  cat("MA Gain greatern than ", i, fill = TRUE)
 
 # Consensus Package
 settfm(all_cb_ratios, 
-       consensus = MA_gain_pusd > 4 & (MA_gain_pusd_bt > 4 | MA_gain_pusd_bt_opt > 4), # 1, 2, or 4
+       consensus = MA_gain_pusd > i & (MA_gain_pusd_bt > i | MA_gain_pusd_bt_opt > i), # 1, 2, or 4
        MA_gain_pusd_cons = pmean(MA_gain_pusd, MA_gain_pusd_bt, MA_gain_pusd_bt_opt))
 
-tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
+pl <- tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(subset(all_cb_ratios, !consensus)) + tm_lines(lwd = 2, col = "grey70") +
   tm_shape(subset(all_cb_ratios, consensus, MA_gain_pusd_cons)) +
   tm_lines(col = "MA_gain_pusd_cons", 
@@ -1313,39 +1315,42 @@ tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(subset(nodes, population > 0)) + tm_dots(size = 0.1) +
   tm_shape(subset(nodes, population <= 0)) + tm_dots(size = 0.1, fill = "grey70") +
   tm_layout(frame = FALSE) 
+print(pl)
 
-dev.copy(pdf, "figures/transport_network/trans_africa_network_MA_gain_all_100kmh_pusd_cons_MAg4.pdf", width = 10, height = 10)
+dev.copy(pdf, sprintf("figures/transport_network/trans_africa_network_MA_gain_all_100kmh_pusd_cons_MAg%d.pdf", i), width = 10, height = 10)
 dev.off()
 
 # Consensus Gains
 nrow(subset(all_cb_ratios, consensus)) / nrow(all_cb_ratios)
 all_cb_ratios %$% table(type, consensus) |> proportions(1)
-subset(all_cb_ratios, consensus) |> with(sum(cost_km * distance / 1000)) |> divide_by(1e9)
+# Cost
+subset(all_cb_ratios, consensus) |> with(sum(cost_km * distance / 1000)) |> divide_by(1e9) |> print()
 
 net_imp_cons <- as_sfnetwork(rbind(
   subset(all_cb_ratios, consensus, duration = duration_imp, total_time = total_time_imp),
   subset(all_cb_ratios, !consensus & type == "existing", duration, total_time)), directed = FALSE)
 
-plot(net_imp_cons)
+# plot(net_imp_cons)
 ind_imp_cons <- ckmatch(nodes_coord, mctl(st_coordinates(st_geometry(net_imp_cons, "nodes"))))
 identical(st_distance(st_geometry(net_imp_cons, "nodes"))[ind_imp_cons, ind_imp_cons], sp_distances)
 
 times_imp_cons <- st_network_cost(net_imp_cons, weights = "duration")[ind_imp_cons, ind_imp_cons]
 times_imp_bt_cons <- st_network_cost(net_imp_cons, weights = "total_time")[ind_imp_cons, ind_imp_cons]
+# Again adjust frictions scenario. Default: cumulative frictions.
 # times_imp_bt_cons <- times_imp_cons + btt_nodes
 sum(times_imp_bt_cons) / sum(times_imp_cons)
 mean(times_imp_bt_cons / times_imp_cons, na.rm = TRUE)
 
 # Total gain
 MA_imp_cons <- total_MA(times_imp_cons, nodes$gdp) # _bt
-MA_imp_cons / MA
+print(MA_imp_cons / MA)
 
 ma_gain_per_min_cons <- MA_imp_cons - MA
 
-ma_gain_per_min_cons / 1e9 # MA gain in billions
-ma_gain_per_min_cons / sum(with(subset(all_cb_ratios, consensus), cost_km * distance / 1000)) # MA gain per investment
-
-
+print(ma_gain_per_min_cons / 1e9) # MA gain in billions
+# MA gain per investment:
+print(ma_gain_per_min_cons / sum(with(subset(all_cb_ratios, consensus), cost_km * distance / 1000))) 
+}
 
 # Macroeconomic Cost-Benefit Analysis (Minimal Required Growth Returns) --------------------------------------------
 
