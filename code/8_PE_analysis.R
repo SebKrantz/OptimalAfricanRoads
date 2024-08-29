@@ -1,5 +1,5 @@
 #####################################################################
-# Trans-African Network: Partial Equilibrium Analysis
+# African Transport Network: Partial Equilibrium Analysis
 #####################################################################
 
 library(fastverse)
@@ -125,7 +125,7 @@ dev.off()
 fastverse_extend(dggridR)
 
 # Matching to grid, and choosing distance-weiighted nearest cell value within 30km
-OUTCOMES <- qread("data/imputed_wealth_GDP_10km_hex.qs")
+OUTCOMES <- qread("data/other_inputs/imputed_wealth_GDP_10km_hex.qs")
 outcomes_coords <- OUTCOMES |> select(lon, lat) |> qM()
 nodes_coord_mat <- st_coordinates(nodes) # graph_nodes |> select(lon, lat) |> qM() 
 nodes$gdp_cap <- nodes$IWI <- NA_real_
@@ -192,7 +192,7 @@ border_dist_transit <- fread("data/QSE/QSE_model_border_dist_mat_transit.csv") |
 border_time_transit <- fread("data/QSE/QSE_model_border_time_mat_transit.csv") |> qM(1)
 
 # Adding Country Classification
-GADM0_africa <- qread("data/GADM0_africa_simplified.qs")
+GADM0_africa <- qread("data/other_inputs/GADM0_africa_simplified.qs")
 # GADM0_africa <- st_read("/Users/sebastiankrantz/Documents/Data/GADM/gadm_410-levels.gpkg", layer = "ADM_0") %>%
 #   subset(GID_0 %in% africamonitor::am_countries$ISO3) %>% st_make_valid()
 # GADM0_africa %<>% rmapshaper::ms_simplify(keep = 0.2) %>% st_make_valid()
@@ -402,7 +402,7 @@ edges_buff_3km <- st_buffer(edges, as_units(3000, "m"))
 # edges$pop_wpop_km2 <- unattrib(edges$pop_wpop / (st_area(edges_buff_3km) / 1e6))
 
 # Loading precomputed version
-rugg_pop <- qread("data/edges_rugg_pop.qs")
+rugg_pop <- qread("data/transport_network/edges_rugg_pop.qs")
 add_routes %<>% join(rugg_pop$add_routes)
 edges %<>% join(rugg_pop$edges)
 rm(rugg_pop)
@@ -451,8 +451,8 @@ dev.off()
 # ROCKS %<>% get_vars(varying(.))
 # qsave(ROCKS, "data/ROCKS_2018.qs")
 
-ROCKS <- qread("data/ROCKS_2018.qs")
-continental_africa <- fread("data/continental_africa.csv")
+ROCKS <- qread("data/other_inputs/ROCKS_2018.qs")
+continental_africa <- fread("data/other_inputs/continental_africa.csv")
 
 options(scipen = 1000)
 # Aggreaating for Continental Africa
