@@ -1,0 +1,454 @@
+city,city_ascii,lat,lon,country,iso2,iso3,admin_name,capital,population,id,pop_cap,port_locode,port_name,port_status,outflows,city_country
+Cairo,Cairo,30.0444,31.2358,Egypt,EG,EGY,Al Qāhirah,primary,28621082,1818253931,1.2685e+10,,,,,Cairo - Egypt
+Lagos,Lagos,6.455,3.3841,Nigeria,NG,NGA,Lagos,minor,19932062,1566593751,2079625000,NGAPP,Apapa,QQ,3749556.40084,Lagos - Nigeria
+Kinshasa,Kinshasa,-4.3219,15.3119,Congo (Kinshasa),CD,COD,Kinshasa,primary,16579488,1180000363,8022500000,,,,,Kinshasa - Congo (Kinshasa)
+Luanda,Luanda,-8.8383,13.2344,Angola,AO,AGO,Luanda,primary,12376210,1024949724,5656875000,AOLAD,Luanda,AI,2439604.51885,Luanda - Angola
+Johannesburg,Johannesburg,-26.2044,28.0456,South Africa,ZA,ZAF,Gauteng,admin,12282763,1710550792,212500000,,,,,Johannesburg - South Africa
+Dar es Salaam,Dar es Salaam,-6.8161,39.2803,Tanzania,TZ,TZA,Dar es Salaam,admin,9048912,1834843853,199050000,TZDAR,Dar es Salaam,AI,1404403.56744,Dar es Salaam - Tanzania
+Khartoum,Khartoum,15.6,32.5,Sudan,SD,SDN,Khartoum,primary,11610745,1729268475,4918125000,,,,,Khartoum - Sudan
+Douala,Douala,4.05,9.7,Cameroon,CM,CMR,Littoral,admin,5768400,1120494607,144210000,CMDLA,Douala,AI,1089387.80006,Douala - Cameroon
+Nairobi,Nairobi,-1.2864,36.8172,Kenya,KE,KEN,Nairobi City,primary,6527382,1404000661,3465625000,,,,,Nairobi - Kenya
+Abidjan,Abidjan,5.3167,-4.0333,Côte d’Ivoire,CI,CIV,Abidjan,primary,9022419,1384207980,3112500000,CIABJ,Abidjan,AI,3248845.43344,Abidjan - Cote d'Ivoire
+Alexandria,Alexandria,31.1975,29.8925,Egypt,EG,EGY,Al Iskandarīyah,admin,5470745,1818695837,121750000,EGALY,El Iskandariya (Alexandria),AI,6655135.04979,Alexandria - Egypt
+Cape Town,Cape Town,-33.9253,18.4239,South Africa,ZA,ZAF,Western Cape,primary,5638695,1710680650,2981445625,ZACPT,Cape Town,AF,4902763.6243,Cape Town - South Africa
+Bamako,Bamako,12.6392,-8.0028,Mali,ML,MLI,Bamako,primary,4552105,1466965925,2642230625,,,,,Bamako - Mali
+Abuja,Abuja,9.0667,7.4833,Nigeria,NG,NGA,Federal Capital Territory,primary,3770000,1566342270,2356250000,,,,,Abuja - Nigeria
+Ibadan,Ibadan,7.3964,3.9167,Nigeria,NG,NGA,Oyo,admin,3552000,1566366407,88800000,,,,,Ibadan - Nigeria
+Casablanca,Casablanca,33.5333,-7.5833,Morocco,MA,MAR,Casablanca-Settat,admin,4219891,1504175315,87475000,MACAS,Casablanca,AI,2434027.9715,Casablanca - Morocco
+Kumasi,Kumasi,6.7,-1.625,Ghana,GH,GHA,Ashanti,admin,6898949,1288181103,87250750,,,,,Kumasi - Ghana
+Algiers,Algiers,36.7539,3.0589,Algeria,DZ,DZA,Alger,primary,5061734,1012973369,2134881875,DZALG,Alger (Algiers),AI,835952.4,Algiers - Algeria
+Addis Ababa,Addis Ababa,9.03,38.74,Ethiopia,ET,ETH,Ādīs Ābeba,primary,3115926,1231824991,1900626250,,,,,Addis Ababa - Ethiopia
+Mbuji-Mayi,Mbuji-Mayi,-6.15,23.6,Congo (Kinshasa),CD,COD,Kasaï Oriental,admin,2976651,1180399586,72300000,,,,,Mbuji-Mayi - Congo (Kinshasa)
+Mogadishu,Mogadishu,2.0392,45.3419,Somalia,SO,SOM,Banaadir,primary,2689883,1706893395,1631551875,SOMGQ,Mogadishu,AI,437501.99998,Mogadishu - Somalia
+Lusaka,Lusaka,-15.4167,28.2833,Zambia,ZM,ZMB,Lusaka,primary,2467563,1894157390,1542226875,,,,,Lusaka - Zambia
+Ouagadougou,Ouagadougou,12.3686,-1.5275,Burkina Faso,BF,BFA,Centre,primary,2497171,1854029208,1533435000,,,,,Ouagadougou - Burkina Faso
+Yaoundé,Yaounde,3.8667,11.5167,Cameroon,CM,CMR,Centre,primary,2440462,1120298240,1525288750,,,,,Yaounde - Cameroon
+Accra,Accra,5.55,-0.2,Ghana,GH,GHA,Greater Accra,primary,3048022,1288299415,1492500000,GHTEM,Tema,QQ,7407893.36449,Accra - Ghana
+Harare,Harare,-17.8292,31.0522,Zimbabwe,ZW,ZWE,Harare,primary,2543282,1716196799,1343750000,,,,,Harare - Zimbabwe
+Kano,Kano,12,8.5167,Nigeria,NG,NGA,Kano,admin,2095000,1566422868,52375000,,,,,Kano - Nigeria
+Bamenda,Bamenda,5.9614,10.1517,Cameroon,CM,CMR,North-West,admin,2130468,1120909610,5e+07,,,,,Bamenda - Cameroon
+Kananga,Kananga,-5.897,22.4488,Congo (Kinshasa),CD,COD,Kasaï Central,admin,1971704,1180172460,49292600,,,,,Kananga - Congo (Kinshasa)
+Blantyre,Blantyre,-15.7861,35.0058,Malawi,MW,MWI,Blantyre,admin,1897553,1454145012,47399325,,,,,Blantyre - Malawi
+Lubumbashi,Lubumbashi,-11.6647,27.4794,Congo (Kinshasa),CD,COD,Haut-Katanga,admin,1919258,1180506234,44659925,,,,,Lubumbashi - Congo (Kinshasa)
+Kampala,Kampala,0.3136,32.5811,Uganda,UG,UGA,Kampala,primary,2924766,1800406299,1050375000,,,,,Kampala - Uganda
+Conakry,Conakry,9.5092,-13.7122,Guinea,GN,GIN,Conakry,primary,1667864,1324568159,1042415000,GNCKY,Conakry,AI,676607.90476,Conakry - Guinea
+Masvingo,Masvingo,-20.0744,30.8328,Zimbabwe,ZW,ZWE,Masvingo,admin,1638528,1716049475,40963200,,,,,Masvingo - Zimbabwe
+Balandougou,Balandougou,13.3558,-9.5517,Mali,ML,MLI,Kayes,"",1631251,1466367944,7984410,,,,,Balandougou - Mali
+Kigali,Kigali,-1.9439,30.0594,Rwanda,RW,RWA,Kigali,primary,1620470,1646923541,949145000,,,,,Kigali - Rwanda
+Katako-Kombe,Katako-Kombe,-3.4,24.42,Congo (Kinshasa),CD,COD,Sankuru,"",1488922,1180033898,7444610,,,,,Katako-Kombe - Congo (Kinshasa)
+Onitsha,Onitsha,6.1667,6.7833,Nigeria,NG,NGA,Anambra,minor,3633207,1566593483,185375000,,,,,Onitsha - Nigeria
+Kismaayo,Kismaayo,-0.3581,42.5453,Somalia,SO,SOM,Jubbada Hoose,admin,1458000,1706091701,36450000,SOKMU,Kismayu,AI,188773,Kismaayo - Somalia
+Dakar,Dakar,14.6928,-17.4467,Senegal,SN,SEN,Dakar,primary,3223755,1686604760,899203125,SNDKR,Dakar,AI,2417263.262,Dakar - Senegal
+Mombasa,Mombasa,-4.05,39.6667,Kenya,KE,KEN,Mombasa,admin,1296082,1404512373,30208325,KEMBA,Mombasa,AI,2290456.63883,Mombasa - Kenya
+Hargeysa,Hargeysa,9.5631,44.0675,Somalia,SO,SOM,Woqooyi Galbeed,admin,1200000,1706832021,3e+07,,,,,Hargeysa - Somalia
+Baidoa,Baidoa,3.1167,43.65,Somalia,SO,SOM,Bay,admin,1200000,1706563100,3e+07,,,,,Baidoa - Somalia
+Maiduguri,Maiduguri,11.8333,13.15,Nigeria,NG,NGA,Borno,admin,1197497,1566540296,29937425,,,,,Maiduguri - Nigeria
+Mbandaka,Mbandaka,0.0478,18.2558,Congo (Kinshasa),CD,COD,Équateur,admin,1187837,1180720887,29695925,,,,,Mbandaka - Congo (Kinshasa)
+Tripoli,Tripoli,32.8872,13.1914,Libya,LY,LBY,Ţarābulus,primary,1319909,1434201852,739375000,LYTIP,Tripoli,AI,281045,Tripoli - Libya
+Aba,Aba,5.1167,7.3667,Nigeria,NG,NGA,Abia,minor,1379632,1566262000,1.45e+08,,,,,Aba - Nigeria
+Bujumbura,Bujumbura,-3.3833,29.3667,Burundi,BI,BDI,Bujumbura Mairie,primary,1750360,1108101689,714501250,,,,,Bujumbura - Burundi
+Maputo,Maputo,-25.9667,32.5833,Mozambique,MZ,MOZ,Maputo,primary,2190397,1508074843,708250000,MZMPM,Maputo,AI,871116.20005,Maputo - Mozambique
+Bukavu,Bukavu,-2.5,28.8667,Congo (Kinshasa),CD,COD,Sud-Kivu,admin,1189226,1180475821,28325000,,,,,Bukavu - Congo (Kinshasa)
+Fès,Fes,34.0433,-5.0033,Morocco,MA,MAR,Fès-Meknès,admin,1380105,1504861997,27801800,,,,,Fes - Morocco
+Mwanza,Mwanza,-2.5167,32.9,Tanzania,TZ,TZA,Mwanza,admin,1104521,1834011288,27613025,,,,,Mwanza - Tanzania
+Ikare,Ikare,7.5167,5.75,Nigeria,NG,NGA,Ondo,minor,1099931,1566683694,137491375,,,,,Ikare - Nigeria
+Tamale,Tamale,9.4075,-0.8533,Ghana,GH,GHA,Northern,admin,1146388,1288890688,27395200,,,,,Tamale - Ghana
+N’Djamena,N'Djamena,12.11,15.05,Chad,TD,TCD,N’Djamena,primary,1193312,1148708596,682541250,,,,,N'Djamena - Chad
+Nouakchott,Nouakchott,18.0858,-15.9785,Mauritania,MR,MRT,Nouakchott Ouest,primary,1440712,1478414984,673230625,MRNKC,Nouakchott,AI,334524,Nouakchott - Mauritania
+Kisangani,Kisangani,0.5167,25.2,Congo (Kinshasa),CD,COD,Tshopo,admin,1040000,1180478201,2.6e+07,,,,,Kisangani - Congo (Kinshasa)
+Ogbomoso,Ogbomoso,8.1333,4.25,Nigeria,NG,NGA,Oyo,minor,1032000,1566373448,1.29e+08,,,,,Ogbomoso - Nigeria
+Niamey,Niamey,13.515,2.1175,Niger,NE,NER,Niamey,primary,1026848,1562932886,641780000,,,,,Niamey - Niger
+Monrovia,Monrovia,6.3133,-10.8014,Liberia,LR,LBR,Montserrado,primary,1110250,1430477826,638601250,LRMLW,Monrovia,AI,467272.00002,Monrovia - Liberia
+Domaa-Ahenkro,Domaa-Ahenkro,7.2833,-2.8833,Ghana,GH,GHA,Bono,"",1e+06,1288459533,5e+06,,,,,Domaa-Ahenkro - Ghana
+Lilongwe,Lilongwe,-13.9833,33.7833,Malawi,MW,MWI,Lilongwe,primary,989318,1454688499,618323750,,,,,Lilongwe - Malawi
+Al Mijlad,Al Mijlad,11.0339,27.74,Sudan,SD,SDN,West Kordofan,"",985000,1729768355,4925000,,,,,Al Mijlad - Sudan
+Gqeberha,Gqeberha,-33.9581,25.6,South Africa,ZA,ZAF,Eastern Cape,"",1305561,1710918997,4838385,ZAZBA,Coega,RL,6024889.12892,Gqeberha - South Africa
+Marrakech,Marrakech,31.63,-8.0089,Morocco,MA,MAR,Marrakech-Safi,admin,1132514,1504172585,24174675,,,,,Marrakech - Morocco
+Asmara,Asmara,15.3228,38.925,Eritrea,ER,ERI,Ma’ĭkel,primary,1008160,1232791236,601875000,,,,,Asmara - Eritrea
+Freetown,Freetown,8.4844,-13.2344,Sierra Leone,SL,SLE,Western Area,primary,1035246,1694085071,594375000,SLFNA,Freetown,AI,292305,Freetown - Sierra Leone
+Tangier,Tangier,35.7767,-5.8039,Morocco,MA,MAR,Tanger-Tétouan-Al Hoceïma,admin,1007037,1504861504,23698800,MAPTM,Tanger Med,AI,29213268.30742,Tangier - Morocco
+Bobo-Dioulasso,Bobo-Dioulasso,11.1833,-4.2833,Burkina Faso,BF,BFA,Hauts-Bassins,admin,903887,1854348796,22597175,,,,,Bobo-Dioulasso - Burkina Faso
+Bunia,Bunia,1.5667,30.25,Congo (Kinshasa),CD,COD,Ituri,admin,900666,1180006418,22516650,,,,,Bunia - Congo (Kinshasa)
+Bangui,Bangui,4.3733,18.5628,Central African Republic,CF,CAF,Bangui,primary,1335009,1140080881,555769375,,,,,Bangui - Central African Republic
+Pietermaritzburg,Pietermaritzburg,-29.6167,30.3833,South Africa,ZA,ZAF,KwaZulu-Natal,admin,886698,1710690280,20983175,,,,,Pietermaritzburg - South Africa
+Durban,Durban,-29.8833,31.05,South Africa,ZA,ZAF,KwaZulu-Natal,"",1186719,1710149138,4193170,ZADUR,Durban,AI,8754191.12186,Durban - South Africa
+Libreville,Libreville,0.3903,9.4542,Gabon,GA,GAB,Estuaire,primary,876303,1266952885,498126875,GALBV,Libreville,AI,414222.00003,Libreville - Gabon
+Pointe-Noire,Pointe-Noire,-4.7975,11.8503,Congo (Brazzaville),CG,COG,Pointe-Noire,admin,820794,1178411563,19694975,CGPNR,Pointe Noire,AI,3485094.33117,Pointe-Noire - Congo (Brazzaville)
+Lubango,Lubango,-14.9167,13.5,Angola,AO,AGO,Huíla,admin,875893,1024669127,19406225,,,,,Lubango - Angola
+Kaduna,Kaduna,10.5167,7.4333,Nigeria,NG,NGA,Kaduna,admin,760084,1566368729,19002100,,,,,Kaduna - Nigeria
+Baardheere,Baardheere,2.3333,42.2833,Somalia,SO,SOM,Gedo,"",755500,1706822684,3777500,,,,,Baardheere - Somalia
+Gaalkacyo,Gaalkacyo,6.7697,47.4308,Somalia,SO,SOM,Mudug,admin,745000,1706067930,18625000,,,,,Gaalkacyo - Somalia
+Nampula,Nampula,-15.1167,39.2667,Mozambique,MZ,MOZ,Nampula,admin,743000,1508958445,18575000,,,,,Nampula - Mozambique
+Cabinda,Cabinda,-5.56,12.19,Angola,AO,AGO,Cabinda,admin,739182,1024474012,18479550,,,,,Cabinda - Angola
+Tshikapa,Tshikapa,-6.4167,20.8,Congo (Kinshasa),CD,COD,Kasaï,admin,732000,1180581239,18300000,,,,,Tshikapa - Congo (Kinshasa)
+Marka,Marka,1.7133,44.7656,Somalia,SO,SOM,Shabeellaha Hoose,admin,898061,1706165964,17909025,,,,,Marka - Somalia
+Enugu,Enugu,6.4528,7.5111,Nigeria,NG,NGA,Enugu,admin,715774,1566212729,17894350,,,,,Enugu - Nigeria
+Boosaaso,Boosaaso,11.2886,49.1819,Somalia,SO,SOM,Bari,admin,700906,1706054548,17522650,,,,,Boosaaso - Somalia
+Bauchi,Bauchi,10.3158,9.8442,Nigeria,NG,NGA,Bauchi,admin,693700,1566483284,17342500,,,,,Bauchi - Nigeria
+Lokoja,Lokoja,7.8019,6.7442,Nigeria,NG,NGA,Kogi,admin,692050,1566772925,17301250,,,,,Lokoja - Nigeria
+Cotonou,Cotonou,6.3667,2.4333,Benin,BJ,BEN,Littoral,primary,2212016,1204955174,424382500,BJCOO,Cotonou,AI,4835490.66433,Cotonou - Benin
+Bulawayo,Bulawayo,-20.17,28.58,Zimbabwe,ZW,ZWE,Bulawayo,admin,665940,1716032632,16648500,,,,,Bulawayo - Zimbabwe
+Huambo,Huambo,-12.7767,15.7347,Angola,AO,AGO,Huambo,admin,665564,1024079828,16639100,,,,,Huambo - Angola
+Jalingo,Jalingo,8.9,11.3667,Nigeria,NG,NGA,Taraba,admin,660213,1566732241,16505325,,,,,Jalingo - Nigeria
+Bouaké,Bouake,7.6833,-5.0167,Côte d’Ivoire,CI,CIV,Vallée du Bandama,admin,659233,1384983838,16480825,,,,,Bouake - Cote d'Ivoire
+Dayrūţ,Dayrut,27.5667,30.8167,Egypt,EG,EGY,Asyūţ,"",1074189,1818248895,3269235,,,,,Dayrut - Egypt
+Ērer Sātā,Erer Sata,9.5667,41.3833,Ethiopia,ET,ETH,Sumalē,"",658197,1231563638,3245000,,,,,Erer Sata - Ethiopia
+Benghazi,Benghazi,32.1167,20.0667,Libya,LY,LBY,Banghāzī,admin,631555,1434915572,15788875,LYBEN,Bingazi (Benghazi),AI,296981,Benghazi - Libya
+Jos,Jos,9.9167,8.8903,Nigeria,NG,NGA,Plateau,admin,622802,1566773679,15570050,,,,,Jos - Nigeria
+Al Manşūrah,Al Mansurah,31.05,31.3833,Egypt,EG,EGY,Ad Daqahlīyah,admin,2658408,1818255319,15548825,,,,,Al Mansurah - Egypt
+Malanje,Malanje,-9.5333,16.35,Angola,AO,AGO,Malanje,admin,656435,1024774947,15105375,,,,,Malanje - Angola
+Djibouti,Djibouti,11.5883,43.145,Djibouti,DJ,DJI,Djibouti,primary,603900,1262028958,377437500,DJJIB,Djibouti,AI,4852561.03525,Djibouti - Djibouti
+Tunis,Tunis,36.8064,10.1817,Tunisia,TN,TUN,Tunis,primary,1784002,1788742103,376600000,,,,,Tunis - Tunisia
+Garoua,Garoua,9.3,13.4,Cameroon,CM,CMR,Nord,admin,628636,1120803808,1.5e+07,,,,,Garoua - Cameroon
+Mbale,Mbale,1.0806,34.175,Uganda,UG,UGA,Mbale,admin,684000,1800265900,14657500,,,,,Mbale - Uganda
+Port Sudan,Port Sudan,19.6167,37.2167,Sudan,SD,SDN,Red Sea,admin,579942,1729710259,14498550,SDPZU,Port Sudan,AI,308535,Port Sudan - Sudan
+Rabat,Rabat,34.0209,-6.8416,Morocco,MA,MAR,Rabat-Salé-Kénitra,primary,1891455,1504023252,357948125,,,,,Rabat - Morocco
+Nakuru,Nakuru,-0.3,36.0667,Kenya,KE,KEN,Nakuru,admin,570674,1404140179,14266850,,,,,Nakuru - Kenya
+Rustenburg,Rustenburg,-25.6667,27.2428,South Africa,ZA,ZAF,North West,"",584172,1710326039,2747875,,,,,Rustenburg - South Africa
+Mbeya,Mbeya,-8.9,33.45,Tanzania,TZ,TZA,Mbeya,admin,541603,1834396594,13540075,,,,,Mbeya - Tanzania
+El Geneina,El Geneina,13.45,22.45,Sudan,SD,SDN,West Darfur,admin,550961,1729642412,13459750,,,,,El Geneina - Sudan
+Kassala,Kassala,15.45,36.4,Sudan,SD,SDN,Kassala,admin,536009,1729157224,13400225,,,,,Kassala - Sudan
+Beira,Beira,-19.8333,34.85,Mozambique,MZ,MOZ,Sofala,admin,601421,1508407369,13265100,MZBEW,Beira,AI,862537.00003,Beira - Mozambique
+Touba,Touba,14.8667,-15.8833,Senegal,SN,SEN,Diourbel,"",597230,1686956738,2645880,,,,,Touba - Senegal
+Ndola,Ndola,-12.9689,28.6325,Zambia,ZM,ZMB,Copperbelt,admin,660101,1894032745,13208250,,,,,Ndola - Zambia
+Port Said,Port Said,31.2625,32.3061,Egypt,EG,EGY,Būr Sa‘īd,admin,894850,1818628574,13110825,EGPSD,Port Said,AI,30580671.80589,Port Said - Egypt
+Al Fayyūm,Al Fayyum,29.3084,30.8441,Egypt,EG,EGY,Al Fayyūm,admin,1378597,1818281002,12976175,,,,,Al Fayyum - Egypt
+Suez,Suez,29.9667,32.55,Egypt,EG,EGY,As Suways,admin,516959,1818495972,12923975,,,,,Suez - Egypt
+Benguela,Benguela,-12.55,13.4167,Angola,AO,AGO,Benguela,admin,1189611,1024141961,12822150,AOLOB,Lobito,RL,210369.4,Benguela - Angola
+Cadaado,Cadaado,6.1403,46.6256,Somalia,SO,SOM,Galguduud,"",560654,1706406560,2553270,,,,,Cadaado - Somalia
+Newcastle,Newcastle,-27.7464,29.9328,South Africa,ZA,ZAF,KwaZulu-Natal,"",507710,1710031016,2538550,,,,,Newcastle - South Africa
+Ile-Ife,Ile-Ife,7.4667,4.5667,Nigeria,NG,NGA,Osun,minor,1021286,1566756897,62744000,,,,,Ile-Ife - Nigeria
+El Fasher,El Fasher,13.6306,25.35,Sudan,SD,SDN,North Darfur,admin,5e+05,1729372385,12500000,,,,,El Fasher - Sudan
+Likasi,Likasi,-10.9833,26.7333,Congo (Kinshasa),CD,COD,Haut-Katanga,"",531702,1180978192,2475000,,,,,Likasi - Congo (Kinshasa)
+Oujda-Angad,Oujda-Angad,34.6867,-1.9114,Morocco,MA,MAR,Oriental,admin,619820,1504891036,12356300,,,,,Oujda-Angad - Morocco
+Nyala,Nyala,12.05,24.8833,Sudan,SD,SDN,South Darfur,admin,492984,1729833248,12324600,,,,,Nyala - Sudan
+Bissau,Bissau,11.85,-15.5667,Guinea-Bissau,GW,GNB,Bissau,primary,503968,1624168850,307502500,GWOXB,Bissau,AI,114309,Bissau - Guinea-Bissau
+Garoowe,Garoowe,8.4,48.4667,Somalia,SO,SOM,Nugaal,admin,485000,1706512367,12125000,,,,,Garoowe - Somalia
+Kolwezi,Kolwezi,-10.7167,25.4667,Congo (Kinshasa),CD,COD,Lualaba,admin,480000,1180380965,1.2e+07,,,,,Kolwezi - Congo (Kinshasa)
+East London,East London,-33.0175,27.9047,South Africa,ZA,ZAF,Eastern Cape,"",490147,1710178149,2393380,,,,,East London - South Africa
+Berbera,Berbera,10.4356,45.0164,Somalia,SO,SOM,Woqooyi Galbeed,"",478000,1706893125,2390000,SOBBO,Berbera,AI,215094.5,Berbera - Somalia
+Eldoret,Eldoret,0.5167,35.2833,Kenya,KE,KEN,Uasin Gishu,admin,493634,1404676289,11892900,,,,,Eldoret - Kenya
+Constantine,Constantine,36.35,6.6,Algeria,DZ,DZA,Constantine,admin,843242,1012275076,11628450,,,,,Constantine - Algeria
+Juba,Juba,4.85,31.6,South Sudan,SS,SSD,Central Equatoria,primary,459342,1728444337,287088750,,,,,Juba - South Sudan
+Kikwit,Kikwit,-5.0386,18.8181,Congo (Kinshasa),CD,COD,Kwilu,"",458000,1180518247,2290000,,,,,Kikwit - Congo (Kinshasa)
+Windhoek,Windhoek,-22.57,17.0836,Namibia,,NAM,Khomas,primary,431000,1516802003,269375000,,,,,Windhoek - Namibia
+Sidi Bouzid,Sidi Bouzid,35.0381,9.4858,Tunisia,TN,TUN,Sidi Bouzid,admin,429912,1788196439,10747800,,,,,Sidi Bouzid - Tunisia
+Ismailia,Ismailia,30.5833,32.2667,Egypt,EG,EGY,Al Ismā‘īlīyah,admin,459785,1818532766,10736625,,,,,Ismailia - Egypt
+Sokoto,Sokoto,13.0622,5.2339,Nigeria,NG,NGA,Sokoto,admin,427760,1566574518,10694000,,,,,Sokoto - Nigeria
+Burco,Burco,9.5279,45.5345,Somalia,SO,SOM,Togdheer,admin,425000,1706322754,10625000,,,,,Burco - Somalia
+Daloa,Daloa,6.8833,-6.45,Côte d’Ivoire,CI,CIV,Sassandra-Marahoué,admin,466205,1384564974,10546775,,,,,Daloa - Cote d'Ivoire
+Agadir,Agadir,30.4333,-9.6,Morocco,MA,MAR,Souss-Massa,admin,1070860,1504116858,10546100,MAAGA,Agadir,AI,593660.57139,Agadir - Morocco
+Ugep,Ugep,5.8,8.0833,Nigeria,NG,NGA,Cross River,minor,540000,1566000091,52500000,,,,,Ugep - Nigeria
+El Obeid,El Obeid,13.1833,30.2167,Sudan,SD,SDN,North Kordofan,admin,418280,1729215531,10457000,,,,,El Obeid - Sudan
+Arusha,Arusha,-3.3667,36.6833,Tanzania,TZ,TZA,Arusha,admin,416442,1834484937,10411050,,,,,Arusha - Tanzania
+Ajdābiyā,Ajdabiya,30.7556,20.2253,Libya,LY,LBY,Al Wāḩāt,admin,437015,1434401280,10400000,,,,,Ajdabiya - Libya
+Banjul,Banjul,13.4531,-16.5775,"Gambia, The",GM,GMB,Banjul,primary,976753,1270723713,258373125,GMBJL,Banjul,AI,184275,"Banjul - Gambia, The"
+Kisumu,Kisumu,-0.0833,34.7667,Kenya,KE,KEN,Kisumu,admin,528624,1404511920,10248200,,,,,Kisumu - Kenya
+Saurimo,Saurimo,-9.65,20.4,Angola,AO,AGO,Lunda-Sul,admin,393000,1024326839,9825000,,,,,Saurimo - Angola
+Yola,Yola,9.23,12.46,Nigeria,NG,NGA,Adamawa,admin,392854,1566782065,9821350,,,,,Yola - Nigeria
+San-Pédro,San-Pedro,4.75,-6.6333,Côte d’Ivoire,CI,CIV,Bas-Sassandra,admin,390654,1384436547,9766350,CISPY,San-Pdro,AI,2312502.02864,San-Pedro - Cote d'Ivoire
+Gwoza,Gwoza,11.0861,13.6914,Nigeria,NG,NGA,Borno,minor,388600,1566834535,48575000,,,,,Gwoza - Nigeria
+Saki,Saki,8.6667,3.4,Nigeria,NG,NGA,Oyo,minor,388225,1566404680,48528125,,,,,Saki - Nigeria
+Uvinza,Uvinza,-5.1069,30.3839,Tanzania,TZ,TZA,Kigoma,"",387442,1834561245,1937210,,,,,Uvinza - Tanzania
+Ceel Baraf,Ceel Baraf,3.2073,45.7587,Somalia,SO,SOM,Shabeellaha Dhexe,"",396430,1706959191,1923150,,,,,Ceel Baraf - Somalia
+Gusau,Gusau,12.15,6.6667,Nigeria,NG,NGA,Zamfara,admin,383162,1566383682,9579050,,,,,Gusau - Nigeria
+Mamou,Mamou,10.3833,-12.0833,Guinea,GN,GIN,Mamou,admin,376269,1324990909,9406725,,,,,Mamou - Guinea
+Qardho,Qardho,9.5,49.0833,Somalia,SO,SOM,Bari,"",365000,1706405003,1825000,,,,,Qardho - Somalia
+Warri,Warri,5.5167,5.75,Nigeria,NG,NGA,Delta,minor,363382,1566325734,45422750,,,,,Warri - Nigeria
+K’ebrī Dehar,K'ebri Dehar,6.7333,44.2667,Ethiopia,ET,ETH,Sumalē,"",363000,1231393469,1815000,,,,,K'ebri Dehar - Ethiopia
+Cubal,Cubal,-13.0333,14.25,Angola,AO,AGO,Benguela,"",448456,1024580158,1788090,,,,,Cubal - Angola
+Luena,Luena,-11.7918,19.9062,Angola,AO,AGO,Moxico,admin,357413,1024283760,8935325,,,,,Luena - Angola
+Cuito,Cuito,-12.3833,16.9333,Angola,AO,AGO,Bié,admin,429249,1024939858,8885575,,,,,Cuito - Angola
+Gedaref,Gedaref,14.0333,35.3833,Sudan,SD,SDN,Gedaref,admin,354927,1729215057,8873175,,,,,Gedaref - Sudan
+António Enes,Antonio Enes,-16.2333,39.9167,Mozambique,MZ,MOZ,Nampula,"",347175,1508591443,1735875,,,,,Antonio Enes - Mozambique
+Wad Medani,Wad Medani,14.4,33.5167,Sudan,SD,SDN,Gezira,admin,345290,1729581572,8632250,,,,,Wad Medani - Sudan
+Kūstī,Kusti,13.1667,32.6667,Sudan,SD,SDN,White Nile,"",345068,1729229371,1725340,,,,,Kusti - Sudan
+Maseru,Maseru,-29.31,27.48,Lesotho,LS,LSO,Maseru,primary,417449,1426977668,214713125,,,,,Maseru - Lesotho
+Matadi,Matadi,-5.8167,13.4833,Congo (Kinshasa),CD,COD,Kongo Central,admin,360880,1180529604,8425000,,,,,Matadi - Congo (Kinshasa)
+Lafia,Lafia,8.4917,8.5167,Nigeria,NG,NGA,Nasarawa,admin,330712,1566042542,8267800,,,,,Lafia - Nigeria
+Nazrēt,Nazret,8.5414,39.2689,Ethiopia,ET,ETH,Oromīya,"",411236,1231826873,1620000,,,,,Nazret - Ethiopia
+Mekele,Mekele,13.4969,39.4769,Ethiopia,ET,ETH,Tigray,admin,336243,1231468531,8092500,,,,,Mekele - Ethiopia
+Uíge,Uige,-7.6167,15.05,Angola,AO,AGO,Uíge,admin,494387,1024666275,8063275,,,,,Uige - Angola
+Taourirt,Taourirt,34.4169,-2.885,Morocco,MA,MAR,Oriental,"",321876,1504648957,1609380,,,,,Taourirt - Morocco
+Menongue,Menongue,-14.6556,17.6842,Angola,AO,AGO,Cuando Cubango,admin,320914,1024725650,8022850,,,,,Menongue - Angola
+Godē,Gode,5.9527,43.5516,Ethiopia,ET,ETH,Sumalē,"",320782,1231128743,1603910,,,,,Gode - Ethiopia
+Katsina,Katsina,12.9889,7.6008,Nigeria,NG,NGA,Katsina,admin,318459,1566777297,7961475,,,,,Katsina - Nigeria
+Geita,Geita,-2.8714,32.2294,Tanzania,TZ,TZA,Geita,admin,318006,1834469543,7950150,,,,,Geita - Tanzania
+Bor,Bor,6.2125,31.5608,South Sudan,SS,SSD,Jonglei,admin,315351,1728186782,7883775,,,,,Bor - South Sudan
+Safi,Safi,32.2833,-9.2333,Morocco,MA,MAR,Marrakech-Safi,"",395857,1504000717,1542540,,,,,Safi - Morocco
+Minna,Minna,9.6139,6.5569,Nigeria,NG,NGA,Niger,admin,304113,1566285237,7602825,,,,,Minna - Nigeria
+Sumbawanga,Sumbawanga,-7.9667,31.6167,Tanzania,TZ,TZA,Rukwa,admin,303986,1834684278,7599650,,,,,Sumbawanga - Tanzania
+Āwasa,Awasa,7.05,38.4667,Ethiopia,ET,ETH,YeDebub Bihēroch Bihēreseboch na Hizboch,admin,708468,1231663122,7502500,,,,,Awasa - Ethiopia
+Batna,Batna,35.55,6.1667,Algeria,DZ,DZA,Batna,admin,416554,1012093229,7266125,,,,,Batna - Algeria
+Sétif,Setif,36.19,5.41,Algeria,DZ,DZA,Sétif,admin,576839,1012981116,7211525,,,,,Setif - Algeria
+Sekondi,Sekondi,4.9433,-1.704,Ghana,GH,GHA,Western,admin,345041,1288186231,7156200,GHTKD,Takoradi,AI,343811.4,Sekondi - Ghana
+Gagnoa,Gagnoa,6.1333,-5.9333,Côte d’Ivoire,CI,CIV,Gôh-Djiboua,admin,277044,1384138010,6926100,,,,,Gagnoa - Cote d'Ivoire
+Soubré,Soubre,5.7833,-6.6,Côte d’Ivoire,CI,CIV,Bas-Sassandra,minor,310768,1384745470,34096625,,,,,Soubre - Cote d'Ivoire
+Gabela,Gabela,-10.85,14.3667,Angola,AO,AGO,Cuanza-Sul,"",369491,1024159015,1359215,,,,,Gabela - Angola
+Nguru,Nguru,12.8792,10.4525,Nigeria,NG,NGA,Yobe,minor,270632,1566737779,33829000,,,,,Nguru - Nigeria
+Gombe,Gombe,10.2904,11.17,Nigeria,NG,NGA,Gombe,admin,306078,1566855445,6759150,,,,,Gombe - Nigeria
+Aswān,Aswan,24.0889,32.8997,Egypt,EG,EGY,Aswān,admin,267913,1818262512,6697825,,,,,Aswan - Egypt
+Maradi,Maradi,13.4833,7.1,Niger,NE,NER,Maradi,admin,267249,1562200314,6681225,,,,,Maradi - Niger
+Djelfa,Djelfa,34.6667,3.25,Algeria,DZ,DZA,Djelfa,admin,313037,1012268984,6645825,,,,,Djelfa - Algeria
+Sfax,Sfax,34.74,10.76,Tunisia,TN,TUN,Sfax,admin,476029,1788741658,6628275,,,,,Sfax - Tunisia
+Ed Daein,Ed Daein,11.4608,26.1283,Sudan,SD,SDN,East Darfur,admin,264734,1729512354,6618350,,,,,Ed Daein - Sudan
+Tchibota,Tchibota,-4.1794,11.3731,Congo (Brazzaville),CG,COG,Kouilou,"",262931,1178731596,1314655,,,,,Tchibota - Congo (Brazzaville)
+Bariadi,Bariadi,-2.7919,33.9894,Tanzania,TZ,TZA,Simiyu,admin,260927,1834546025,6523175,,,,,Bariadi - Tanzania
+Hong,Hong,10.2317,12.9303,Nigeria,NG,NGA,Adamawa,minor,260900,1566033629,32612500,,,,,Hong - Nigeria
+Mişrātah,Misratah,32.3775,15.092,Libya,LY,LBY,Mişrātah,admin,259056,1434518407,6476400,LYMRA,Misurata,AI,988004.00002,Misratah - Libya
+Singa,Singa,13.15,33.9333,Sudan,SD,SDN,Sennar,admin,259000,1729951108,6475000,,,,,Singa - Sudan
+Ndulo,Ndulo,-11.4833,15.8333,Angola,AO,AGO,Huambo,"",258161,1024783572,1290805,,,,,Ndulo - Angola
+Annaba,Annaba,36.9,7.7667,Algeria,DZ,DZA,Annaba,admin,314612,1012600001,6433975,,,,,Annaba - Algeria
+Bloemfontein,Bloemfontein,-29.1167,26.2167,South Africa,ZA,ZAF,Free State,primary,256185,1710495933,160115625,,,,,Bloemfontein - South Africa
+Moçâmedes,Mocamedes,-15.1953,12.1508,Angola,AO,AGO,Namibe,admin,255000,1024785067,6375000,,,,,Mocamedes - Angola
+Bata,Bata,1.865,9.77,Equatorial Guinea,GQ,GNQ,Litoral,admin,250770,1226528087,6269250,GQBSG,Bata,RQ,454067,Bata - Equatorial Guinea
+Al Bayḑā’,Al Bayda',32.7664,21.7417,Libya,LY,LBY,Al Jabal al Akhḑar,admin,303861,1434263017,6250000,,,,,Al Bayda' - Libya
+Kurmuk,Kurmuk,10.55,34.2833,Sudan,SD,SDN,Blue Nile,"",250000,1729180375,1250000,,,,,Kurmuk - Sudan
+Goma,Goma,-1.6794,29.2336,Congo (Kinshasa),CD,COD,Nord-Kivu,admin,320616,1180805022,6246550,,,,,Goma - Congo (Kinshasa)
+Banikoara,Banikoara,11.3,2.4333,Benin,BJ,BEN,Alibori,"",343226,1204495680,1243105,,,,,Banikoara - Benin
+Kabinda,Kabinda,-6.13,24.48,Congo (Kinshasa),CD,COD,Lomami,admin,244000,1180751831,6100000,,,,,Kabinda - Congo (Kinshasa)
+Bahir Dar,Bahir Dar,11.6,37.3833,Ethiopia,ET,ETH,Āmara,admin,243300,1231784118,6082500,,,,,Bahir Dar - Ethiopia
+Kahama,Kahama,-3.8375,32.6,Tanzania,TZ,TZA,Shinyanga,"",242208,1834043034,1211040,,,,,Kahama - Tanzania
+Chimoio,Chimoio,-19.1167,33.45,Mozambique,MZ,MOZ,Manica,admin,238976,1508460246,5974400,,,,,Chimoio - Mozambique
+Djougou,Djougou,9.7,1.6667,Benin,BJ,BEN,Donga,admin,353378,1204972666,5926000,,,,,Djougou - Benin
+Gaborone,Gaborone,-24.6581,25.9122,Botswana,BW,BWA,Gaborone,primary,404964,1072756768,147427500,,,,,Gaborone - Botswana
+Zinder,Zinder,13.8053,8.9883,Niger,NE,NER,Zinder,admin,235605,1562758258,5890125,,,,,Zinder - Niger
+Bo,Bo,7.9564,-11.74,Sierra Leone,SL,SLE,Southern,admin,249807,1694651111,5842100,,,,,Bo - Sierra Leone
+Mambéré,Mambere,5.5,15.5,Central African Republic,CF,CAF,Nana-Mambéré,"",233666,1140081585,1168330,,,,,Mambere - Central African Republic
+Damboa,Damboa,11.15,12.75,Nigeria,NG,NGA,Borno,minor,233500,1566264329,29187500,,,,,Damboa - Nigeria
+Beni,Beni,0.5,29.4667,Congo (Kinshasa),CD,COD,Nord-Kivu,"",284873,1180325051,1159760,,,,,Beni - Congo (Kinshasa)
+Khénifra,Khenifra,32.9394,-5.6675,Morocco,MA,MAR,Béni Mellal-Khénifra,"",381704,1504143530,1142835,,,,,Khenifra - Morocco
+Uacu Cungo,Uacu Cungo,-11.3583,15.1194,Angola,AO,AGO,Cuanza-Sul,"",258438,1024677127,1127600,,,,,Uacu Cungo - Angola
+Kimberley,Kimberley,-28.7383,24.7639,South Africa,ZA,ZAF,Northern Cape,admin,225160,1710282622,5629000,,,,,Kimberley - South Africa
+Mutare,Mutare,-18.9667,32.6333,Zimbabwe,ZW,ZWE,Manicaland,admin,278802,1716060405,5620050,,,,,Mutare - Zimbabwe
+Guéckédou,Gueckedou,8.5667,-10.1333,Guinea,GN,GIN,N’Zérékoré,minor,221715,1324580681,27714375,,,,,Gueckedou - Guinea
+Sousse,Sousse,35.8333,10.6333,Tunisia,TN,TUN,Sousse,admin,823099,1788927583,5538250,,,,,Sousse - Tunisia
+Tabora,Tabora,-5.0167,32.8,Tanzania,TZ,TZA,Tabora,admin,221466,1834712235,5536650,,,,,Tabora - Tanzania
+Tchaourou,Tchaourou,8.8833,2.6,Benin,BJ,BEN,Borgou,"",236742,1204695000,1105540,,,,,Tchaourou - Benin
+Duekoué,Duekoue,6.7333,-7.35,Côte d’Ivoire,CI,CIV,Montagnes,minor,284596,1384429839,27619125,,,,,Duekoue - Cote d'Ivoire
+El Jadid,El Jadid,33.2333,-8.5,Morocco,MA,MAR,Casablanca-Settat,"",467017,1504964063,1100905,,,,,El Jadid - Morocco
+Laâyoune,Laayoune,27.1536,-13.2033,Morocco,MA,MAR,Laâyoune-Sakia El Hamra,"",217732,1504000319,1088660,,,,,Laayoune - Morocco
+Sikasso,Sikasso,11.3167,-5.6667,Mali,ML,MLI,Sikasso,admin,315730,1466666150,5349425,,,,,Sikasso - Mali
+Sodo,Sodo,6.855,37.7808,Ethiopia,ET,ETH,YeDebub Bihēroch Bihēreseboch na Hizboch,"",361957,1231130720,1067335,,,,,Sodo - Ethiopia
+Morogoro,Morogoro,-6.8242,37.6633,Tanzania,TZ,TZA,Morogoro,admin,207000,1834185429,5175000,,,,,Morogoro - Tanzania
+Cidade de Nacala,Cidade de Nacala,-14.5428,40.6728,Mozambique,MZ,MOZ,Nampula,"",206449,1508752825,1032245,MZMNC,Nacala,AI,668056.99998,Cidade de Nacala - Mozambique
+Ifakara,Ifakara,-8.1,36.6833,Tanzania,TZ,TZA,Morogoro,"",205843,1834456222,1029215,,,,,Ifakara - Tanzania
+Biskra,Biskra,34.85,5.7333,Algeria,DZ,DZA,Biskra,admin,287759,1012947247,5116525,,,,,Biskra - Algeria
+Mpanda,Mpanda,-6.35,31.0667,Tanzania,TZ,TZA,Katavi,admin,204338,1834127573,5108450,,,,,Mpanda - Tanzania
+Kukawa,Kukawa,12.9167,13.5667,Nigeria,NG,NGA,Borno,minor,203864,1566891739,25483000,,,,,Kukawa - Nigeria
+Iringa,Iringa,-7.77,35.69,Tanzania,TZ,TZA,Iringa,admin,202490,1834453478,5062250,,,,,Iringa - Tanzania
+Luxor,Luxor,25.6967,32.6444,Egypt,EG,EGY,Al Uqşur,admin,371539,1818948225,5055800,,,,,Luxor - Egypt
+Al Khums,Al Khums,32.6497,14.2644,Libya,LY,LBY,Al Marqab,"",281943,1434172839,1009715,,,,,Al Khums - Libya
+Maroua,Maroua,10.5971,14.3157,Cameroon,CM,CMR,Extrême-Nord,admin,201371,1120956931,5034275,,,,,Maroua - Cameroon
+Isanlu,Isanlu,8.1667,5.8,Nigeria,NG,NGA,Kogi,minor,2e+05,1566562770,2.5e+07,,,,,Isanlu - Nigeria
+Gbadolite,Gbadolite,4.2833,21.0167,Congo (Kinshasa),CD,COD,Nord-Ubangi,admin,206015,1180674224,4970975,,,,,Gbadolite - Congo (Kinshasa)
+Lunga-Lunga,Lunga-Lunga,-4.555,39.1231,Kenya,KE,KEN,Kwale,"",198423,1404110872,992115,,,,,Lunga-Lunga - Kenya
+Kankan,Kankan,10.3833,-9.3,Guinea,GN,GIN,Kankan,admin,198013,1324495325,4950325,,,,,Kankan - Guinea
+Baure,Baure,12.7833,8.7667,Nigeria,NG,NGA,Katsina,minor,197425,1566183701,24678125,,,,,Baure - Nigeria
+Kajo Kaji,Kajo Kaji,3.8492,31.6578,South Sudan,SS,SSD,Central Equatoria,"",218434,1728764691,980000,,,,,Kajo Kaji - South Sudan
+Mwene-Ditu,Mwene-Ditu,-7,23.45,Congo (Kinshasa),CD,COD,Lomami,"",195622,1180134137,978110,,,,,Mwene-Ditu - Congo (Kinshasa)
+Malema,Malema,-14.9486,37.4144,Mozambique,MZ,MOZ,Nampula,"",195077,1508782895,975385,,,,,Malema - Mozambique
+N’Zérékoré,N'Zerekore,7.75,-8.8167,Guinea,GN,GIN,N’Zérékoré,admin,195027,1324336588,4875675,,,,,N'Zerekore - Guinea
+Mbarara,Mbarara,-0.6133,30.6583,Uganda,UG,UGA,Mbarara,admin,229313,1800554483,4875325,,,,,Mbarara - Uganda
+Tébessa,Tebessa,35.4,8.1167,Algeria,DZ,DZA,Tébessa,admin,221697,1012196375,4861525,,,,,Tebessa - Algeria
+Sūhāj,Suhaj,26.55,31.7,Egypt,EG,EGY,Sūhāj,admin,1402478,1818460403,4848275,,,,,Suhaj - Egypt
+Quelimane,Quelimane,-17.8764,36.8872,Mozambique,MZ,MOZ,Zambézia,admin,192876,1508396687,4821900,,,,,Quelimane - Mozambique
+Béni Mellal,Beni Mellal,32.3394,-6.3608,Morocco,MA,MAR,Béni Mellal-Khénifra,admin,559315,1504131639,4816900,,,,,Beni Mellal - Morocco
+Ārba Minch’,Arba Minch',6.0333,37.55,Ethiopia,ET,ETH,YeDebub Bihēroch Bihēreseboch na Hizboch,"",202531,1231302134,960215,,,,,Arba Minch' - Ethiopia
+Ouargla,Ouargla,31.95,5.3167,Algeria,DZ,DZA,Ouargla,admin,265829,1012425687,4778400,,,,,Ouargla - Algeria
+Ngaoundéré,Ngaoundere,7.3167,13.5833,Cameroon,CM,CMR,Adamaoua,admin,189800,1120011020,4745000,,,,,Ngaoundere - Cameroon
+Desē,Dese,11.1333,39.6333,Ethiopia,ET,ETH,Āmara,"",313554,1231359719,939500,,,,,Dese - Ethiopia
+Gharyān,Gharyan,32.1697,13.0167,Libya,LY,LBY,Al Jabal al Gharbī,admin,187854,1434507846,4696350,,,,,Gharyan - Libya
+Klerksdorp,Klerksdorp,-26.8667,26.6667,South Africa,ZA,ZAF,North West,"",229237,1710416691,932575,,,,,Klerksdorp - South Africa
+Ed Damazin,Ed Damazin,11.7667,34.35,Sudan,SD,SDN,Blue Nile,admin,401908,1729684147,4651275,,,,,Ed Damazin - Sudan
+Yei,Yei,4.0904,30.68,South Sudan,SS,SSD,Central Equatoria,"",185000,1728607274,925000,,,,,Yei - South Sudan
+Siguiri,Siguiri,11.4167,-9.1667,Guinea,GN,GIN,Kankan,minor,183875,1324494896,22984375,,,,,Siguiri - Guinea
+Cuango,Cuango,-9.1444,18.0464,Angola,AO,AGO,Lunda-Norte,"",264182,1024514740,918835,,,,,Cuango - Angola
+Malumfashi,Malumfashi,11.8,7.6167,Nigeria,NG,NGA,Katsina,minor,182920,1566616936,22865000,,,,,Malumfashi - Nigeria
+Isiro,Isiro,2.7833,27.6167,Congo (Kinshasa),CD,COD,Haut-Uélé,admin,182900,1180183850,4572500,,,,,Isiro - Congo (Kinshasa)
+Kindia,Kindia,10.0497,-12.8542,Guinea,GN,GIN,Kindia,admin,181126,1324348910,4528150,,,,,Kindia - Guinea
+Mbanza Kongo,Mbanza Kongo,-6.2678,14.2481,Angola,AO,AGO,Zaire,admin,180329,1024532464,4508225,,,,,Mbanza Kongo - Angola
+Caluquembe,Caluquembe,-13.7833,14.6833,Angola,AO,AGO,Huíla,"",349351,1024346445,899655,,,,,Caluquembe - Angola
+Hosa’ina,Hosa'ina,7.55,37.85,Ethiopia,ET,ETH,YeDebub Bihēroch Bihēreseboch na Hizboch,"",179761,1231400775,898805,,,,,Hosa'ina - Ethiopia
+Mongu,Mongu,-15.2775,23.1319,Zambia,ZM,ZMB,Western,admin,179585,1894761291,4489625,,,,,Mongu - Zambia
+Calabar,Calabar,4.9767,8.3383,Nigeria,NG,NGA,Cross River,admin,179392,1566495489,4484800,,,,,Calabar - Nigeria
+Tiaret,Tiaret,35.3667,1.3167,Algeria,DZ,DZA,Tiaret,admin,273948,1012785868,4472875,,,,,Tiaret - Algeria
+Dundo,Dundo,-7.3801,20.8351,Angola,AO,AGO,Lunda-Norte,admin,372740,1024121799,4440100,,,,,Dundo - Angola
+Biu,Biu,10.6111,12.195,Nigeria,NG,NGA,Borno,minor,176072,1566675681,22009000,,,,,Biu - Nigeria
+Habaswein,Habaswein,1.01,39.49,Kenya,KE,KEN,Wajir,"",174134,1404012344,870670,,,,,Habaswein - Kenya
+Bida,Bida,9.0804,6.01,Nigeria,NG,NGA,Niger,minor,173849,1566468363,21731125,,,,,Bida - Nigeria
+Kindu,Kindu,-2.95,25.95,Congo (Kinshasa),CD,COD,Maniema,admin,172321,1180106925,4308025,,,,,Kindu - Congo (Kinshasa)
+Kaolack,Kaolack,14.1389,-16.0764,Senegal,SN,SEN,Kaolack,admin,187932,1686256343,4307625,,,,,Kaolack - Senegal
+Makurdi,Makurdi,7.7333,8.5,Nigeria,NG,NGA,Benue,admin,170925,1566873994,4273125,,,,,Makurdi - Nigeria
+Nqutu,Nqutu,-28.232,30.566,South Africa,ZA,ZAF,KwaZulu-Natal,"",170307,1710983407,851535,,,,,Nqutu - South Africa
+Magwe,Magwe,4.1333,32.3,South Sudan,SS,SSD,Eastern Equatoria,"",169826,1728085840,849130,,,,,Magwe - South Sudan
+Al Marj,Al Marj,32.5005,20.83,Libya,LY,LBY,Al Marj,admin,192704,1434742923,4238500,,,,,Al Marj - Libya
+Kalalé,Kalale,10.2953,3.3786,Benin,BJ,BEN,Borgou,"",235372,1204531108,844410,,,,,Kalale - Benin
+Kasama,Kasama,-10.2117,31.1783,Zambia,ZM,ZMB,Northern,admin,168102,1894305215,4202550,,,,,Kasama - Zambia
+Malanville,Malanville,11.8667,3.3833,Benin,BJ,BEN,Atacora,"",274884,1204159179,840030,,,,,Malanville - Benin
+Béchar,Bechar,31.6167,-2.2167,Algeria,DZ,DZA,Béchar,admin,179119,1012371820,4140675,,,,,Bechar - Algeria
+Singida,Singida,-4.8167,34.75,Tanzania,TZ,TZA,Singida,admin,165492,1834418526,4137300,,,,,Singida - Tanzania
+Abengourou,Abengourou,6.7333,-3.4833,Côte d’Ivoire,CI,CIV,Comoé,admin,164424,1384295898,4110600,,,,,Abengourou - Cote d'Ivoire
+Wau,Wau,7.7,28,South Sudan,SS,SSD,Western Bahr el Ghazal,admin,163442,1728877501,4086050,,,,,Wau - South Sudan
+Garissa,Garissa,-0.4569,39.6583,Kenya,KE,KEN,Garissa,admin,163399,1404464692,4084975,,,,,Garissa - Kenya
+Kebili,Kebili,33.705,8.965,Tunisia,TN,TUN,Kébili,admin,210439,1788285135,4081425,,,,,Kebili - Tunisia
+Nador,Nador,35.1667,-2.9333,Morocco,MA,MAR,Oriental,"",398424,1504811178,808630,,,,,Nador - Morocco
+Ndalatando,Ndalatando,-9.3,14.9167,Angola,AO,AGO,Cuanza-Norte,admin,367161,1024645515,4039600,,,,,Ndalatando - Angola
+Al Ghardaqah,Al Ghardaqah,27.2578,33.8117,Egypt,EG,EGY,Al Baḩr al Aḩmar,admin,160901,1818666245,4022525,,,,,Al Ghardaqah - Egypt
+Ferkessédougou,Ferkessedougou,9.5833,-5.2,Côte d’Ivoire,CI,CIV,Savanes,minor,160267,1384974005,20033375,,,,,Ferkessedougou - Cote d'Ivoire
+Koudougou,Koudougou,12.25,-2.3667,Burkina Faso,BF,BFA,Centre-Ouest,admin,252816,1854839075,4005175,,,,,Koudougou - Burkina Faso
+Jijiga,Jijiga,9.35,42.8,Ethiopia,ET,ETH,Sumalē,admin,159300,1231737909,3982500,,,,,Jijiga - Ethiopia
+Quipungo,Quipungo,-14.8167,14.55,Angola,AO,AGO,Huíla,"",158918,1024929138,794590,,,,,Quipungo - Angola
+George,George,-33.9667,22.45,South Africa,ZA,ZAF,Western Cape,"",168013,1710164136,786970,,,,,George - South Africa
+Kamina,Kamina,-8.7386,24.9906,Congo (Kinshasa),CD,COD,Haut-Lomami,admin,156761,1180363197,3919025,,,,,Kamina - Congo (Kinshasa)
+Kétou,Ketou,7.3581,2.6075,Benin,BJ,BEN,Plateau,"",214370,1204020661,782485,,,,,Ketou - Benin
+Adzopé,Adzope,6.1667,-3.9833,Côte d’Ivoire,CI,CIV,Lagunes,minor,156488,1384370507,19561000,,,,,Adzope - Cote d'Ivoire
+Souk Ahras,Souk Ahras,36.2864,7.9511,Algeria,DZ,DZA,Souk Ahras,admin,199293,1012419619,3881475,,,,,Souk Ahras - Algeria
+Chlef,Chlef,36.1647,1.3317,Algeria,DZ,DZA,Chlef,admin,575939,1012772239,3878350,,,,,Chlef - Algeria
+Camacupa,Camacupa,-12.0256,17.4686,Angola,AO,AGO,Bié,"",281559,1024037086,774640,,,,,Camacupa - Angola
+Saint-Louis,Saint-Louis,16.0333,-16.5,Senegal,SN,SEN,Saint-Louis,admin,154555,1686542859,3863875,,,,,Saint-Louis - Senegal
+Lucapa,Lucapa,-8.4228,20.7392,Angola,AO,AGO,Lunda-Norte,"",154305,1024056286,771525,,,,,Lucapa - Angola
+Dutse,Dutse,11.7011,9.3419,Nigeria,NG,NGA,Jigawa,admin,153000,1566855083,3825000,,,,,Dutse - Nigeria
+Tete,Tete,-16.1667,33.6,Mozambique,MZ,MOZ,Tete,admin,191982,1508476900,3822725,,,,,Tete - Mozambique
+Gulu,Gulu,2.7817,32.2992,Uganda,UG,UGA,Gulu,admin,152276,1800406007,3806900,,,,,Gulu - Uganda
+Dīla,Dila,6.4083,38.3083,Ethiopia,ET,ETH,YeDebub Bihēroch Bihēreseboch na Hizboch,"",151682,1231393325,758410,,,,,Dila - Ethiopia
+Mzuzu,Mzuzu,-11.4581,34.0151,Malawi,MW,MWI,Mzimba,"",150100,1454525586,750500,,,,,Mzuzu - Malawi
+Kashikishi,Kashikishi,-9.3,28.7167,Zambia,ZM,ZMB,Luapula,"",297927,1894795016,750000,,,,,Kashikishi - Zambia
+Nek’emtē,Nek'emte,9.0833,36.55,Ethiopia,ET,ETH,Oromīya,"",148613,1231437227,743065,,,,,Nek'emte - Ethiopia
+Taza,Taza,34.2167,-4.0167,Morocco,MA,MAR,Fès-Meknès,"",215147,1504405154,742280,,,,,Taza - Morocco
+Maridi,Maridi,4.91,29.45,South Sudan,SS,SSD,Western Equatoria,"",148000,1728685965,740000,,,,,Maridi - South Sudan
+Malakal,Malakal,9.55,31.65,South Sudan,SS,SSD,Upper Nile,admin,147450,1728299711,3686250,,,,,Malakal - South Sudan
+Kalemie,Kalemie,-5.9128,29.1906,Congo (Kinshasa),CD,COD,Tanganyika,admin,146974,1180574233,3674350,,,,,Kalemie - Congo (Kinshasa)
+Maquela do Zombo,Maquela do Zombo,-6.05,15.1167,Angola,AO,AGO,Uíge,"",146908,1024582197,734540,,,,,Maquela do Zombo - Angola
+Wamba,Wamba,2.1442,27.9929,Congo (Kinshasa),CD,COD,Haut-Uélé,"",146871,1180866253,734355,,,,,Wamba - Congo (Kinshasa)
+Keren,Keren,15.7778,38.4581,Eritrea,ER,ERI,‘Anseba,admin,146500,1232693598,3662500,,,,,Keren - Eritrea
+Vila Junqueiro,Vila Junqueiro,-15.4667,36.9833,Mozambique,MZ,MOZ,Zambézia,"",145466,1508271174,727330,,,,,Vila Junqueiro - Mozambique
+Bukoba,Bukoba,-1.3333,31.8167,Tanzania,TZ,TZA,Kagera,admin,144938,1834433264,3623450,,,,,Bukoba - Tanzania
+Moshi,Moshi,-3.3349,37.3404,Tanzania,TZ,TZA,Kilimanjaro,admin,144739,1834217168,3618475,,,,,Moshi - Tanzania
+Ramu,Ramu,3.9375,41.2203,Kenya,KE,KEN,Mandera,"",143850,1404221019,719250,,,,,Ramu - Kenya
+Bandundu,Bandundu,-3.3167,17.3667,Congo (Kinshasa),CD,COD,Kwilu,admin,143435,1180219776,3585875,,,,,Bandundu - Congo (Kinshasa)
+Touggourt,Touggourt,33.1,6.0667,Algeria,DZ,DZA,Touggourt,admin,261013,1012546670,3581750,,,,,Touggourt - Algeria
+Moundou,Moundou,8.5667,16.0833,Chad,TD,TCD,Logone Occidental,admin,142462,1148369114,3561550,,,,,Moundou - Chad
+Lichinga,Lichinga,-13.3167,35.2333,Mozambique,MZ,MOZ,Niassa,admin,142253,1508041628,3556325,,,,,Lichinga - Mozambique
+Bondoukou,Bondoukou,8.0333,-2.8,Côte d’Ivoire,CI,CIV,Zanzan,admin,141568,1384649653,3539200,,,,,Bondoukou - Cote d'Ivoire
+Pemba,Pemba,-12.9667,40.55,Mozambique,MZ,MOZ,Cabo Delgado,admin,141316,1508872233,3532900,,,,,Pemba - Mozambique
+Gweru,Gweru,-19.4614,29.8022,Zimbabwe,ZW,ZWE,Midlands,admin,141260,1716621481,3531500,,,,,Gweru - Zimbabwe
+Debre Birhan,Debre Birhan,9.6833,39.5333,Ethiopia,ET,ETH,Āmara,"",139724,1231777741,698620,,,,,Debre Birhan - Ethiopia
+Gemena,Gemena,3.25,19.7667,Congo (Kinshasa),CD,COD,Sud-Ubangi,admin,138527,1180000163,3463175,,,,,Gemena - Congo (Kinshasa)
+Koutiala,Koutiala,12.3833,-5.4667,Mali,ML,MLI,Sikasso,minor,173390,1466253368,17239875,,,,,Koutiala - Mali
+Mthatha,Mthatha,-31.58,28.79,South Africa,ZA,ZAF,Eastern Cape,"",137772,1710651314,688860,,,,,Mthatha - South Africa
+Quimbele,Quimbele,-6.5167,16.2167,Angola,AO,AGO,Uíge,"",136496,1024357792,682480,,,,,Quimbele - Angola
+Port-Gentil,Port-Gentil,-0.7167,8.7833,Gabon,GA,GAB,Ogooué-Maritime,admin,136462,1266383028,3411550,GAPOG,Port Gentil,AI,148566.9,Port-Gentil - Gabon
+Tobruk,Tobruk,32.0761,23.9614,Libya,LY,LBY,Al Buţnān,admin,135832,1434068493,3395800,,,,,Tobruk - Libya
+Nkongsamba,Nkongsamba,4.95,9.9333,Cameroon,CM,CMR,Littoral,"",256856,1120972098,677025,,,,,Nkongsamba - Cameroon
+Tizi Ouzou,Tizi Ouzou,36.7167,4.05,Algeria,DZ,DZA,Tizi Ouzou,admin,855298,1012126997,3377200,,,,,Tizi Ouzou - Algeria
+El Oued,El Oued,33.3611,6.8606,Algeria,DZ,DZA,El Oued,admin,357631,1012148937,3367475,,,,,El Oued - Algeria
+Laghouat,Laghouat,33.8028,2.875,Algeria,DZ,DZA,Laghouat,admin,158213,1012233848,3359300,,,,,Laghouat - Algeria
+Luuq,Luuq,3.6981,42.5972,Somalia,SO,SOM,Gedo,"",223345,1706505283,670000,,,,,Luuq - Somalia
+Debre Mark’os,Debre Mark'os,10.3333,37.7167,Ethiopia,ET,ETH,Āmara,"",133810,1231943444,669050,,,,,Debre Mark'os - Ethiopia
+Idfū,Idfu,24.9778,32.8733,Egypt,EG,EGY,Aswān,"",133772,1818755693,668860,,,,,Idfu - Egypt
+Ségou,Segou,13.45,-6.2667,Mali,ML,MLI,Ségou,admin,240936,1466684950,3337525,,,,,Segou - Mali
+Tarime,Tarime,-1.35,34.3833,Tanzania,TZ,TZA,Mara,"",150607,1834684619,665215,,,,,Tarime - Tanzania
+Āwarē,Aware,8.2667,44.15,Ethiopia,ET,ETH,Sumalē,"",132149,1231934049,660745,,,,,Aware - Ethiopia
+Jijel,Jijel,36.8167,5.75,Algeria,DZ,DZA,Jijel,admin,358739,1012782547,3287825,,,,,Jijel - Algeria
+Bassila,Bassila,9.0167,1.6667,Benin,BJ,BEN,Donga,"",130770,1204259496,653850,,,,,Bassila - Benin
+Polokwane,Polokwane,-23.9,29.45,South Africa,ZA,ZAF,Limpopo,admin,173719,1710908010,3250700,,,,,Polokwane - South Africa
+Mansa,Mansa,-11.2,28.8833,Zambia,ZM,ZMB,Luapula,admin,129185,1894038366,3229625,,,,,Mansa - Zambia
+Abaji,Abaji,8.4756,6.9433,Nigeria,NG,NGA,Federal Capital Territory,minor,127900,1566650592,15987500,,,,,Abaji - Nigeria
+Kayes,Kayes,14.45,-11.4333,Mali,ML,MLI,Kayes,admin,174373,1466546429,3184200,,,,,Kayes - Mali
+Ksar El Kebir,Ksar El Kebir,35.009,-5.9,Morocco,MA,MAR,Tanger-Tétouan-Al Hoceïma,"",481749,1504230428,633085,,,,,Ksar El Kebir - Morocco
+Nzega,Nzega,-4.2169,33.1864,Tanzania,TZ,TZA,Tabora,"",125193,1834034762,625965,,,,,Nzega - Tanzania
+Koidu,Koidu,8.6439,-10.9717,Sierra Leone,SL,SLE,Eastern,"",300387,1694710002,623310,,,,,Koidu - Sierra Leone
+Ouahigouya,Ouahigouya,13.5833,-2.4167,Burkina Faso,BF,BFA,Nord,admin,124580,1854011699,3114500,,,,,Ouahigouya - Burkina Faso
+Glazoué,Glazoue,7.9736,2.24,Benin,BJ,BEN,Collines,"",284888,1204842273,622155,,,,,Glazoue - Benin
+Kaya,Kaya,13.0833,-1.0833,Burkina Faso,BF,BFA,Centre-Nord,admin,141824,1854170035,3073725,,,,,Kaya - Burkina Faso
+Ed Damer,Ed Damer,17.59,33.96,Sudan,SD,SDN,River Nile,admin,262712,1729791168,3073600,,,,,Ed Damer - Sudan
+Hoima,Hoima,1.4319,31.3525,Uganda,UG,UGA,Hoima,admin,140800,1800806239,3067500,,,,,Hoima - Uganda
+Ondjiva,Ondjiva,-17.0667,15.7333,Angola,AO,AGO,Cunene,admin,263584,1024504085,3038425,,,,,Ondjiva - Angola
+Upington,Upington,-28.45,21.25,South Africa,ZA,ZAF,Northern Cape,"",121189,1710210449,605945,,,,,Upington - South Africa
+Jīma,Jima,7.6667,36.8333,Ethiopia,ET,ETH,Oromīya,"",120960,1231214366,604800,,,,,Jima - Ethiopia
+Baraka,Baraka,-4.1041,29.094,Congo (Kinshasa),CD,COD,Sud-Kivu,"",120000,1180665112,6e+05,,,,,Baraka - Congo (Kinshasa)
+Ghardaïa,Ghardaia,32.4833,3.6667,Algeria,DZ,DZA,Ghardaïa,admin,210733,1012074690,3e+06,,,,,Ghardaia - Algeria
+Debre Tabor,Debre Tabor,11.85,38.0167,Ethiopia,ET,ETH,Āmara,"",119176,1231557860,595880,,,,,Debre Tabor - Ethiopia
+Guelmim,Guelmim,28.9833,-10.0667,Morocco,MA,MAR,Guelmim-Oued Noun,admin,118318,1504110861,2957950,,,,,Guelmim - Morocco
+Nouadhibou,Nouadhibou,20.9333,-17.0333,Mauritania,MR,MRT,Dakhlet Nouadhibou,admin,118000,1478176283,2950000,MRNDB,Nouadhibou,AI,197029.5,Nouadhibou - Mauritania
+Tahoua,Tahoua,14.8903,5.2642,Niger,NE,NER,Tahoua,admin,117826,1562214493,2945650,,,,,Tahoua - Niger
+Agadez,Agadez,16.9959,7.9828,Niger,NE,NER,Agadez,admin,117770,1562789067,2944250,,,,,Agadez - Niger
+Kabwe,Kabwe,-14.4333,28.45,Zambia,ZM,ZMB,Central,admin,117517,1894711746,2937925,,,,,Kabwe - Zambia
+Banfora,Banfora,10.6308,-4.7589,Burkina Faso,BF,BFA,Cascades,admin,126236,1854763822,2930000,,,,,Banfora - Burkina Faso
+Lira,Lira,2.2472,32.9,Uganda,UG,UGA,Lira,admin,116500,1800877735,2912500,,,,,Lira - Uganda
+Xai-Xai,Xai-Xai,-25.05,33.65,Mozambique,MZ,MOZ,Gaza,admin,116343,1508689070,2908575,,,,,Xai-Xai - Mozambique
+Gabès,Gabes,33.8833,10.1167,Tunisia,TN,TUN,Gabès,admin,400443,1788064276,2908075,,,,,Gabes - Tunisia
+Boké,Boke,10.94,-14.3,Guinea,GN,GIN,Boké,admin,116270,1324037897,2906750,,,,,Boke - Guinea
+Kasese,Kasese,0.1867,30.0881,Uganda,UG,UGA,Kasese,admin,130100,1800924936,2885000,,,,,Kasese - Uganda
+Bu’aale,Bu'aale,1.0833,42.5833,Somalia,SO,SOM,Jubbada Dhexe,admin,115000,1706765820,2875000,,,,,Bu'aale - Somalia
+Matéri,Materi,10.6978,1.0633,Benin,BJ,BEN,Atacora,"",260509,1204459888,569790,,,,,Materi - Benin
+Quilengues,Quilengues,-14.0814,14.0931,Angola,AO,AGO,Huíla,"",113825,1024895987,569125,,,,,Quilengues - Angola
+Nkayi,Nkayi,-19,28.9,Zimbabwe,ZW,ZWE,Matabeleland North,"",112471,1716871686,562355,,,,,Nkayi - Zimbabwe
+Bou Saâda,Bou Saada,35.2083,4.1739,Algeria,DZ,DZA,M’sila,"",122805,1012931222,558935,,,,,Bou Saada - Algeria
+Sabara Bangou,Sabara Bangou,15.1177,1.996,Niger,NE,NER,Tillabéri,"",111490,1562582841,557450,,,,,Sabara Bangou - Niger
+Kasempa,Kasempa,-13.455,25.835,Zambia,ZM,ZMB,North-Western,"",111272,1894152710,556360,,,,,Kasempa - Zambia
+Gafsa,Gafsa,34.4225,8.7842,Tunisia,TN,TUN,Gafsa,admin,171801,1788454569,2779250,,,,,Gafsa - Tunisia
+Kintampo,Kintampo,8.0522,-1.7347,Ghana,GH,GHA,Bono East,"",111000,1288911745,555000,,,,,Kintampo - Ghana
+Kiffa,Kiffa,16.63,-11.4,Mauritania,MR,MRT,Assaba,admin,110714,1478465771,2767850,,,,,Kiffa - Mauritania
+Franceville,Franceville,-1.6333,13.5833,Gabon,GA,GAB,Haut-Ogooué,admin,110568,1266537692,2764200,,,,,Franceville - Gabon
+Empangeni,Empangeni,-28.75,31.9,South Africa,ZA,ZAF,KwaZulu-Natal,"",167727,1710623921,551700,ZARCB,Richards Bay,AF,164538.86664,Empangeni - South Africa
+Béja,Beja,36.7333,9.1833,Tunisia,TN,TUN,Béja,admin,144491,1788225711,2732475,,,,,Beja - Tunisia
+Handeni,Handeni,-5.4242,38.0194,Tanzania,TZ,TZA,Tanga,"",108968,1834479617,544840,,,,,Handeni - Tanzania
+Maţrūḩ,Matruh,31.3333,27.2167,Egypt,EG,EGY,Maţrūḩ,admin,108774,1818661611,2719350,,,,,Matruh - Egypt
+Mopti,Mopti,14.49,-4.18,Mali,ML,MLI,Mopti,admin,175604,1466352252,2711400,,,,,Mopti - Mali
+Birnin Kebbi,Birnin Kebbi,12.4504,4.1999,Nigeria,NG,NGA,Kebbi,admin,108164,1566191812,2704100,,,,,Birnin Kebbi - Nigeria
+Sarh,Sarh,9.15,18.3833,Chad,TD,TCD,Moyen-Chari,admin,108061,1148442794,2701525,,,,,Sarh - Chad
+An Nuhūd,An Nuhud,12.6925,28.4233,Sudan,SD,SDN,West Kordofan,"",108008,1729223651,540040,,,,,An Nuhud - Sudan
+Labé,Labe,11.3167,-12.2833,Guinea,GN,GIN,Labé,admin,127747,1324900784,2692375,,,,,Labe - Guinea
+Wa,Wa,10.0667,-2.5,Ghana,GH,GHA,Upper West,admin,107214,1288765586,2680350,,,,,Wa - Ghana
+Ilebo,Ilebo,-4.3167,20.6,Congo (Kinshasa),CD,COD,Kasaï,"",165185,1180788280,535465,,,,,Ilebo - Congo (Kinshasa)
+Ad Dakhla,Ad Dakhla,23.7081,-15.9456,Morocco,MA,MAR,Dakhla-Oued Ed-Dahab,"",106277,1504999983,531385,,,,,Ad Dakhla - Morocco
+Lokossa,Lokossa,6.6333,1.7167,Benin,BJ,BEN,Mono,admin,725984,1204036358,2652025,,,,,Lokossa - Benin
+Atebubu,Atebubu,7.75,-0.9833,Ghana,GH,GHA,Bono East,"",105938,1288881078,529690,,,,,Atebubu - Ghana
+Azare,Azare,11.6742,10.1911,Nigeria,NG,NGA,Bauchi,minor,105687,1566322480,13210875,,,,,Azare - Nigeria
+Kongolo,Kongolo,-5.4,27,Congo (Kinshasa),CD,COD,Tanganyika,"",105202,1180814807,526010,,,,,Kongolo - Congo (Kinshasa)
+Ndjamba,Ndjamba,-14.7,16.0667,Angola,AO,AGO,Huíla,"",105090,1024911597,525450,,,,,Ndjamba - Angola
+Masaka,Masaka,-0.3411,31.7361,Uganda,UG,UGA,Masaka,admin,169518,1800731885,2595725,,,,,Masaka - Uganda
+Mubende,Mubende,0.5575,31.395,Uganda,UG,UGA,Mubende,admin,103473,1800105368,2586825,,,,,Mubende - Uganda
+Francistown,Francistown,-21.1736,27.5125,Botswana,BW,BWA,Francistown,admin,103417,1072124168,2585425,,,,,Francistown - Botswana
+Bumba,Bumba,2.1844,22.4703,Congo (Kinshasa),CD,COD,Mongala,"",103328,1180549980,516640,,,,,Bumba - Congo (Kinshasa)
+Aflou,Aflou,34.1089,2.1019,Algeria,DZ,DZA,Laghouat,"",114592,1012904117,510125,,,,,Aflou - Algeria
+Aïn Oussera,Ain Oussera,35.4489,2.9044,Algeria,DZ,DZA,Djelfa,"",128738,1012469007,506195,,,,,Ain Oussera - Algeria
+Oran,Oran,35.6969,-0.6331,Algeria,DZ,DZA,Oran,admin,725418,1012126319,2525225,DZORN,Oran,AI,255615.9,Oran - Algeria
+Mporokoso,Mporokoso,-9.3833,30.1,Zambia,ZM,ZMB,Northern,"",100993,1894882927,504965,,,,,Mporokoso - Zambia
+Aboisso,Aboisso,5.4667,-3.2,Côte d’Ivoire,CI,CIV,Comoé,minor,115831,1384385857,12612875,,,,,Aboisso - Cote d'Ivoire
+Leer,Leer,8.2979,30.1475,South Sudan,SS,SSD,Unity,"",100722,1728110399,503610,,,,,Leer - South Sudan
+Pouytenga,Pouytenga,12.25,-0.4333,Burkina Faso,BF,BFA,Centre-Est,"",181256,1854151910,499750,,,,,Pouytenga - Burkina Faso
+Weldiya,Weldiya,11.8306,39.6,Ethiopia,ET,ETH,Āmara,"",140164,1231023092,494555,,,,,Weldiya - Ethiopia
+Niono,Niono,14.25,-5.9861,Mali,ML,MLI,Ségou,minor,128619,1466927773,11444250,,,,,Niono - Mali
+Houndé,Hounde,11.5,-3.5167,Burkina Faso,BF,BFA,Hauts-Bassins,minor,102324,1854289245,10894250,,,,,Hounde - Burkina Faso
+Ādwa,Adwa,14.1667,38.9,Ethiopia,ET,ETH,Tigray,"",161492,1231086312,428220,,,,,Adwa - Ethiopia
+Ho,Ho,6.6119,0.4703,Ghana,GH,GHA,Volta,admin,183715,1288938914,2092875,,,,,Ho - Ghana
+Gonder,Gonder,12.6075,37.4592,Ethiopia,ET,ETH,Āmara,"",114605,1231234833,404430,,,,,Gonder - Ethiopia
+Rafaḩ,Rafah,31.2808,34.2414,Egypt,EG,EGY,Shamāl Sīnā’,minor,145128,1818109072,10102875,,,,,Rafah - Egypt
+Zuwārah,Zuwarah,32.9333,12.0833,Libya,LY,LBY,An Nuqāţ al Khams,admin,200010,1434206265,2007750,,,,,Zuwarah - Libya
+Ébolowa,Ebolowa,2.9167,11.15,Cameroon,CM,CMR,Sud,admin,111259,1120924207,1922125,,,,,Ebolowa - Cameroon
+Tiznit,Tiznit,29.7167,-9.7167,Morocco,MA,MAR,Souss-Massa,"",108998,1504399838,373495,,,,,Tiznit - Morocco
+Jinja,Jinja,0.4233,33.2039,Uganda,UG,UGA,Jinja,admin,415950,1800632405,1823275,,,,,Jinja - Uganda
+Kayes,Kayes,-4.1683,13.2933,Congo (Brazzaville),CG,COG,Bouenza,"",127687,1178012015,358100,,,,,Kayes - Congo (Brazzaville)
+Bawku,Bawku,11.05,-0.2333,Ghana,GH,GHA,Upper East,"",100737,1288067377,347635,,,,,Bawku - Ghana
+Virginia,Virginia,-28.1064,26.8622,South Africa,ZA,ZAF,Free State,"",177221,1710992750,331040,,,,,Virginia - South Africa
+Inhambane,Inhambane,-23.865,35.3833,Mozambique,MZ,MOZ,Inhambane,admin,172661,1508945412,1595925,,,,,Inhambane - Mozambique
+Ouled Djellal,Ouled Djellal,34.4167,5.0667,Algeria,DZ,DZA,Ouled Djellal,admin,102224,1012109892,1580925,,,,,Ouled Djellal - Algeria
+Wundanyi,Wundanyi,-3.3983,38.3603,Kenya,KE,KEN,Taita/Taveta,"",113374,1404917325,311700,,,,,Wundanyi - Kenya
+Camabatela,Camabatela,-8.1833,15.3667,Angola,AO,AGO,Cuanza-Norte,"",101071,1024701540,308845,,,,,Camabatela - Angola
+Bethal,Bethal,-26.45,29.45,South Africa,ZA,ZAF,Mpumalanga,"",116214,1710328253,303895,,,,,Bethal - South Africa
+Mbabane,Mbabane,-26.3167,31.1333,Eswatini,SZ,SWZ,Hhohho,primary,176999,1748811945,37931875,,,,,Mbabane - Eswatini
+Nioro,Nioro,15.1833,-9.55,Mali,ML,MLI,Kayes,minor,116376,1466532076,7514000,,,,,Nioro - Mali
+Al Hoceïma,Al Hoceima,35.2472,-3.9322,Morocco,MA,MAR,Tanger-Tétouan-Al Hoceïma,"",157146,1504990575,283580,,,,,Al Hoceima - Morocco
+Kouri,Kouri,12.1833,-4.8056,Mali,ML,MLI,Sikasso,"",137964,1466886162,272175,,,,,Kouri - Mali
+Kadiolo,Kadiolo,10.5556,-5.7597,Mali,ML,MLI,Sikasso,minor,317492,1466526601,6616500,,,,,Kadiolo - Mali
+El Kelaa des Srarhna,El Kelaa des Srarhna,32.0481,-7.4083,Morocco,MA,MAR,Marrakech-Safi,"",223364,1504846488,257020,,,,,El Kelaa des Srarhna - Morocco
+Rosso,Rosso,16.5128,-15.805,Mauritania,MR,MRT,Trarza,admin,159231,1478524903,1275650,,,,,Rosso - Mauritania
+Sokhna Port,,29.65,32.35,,,,,,1000,,,EGSOK,Sokhna Port,RQ,3639356.73184,Sokhna Port - NA
+Port Harcourt,Port Harcourt,4.8242,7.0336,Nigeria,NG,NGA,Rivers,admin,1892253,1566070649,46625000,NGONN,Onne,RL,1388574.63318,Port Harcourt - Nigeria
+Kribi,Kribi,2.935,9.91,Cameroon,CM,CMR,Sud,"",60000,1120360100,3e+05,CMKBI,Kribi,AI,1338743.54556,Kribi - Cameroon
+Walvisbaai,Walvisbaai,-22.9561,14.5081,Namibia,,NAM,Erongo,"",119300,1516267898,425000,NAWVB,Walvis Bay,QQ,2144542.86661,Walvisbaai - Namibia
+Aflao,Aflao,6.1468,1.1799,Ghana,GH,GHA,Volta,"",200799,1288563374,332730,TGLFW,Lome,AI,6445382.41344,Aflao - Ghana
+Menzel Bourguiba,Menzel Bourguiba,37.15,9.7833,Tunisia,TN,TUN,Bizerte,"",411271,1788007460,309595,TNBIZ,Bizerte,QQ,165865.5,Menzel Bourguiba - Tunisia
