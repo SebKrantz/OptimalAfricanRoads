@@ -9,7 +9,7 @@ source("code/helpers.R")
 fastverse_conflicts()
 
 # All essential objects from previous sections
-load("data/transport_network/trans_africa_network.RData")
+load("data/transport_network/trans_africa_network_param.RData")
 
 # Average route efficiency per edge
 aere <- unattrib(mean(edges$sp_distance / edges$distance)) 
@@ -968,11 +968,11 @@ mean(times_imp_bt / times_imp, na.rm = TRUE)
 # Computing total real market access
 (MA_bt_opt <- total_MA(times_bt, nodes$gdp)) / 1e9
 
-MA_bt_opt / MA * 1748.128
+MA_bt_opt / MA * MA_real
 
 # Total gain
 (MA_imp_bt_opt <- total_MA(times_imp_bt, nodes$gdp)) / 1e9
-MA_imp_bt_opt / MA_imp * 1.420647 * 1748.128
+MA_imp_bt_opt / MA * MA_real
 MA_imp_bt_opt / MA_bt_opt
 
 # Needed for later
@@ -1249,7 +1249,6 @@ add_routes$MA_per_link_100kmh_bt <- sapply(seq_row(add_routes), function(i) {
   diag(inv_dur) = 0
   sum(inv_dur %*% nodes$gdp)
 })
-# Percent increase
 add_routes$MA_per_link_100kmh_bt_perc <- (add_routes$MA_per_link_100kmh_bt / MA_bt - 1) * 100
 descr(add_routes$MA_per_link_100kmh_bt_perc)
 
@@ -1262,7 +1261,6 @@ add_routes$MA_per_link_100kmh_bt_opt <- sapply(seq_row(add_routes), function(i) 
   diag(inv_dur) = 0
   sum(inv_dur %*% nodes$gdp[ind])
 })
-
 add_routes$MA_per_link_100kmh_bt_opt_perc <- (add_routes$MA_per_link_100kmh_bt_opt / MA_bt_opt - 1) * 100
 descr(add_routes$MA_per_link_100kmh_bt_opt_perc)
 
@@ -1280,22 +1278,21 @@ tfm(all_cb_ratios) <- all_costs |> atomic_elem()
 descr(all_cb_ratios)
 
 for (v in .c(pusd, pusd_bt, pusd_bt_opt)) {
-print(v)
-pl <- tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
-  tm_shape(all_cb_ratios) + 
-  tm_lines(col = paste0("MA_gain_", v), 
-           col.scale = tm_scale_intervals(values = "turbo", breaks = c(0, 1, 2, 5, 10, 20, 50, 100, Inf)),
-           col.legend = tm_legend(expression(Delta~"MA/USD"),
-                                  position = c("left", "bottom"), frame = FALSE, 
-                                  text.size = 1.5, title.size = 2), lwd = 2) + 
-  tm_shape(subset(nodes, population > 0)) + tm_dots(size = 0.1) +
-  tm_shape(subset(nodes, population <= 0)) + tm_dots(size = 0.1, fill = "grey70") +
-  tm_layout(frame = FALSE)
-
-print(pl)
-dev.copy(pdf, sprintf("figures/transport_network/trans_africa_network_MA_gain_all_100kmh_%s.pdf", v), 
-         width = 10, height = 10)
-dev.off()
+  print(v)
+  pl <- tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
+    tm_shape(all_cb_ratios) + 
+    tm_lines(col = paste0("MA_gain_", v), 
+            col.scale = tm_scale_intervals(values = "turbo", breaks = c(0, 1, 2, 5, 10, 20, 50, 100, Inf)),
+            col.legend = tm_legend(expression(Delta~"MA/USD"),
+                                    position = c("left", "bottom"), frame = FALSE, 
+                                    text.size = 1.5, title.size = 2), lwd = 2) + 
+    tm_shape(subset(nodes, population > 0)) + tm_dots(size = 0.1) +
+    tm_shape(subset(nodes, population <= 0)) + tm_dots(size = 0.1, fill = "grey70") +
+    tm_layout(frame = FALSE)
+  print(pl)
+  dev.copy(pdf, sprintf("figures/transport_network/trans_africa_network_MA_gain_all_100kmh_%s.pdf", v), 
+          width = 10, height = 10)
+  dev.off()
 }; rm(v)
 
 
