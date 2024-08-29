@@ -37,7 +37,7 @@ africa_dist$centroids %>%
         legend.key.width = unit(2, "mm"), 
         plot.margin = margin())
 
-ggsave("figures/WorldPop2020_hex9_grid.pdf", width = 6, height = 6)
+ggsave("figures/full_network/WorldPop2020_hex9_grid.pdf", width = 6, height = 6)
 
 
 ################################
@@ -80,7 +80,7 @@ africa_dist$centroids %>%
         legend.key.width = unit(2, "mm"), 
         plot.margin = margin())
 
-ggsave("figures/average_network_speed.pdf", width = 6, height = 6)
+ggsave("figures/full_network/average_network_speed.pdf", width = 6, height = 6)
 
 # # Interactive Plot
 # africa_dist$centroids %>% 
@@ -122,7 +122,7 @@ spherical_dist$centroids %>%
         legend.key.width = unit(2, "mm"), 
         plot.margin = margin())
 
-ggsave("figures/network_route_efficiency.pdf", width = 6, height = 6)
+ggsave("figures/full_network/network_route_efficiency.pdf", width = 6, height = 6)
 
 
 ################################
@@ -160,12 +160,12 @@ spherical_dist$centroids %>%
         legend.key.width = unit(2, "mm"), 
         plot.margin = margin())
 
-ggsave("figures/network_time_efficiency.pdf", width = 6, height = 6)
+ggsave("figures/full_network/network_time_efficiency.pdf", width = 6, height = 6)
 
 # Saving Estimates --------------------
 
 qsave(add_vars(spherical_dist$centroids, ANS = ans, NRE = nre, NTE = nte), 
-      file = "data/network_efficiency.qs")
+      file = "results/full_network/network_efficiency.qs")
 
 
 ##################################################
