@@ -9,7 +9,7 @@ fastverse_conflicts()
 
 # Finding nearest cells and removing some cells --------------------------------------------------------
 
-spherical_dist <- qread("data/africa_full_spherical_distance_matrix_r9.qs")
+spherical_dist <- qread("data/full_network/africa_full_spherical_distance_matrix_r9.qs")
 sp_distances <- spherical_dist$distances
 centroids <- spherical_dist$centroids
 diag(sp_distances) <- NA
@@ -59,7 +59,7 @@ nn_cell_list %<>% lapply(function(i) centroids$cell[i])
 # Adjusting
 
 # Simple graph based on distances
-africa_dist <- qread("data/africa_full_distance_matrix_r9_adjusted.qs")
+africa_dist <- qread("data/full_network/africa_full_distance_matrix_r9_adjusted.qs")
 africa_dist[c("sources", "centroids")] %<>% lapply(ss, !(cow_ind | mdg_ind))
 africa_dist[c("distances", "durations", "distances_nosphere")] %<>% lapply(ss, !(cow_ind | mdg_ind), !(cow_ind | mdg_ind))
 
@@ -93,7 +93,7 @@ graphs_df |>
   transform(from = group(from), to = ckmatch(to, unique(from)), 
             from_cell = from, to_cell = to) |> 
   colorder(from, from_cell, to, to_cell) |> 
-  fwrite("data/full_graph_df.csv")
+  fwrite("data/full_network/full_graph_df.csv")
 
 # Also saving cell-data
 calib_data <- fread("data/QSE/QSE_model_calibration_data_ctry_min_imp.csv") |> 
@@ -109,7 +109,7 @@ calib_data |> fwrite("data/QSE/QSE_model_calibration_data_ctry_min_imp_full_grap
 # Creating Optimal Full Graphs --------------------------------------------------------
 
 # Read graphs data!
-graphs_df <- fread("data/full_graph_df.csv")
+graphs_df <- fread("data/full_network/full_graph_df.csv")
 # Check
 descr(africa_dist$durations[with(graphs_df, cbind(from, to))] - graphs_df$duration)
 # Add original distances
@@ -272,7 +272,7 @@ map_to_palette <- function(vector, option = "turbo") {
 
 settfm(optimized_graph, cost_colour = map_to_palette(cost))
 
-pdf("figures/full_network_optimal_duration_graph.pdf", width = 10, height = 10)
+pdf("figures/full_network/full_network_optimal_duration_graph.pdf", width = 10, height = 10)
 with(calib_data, {
   oldpar <- par(mar = c(0,0,0,0))
   plot(lon, lat, cex = NA, pch = 16, axes = FALSE, xlab = NA, ylab = NA, asp=1)
@@ -359,7 +359,7 @@ qsave(MA_new, "results/full_network/africa_full_MA_50kmh_NTE.qs")
 # Visual Exploration: Travel Time ---------------------------------
 
 MA_new <- qread("results/full_network/africa_full_MA_50kmh_NTE.qs")
-graph_count <- fread("data/full_graph_df.csv") %>%
+graph_count <- fread("data/full_network/full_graph_df.csv") %>%
   subset(from_cell %in% MA_new$cell & to_cell %in% MA_new$cell) %>% {
     join(count(., cell = from_cell), count(., cell = to_cell), on = "cell") %>% 
       transform(N = N + N_y, N_y = NULL)
