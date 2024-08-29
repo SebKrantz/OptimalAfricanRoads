@@ -2,15 +2,16 @@
 # Adding High-Value Links to Existing Network
 #############################################
 
+# Note: This is a self-contained section due to the use of specific indices for manual adjustments. 
+# It uses a previous version of the network identical to the current/generated version but where the nodes and edges are in a different (random) order. 
+# The output is a spatial data frame 'add_routes' with the final proposed links. These can be added to the current/generated version.
+
 library(fastverse)
 set_collapse(mask = c("manip", "helper", "special"), nthreads = 4)
 fastverse_extend(qs, sf, s2, units, sfnetworks, stplanr, install = TRUE)
 source("code/helpers.R")
 fastverse_conflicts()
 
-# Note: This is a self-contained section due to the use of specific indices for manual adjustments. 
-# It uses a previous version of the network, which is basically identical to the current version, but the nodes and edges are in a different order. 
-# The output is a spatial data frame 'add_routes' with the final proposed links. These can be added to the current network.
 net <- qread("data/transport_network/old/net_discrete_final.qs")
 dist_ttime_mats <- qread("data/transport_network/old/net_dist_ttime_mats.qs")
 sym_dist_mat <- (dist_ttime_mats$distances + t(dist_ttime_mats$distances)) / 2
