@@ -111,7 +111,7 @@ end
 # **** Simulation ****
 # **************************
 
-include("CRS_model.jl")
+include("code/5_redding_2016/CRS_model.jl")
 
 w = calib_data.wage_IWI_global
 w /= geomean(w) 
@@ -148,7 +148,7 @@ ots = res.dtradesh
 # **** Compute Quantities of Interest ****
 # ****************************************
 
-include("helpers.jl")
+include("code/5_redding_2016/helpers.jl")
 
 # Land price
 r = landprice(param, fund, res)
@@ -235,4 +235,4 @@ p3 = plot(
 )
 
 # rcParams["figure.dpi"] = 300 
-savefig(p3, "figures/gains_from_trade.pdf")
+savefig(p3, "figures/full_network/gains_from_trade.pdf")
