@@ -12,8 +12,10 @@ fastverse_conflicts()
 # Part 1: Important Cities and Ports
 ####################################
 
+# -> Feel free to skip and load result below
+
 # Load Populated Cities from Simplemaps: https://simplemaps.com/data/world-cities
-WC24_Africa <- fread("data/worldcities_continental_africa_2024.csv")
+WC24_Africa <- fread("data/other_inputs/worldcities_continental_africa_2024.csv")
 fsum(WC24_Africa$population)
 WC24_Africa_g50k <- WC24_Africa |> subset(population > 5e4)
 
@@ -46,7 +48,7 @@ WC24_Africa_g100k_red <- largest_within_radius(WC24_Africa_g50k_red[population >
 
 # Load International Ports from The World Bank: https://datacatalog.worldbank.org/search/dataset/0038118/Global---International-Ports -----
 
-WBP_Africa <- fread("data/continental_african_ports.csv")
+WBP_Africa <- fread("data/other_inputs/continental_african_ports.csv")
 WBP_Africa_g100k <- WBP_Africa |> subset(outflows > 1e5)
 
 ## Visualization
@@ -97,14 +99,6 @@ cities_ports <- rowbind(WC24_Africa_g100k_red, tmp)
 # WC24_Africa_g100k_red |> with(plot(lon, lat, cex = sqrt(population)/1e3, pch = 16, col = rgb(0, 0, 0, alpha=0.5)))
 # WC24_Africa_g100k_red |> st_as_sf(coords = c("lon", "lat"), crs = st_crs(4326)) |> select(population) |> mapview::mapview()
 
-# Cleanup
-rm(list = setdiff(ls(), .c(cities_ports, split_large_dist_matrix)))
-
-
-####################################
-# Part 2: Transport Network
-####################################
-
 # Raw matrix of routes:
 dist_ttime_mats <- split_large_dist_matrix(select(cities_ports, lon, lat))
 
@@ -131,12 +125,21 @@ dist_ttime_mats$durations <- ss(dist_ttime_mats$durations, -isl_ind, -isl_ind)
 dist_ttime_mats$distances <- ss(dist_ttime_mats$distances, -isl_ind, -isl_ind)
 
 # Creating unique city identifier
-fndistinct(cities_ports)
 cities_ports[, city_country := stringi::stri_trans_general(paste(city, country, sep = " - "), "latin-ascii")]
+fndistinct(cities_ports)
 
 # Saving
 cities_ports |> fwrite("data/transport_network/cities_ports.csv")
 dist_ttime_mats |> qsave("data/transport_network/cities_ports_dist_ttime_mats.qs")
+
+# Cleanup
+rm(list = ls())
+source("code/helpers.R")
+fastverse_conflicts()
+
+####################################
+# Part 2: Transport Network
+####################################
 
 # Reading again
 cities_ports <- fread("data/transport_network/cities_ports.csv")
@@ -162,7 +165,6 @@ nrow(routes_ind)
 
 
 # Determining Ideal Hypothetical (US-Grade) Network 
-
 # See: https://christopherwolfram.com/projects/efficiency-of-road-networks/
 
 # US Route efficeincy = 0.843, thus mr = 1/0.843 = 1.186 
@@ -205,8 +207,12 @@ dev.off()
 
 
 # Fetching all Routes and Simplifying -------------------------------------------
+
+# -> Better skip and load finished segments below
+
 # Note: The routes file is about 2.6GB large! you can load it yourself by executing this code. 
-# In this replication package I only provide final segments: the result of intersecting all routes.
+# In this replication package I only provide final segments: the result of intersecting all routes. 
+# As OSM continues to evolve, I cannot guarantee that the result will be identical. Thus better skip this part
 
 routes <- data.table(from_city_country = cities_ports$city_country[routes_ind[, 1]], 
                      to_city_country = cities_ports$city_country[routes_ind[, 2]], 
@@ -267,15 +273,14 @@ segments <- qread("data/transport_network/segments.qs")
 
 # First Round of subdivision
 segments <- rmapshaper::ms_simplify(segments, keep = 0.5, snap_interval = deg_m(500)) |> 
-  subset(vlengths(geometry) > 0)
+            subset(vlengths(geometry) > 0)
 segments <- overline2(segments, attrib = c("passes", "gravity", "gravity_rd", "gravity_dur"))
 if(any(is_linepoint(segments))) segments %<>% ss(!is_linepoint(.))
 segments_simp <- segments |> rmapshaper::ms_simplify(keep = 0.25, snap_interval = deg_m(1500)) # For later plot
 # plot(segments)
 # mapview(segments) + mapview(rnet_get_nodes(segments))
 
-# Note: The code bwloe can be executed to regenerate the network. For all practical purposes however I have 
-# already provided the final network, so this code can also be skipped. 
+# -> Feel free to skip and load final network below
 
 # Creating Network
 net <- as_sfnetwork(segments, directed = FALSE)
@@ -298,7 +303,7 @@ net <- filter_smooth(net)
 # Second round of subdivision
 segments <- net |> activate("edges") |> tidygraph::as_tibble() |> mutate(.tidygraph_edge_index = NULL)
 segments <- rmapshaper::ms_simplify(segments, keep = 0.5, snap_interval = deg_m(1000)) |> 
-  subset(vlengths(geometry) > 0)
+            subset(vlengths(geometry) > 0)
 segments <- overline2(segments, attrib = c("passes", "gravity", "gravity_rd", "gravity_dur"))
 if(any(is_linepoint(segments))) segments %<>% ss(!is_linepoint(.))
 
@@ -409,8 +414,11 @@ dev.off()
 
 # Recalculating Routes Matrix for Network ----------------------------------------------------------
 
+# -> Feel free to skip and load matrix below
+
 nrow(nodes_coord)
 all.equal(unattrib(nodes_coord), mctl(st_coordinates(nodes)))
+# This can take a few minutes: now generating distance matrix of all 1379 nodes
 dist_ttime_mats <- split_large_dist_matrix(nodes_coord, verbose = TRUE)
 
 # Checks
@@ -424,10 +432,11 @@ pwcor(unattrib(dist_ttime_mats$distances), unattrib(dist_ttime_mats$durations))
 # Now finding places that are on islands (e.g. Zanzibar City): should not exist here
 if(any(which(fnobs(dist_ttime_mats$durations) < 200))) stop("Found Islands")
 
-dist_ttime_mats |> qsave("data/transport_network/dist_ttime_mats_network_30km.qs")
+dist_ttime_mats |> qsave("data/transport_network/net_dist_ttime_mats.qs")
 
 # Loading again -----------------------------------
-dist_ttime_mats <- qread("data/transport_network/dist_ttime_mats_network_30km.qs")
+
+dist_ttime_mats <- qread("data/transport_network/net_dist_ttime_mats.qs")
 
 # Check
 all.equal(st_as_sf(net, "nodes")$geometry, nodes$geometry)
@@ -442,65 +451,9 @@ edges$sp_distance <- st_length(edges)
 edges$distance <- sym_dist_mat[edges_ind]
 edges$duration <- sym_time_mat[edges_ind]
 
+# Loading, Integrating and Plotting Additional Connections ---------------------------------------------------
 
-# Adding High-Value Links to Existing Network ----------------------------------------------------------
-# Note: This is a self-contained section due to the use of specific indices for manual adjustments!! -> Skip it!
-# It uses a previous version of the network, which is basically identical to the current version, but the nodes and edges are in a different order. 
-# Because only the output of this section is relevant, I have not added the inputs to the replication package. 
-# But users can still execute the section with the current network and distance matrices to verify that the network finding algorithm produces 
-# sensible new links. Just the manual adjustment (removing links crossing water bodies and protected areas and adding a few links) won't work
-# using the indices provided. The output is a spatial data frame 'add_routes' with the final proposed links. These can be added to the current network.
-
-net <- qread("data/transport_network/old/net_discrete_final.qs")
-dist_ttime_mats <- qread("~/Documents/IFW Kiel/Africa-Infrastructure/data/transport_network/old/dist_ttime_mats_network_30km.qs")
-sym_dist_mat <- (dist_ttime_mats$distances + t(dist_ttime_mats$distances)) / 2
-
-## Plotting
-plot(net)
-nodes <- net |> activate("nodes") |> tidygraph::as_tibble() |> 
-  mutate(.tidygraph_node_index = NULL)
-
-nodes_dmat <- st_distance(nodes) |> set_units("km")
-nodes_dmat[nodes_dmat > as_units(2000, "km")] <- NA
-diag(nodes_dmat) <- NA
-nodes_dmat[upper.tri(nodes_dmat)] <- NA
-
-# Routes to be calculated
-routes_ind <- which(!is.na(nodes_dmat), arr.ind = TRUE)
-nrow(routes_ind)
-
-nodes_coord <- st_coordinates(nodes) |> qDF() |> setNames(c("lon", "lat"))
-
-keep_routes <- !intercepted_routes(routes_ind, nodes_coord, sym_dist_mat, feasible = TRUE, alpha = 45, mr = 1/0.767, fmr = 1.5) # US: 0.843 EU: 0.767
-sum(keep_routes)
-
-add_routes <- with(nodes_coord, lapply(mrtl(routes_ind[keep_routes, ]), function(r) st_linestring(cbind(lon[r], lat[r])))) |> st_sfc(crs = 4326) |> st_as_sf()
-add_routes_df <- line2df(add_routes)[-1] %*=% 1000 %>% dapply(as.integer)
-edges_df <- line2df(edges)[-1] %*=% 1000 %>% dapply(as.integer)
-m <- add_routes_df %in% edges_df | add_routes_df %in% gv(edges_df, c(3:4, 1:2))
-nrow(add_routes) - sum(m)
-add_routes <- add_routes[!m, ]
-rm(add_routes_df, edges_df)
-
-add_routes |> qsave("~/Documents/IFW Kiel/Africa-Infrastructure/data/transport_network/add_routes_network_30km_alpha45_mrEU_fmr15.qs")
-add_routes <- qread("~/Documents/IFW Kiel/Africa-Infrastructure/data/transport_network/add_routes_network_30km_alpha45_mrEU_fmr15.qs")
-
-# Plot
-# mapview(edges, map.types = c(mapviewGetOption("basemaps"), "Esri.WorldStreetMap", "Esri.WorldTerrain")) + mapview(nodes) + mapview(add_routes, color = "green") # [remove, ]
-remove <- c(305, 396, 399, 400, 402, 512, 513, 514, 516, 403, 409, 410, 390, 386, 457, 420, 429, 428, 426, 427, 434,
-            358, 357, 363, 364, 344, 345, 165, 175, 106, 27, 10, 69, 68, 433, 490, 499, 444, 326, 324, 419, 279, 317, 178, 331, 270)
-# link 59 and 57 should have cost of 0 -> political
-# Links 32, 33, 39, 62, 67, 118, 128, 129, 141, 412, 487, 489 could have better roads
-# add_routes[remove, "x"] <- st_linestring()
-add <- list(c(63, 105), c(862, 717), c(499, 519), c(499, 455), c(312, 379), c(1184, 1271), c(46, 37), c(1071, 842),
-            c(901, 751), c(751, 710), c(593, 514))
-add_routes <- rbind(add_routes[-remove, ],
-                    with(nodes_coord, lapply(add, function(r) st_linestring(cbind(lon[r], lat[r])))) |> st_sfc(crs = 4326) |> st_as_sf())
-
-add_routes |> qsave("~/Documents/IFW Kiel/Africa-Infrastructure/data/transport_network/add_routes_network_30km_alpha45_mrEU_fmr15_adjusted.qs")
-
-
-# Loading, Integrating and Plotting ---------------------------------------------------
+# -> To generate the 'add_routes' file, execute '7.1_add_routes.R' in a clean R session
 
 add_routes <- qread("data/transport_network/add_routes_network_30km_alpha45_mrEU_fmr15_adjusted.qs")
 add_routes_df <- line2points(add_routes)
@@ -508,9 +461,9 @@ dmat <- st_distance(nodes$geometry, add_routes_df$geometry)
 add_routes_df$node <- dapply(dmat, which.min)
 add_routes_df$geometry <- nodes$geometry[add_routes_df$node]
 add_routes <- add_routes_df |> group_by(id) |> 
-  summarise(from = ffirst(node),
-            to = flast(node),
-            geometry = st_combine(geometry)) |> st_cast("LINESTRING")
+              summarise(from = ffirst(node),
+                        to = flast(node),
+                        geometry = st_combine(geometry)) |> st_cast("LINESTRING")
 # Checks
 all(line2df(add_routes) %>% select(fx, fy) %in% qDF(st_coordinates(nodes)))
 all(line2df(add_routes) %>% select(tx, ty) %in% qDF(st_coordinates(nodes)))
@@ -534,9 +487,12 @@ dev.copy(pdf, "figures/transport_network/trans_africa_network_actual_discretized
          width = 10, height = 10)
 dev.off()
 
+
 # Now Adding Populations ----------------------------------------------------------
 
 # min(nodes_dmat, na.rm = TRUE) # Need to assign to nearest node
+
+WC24_Africa <- fread("data/other_inputs/worldcities_continental_africa_2024.csv")
 
 # Distance Matrix
 dmat <- nodes |> st_distance(st_as_sf(WC24_Africa, coords = c("lon", "lat"), crs = 4326)) 
@@ -586,9 +542,9 @@ save(nodes, edges, edges_ind, nodes_coord, net, add_routes, WC24_Africa,
 
 
 
-########################################################
-# Part 2.1: Recalculating Routes for Visual Analysis
-########################################################
+##########################################################
+# Fetching Simplified Routes (Edges) for Visual Inspection
+##########################################################
 
 load("data/transport_network/trans_africa_network.RData")
 
@@ -608,7 +564,10 @@ tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
 #          width = 10, height = 10)
 # dev.off()
 
-# Now: Load Simplified Routes
+# Fetching Simplified Routes
+
+# -> Feel free to skip and load result below
+
 edges_real <- edges |> qDT() |> 
   transform(geometry = list(NULL), distance = NA_real_, duration = NA_real_)
 nodes_coord <- st_coordinates(nodes) |> qDF() |> setNames(c("lon", "lat"))
@@ -627,7 +586,7 @@ edges_real <- edges_real |> st_as_sf(crs = st_crs(route)) |> st_make_valid()
 edges_real |> qsave("data/transport_network/edges_real_simplified.qs")
 rm(route, i, r)
 
-# Now the updated plot
+# Draw the updated plot
 edges_real <- qread("data/transport_network/edges_real_simplified.qs")
 
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
@@ -647,242 +606,4 @@ dev.copy(pdf, "figures/transport_network/trans_africa_network_actual_discretized
 dev.off()
 
 
-########################################################
-# Part 2.2: Identifying Major Transport Routes
-########################################################
-
-# TODO: Keep here? Or separate file??
-
-load("data/transport_network/trans_africa_network.RData")
-edges_real <- qread("data/transport_network/edges_real_simplified.qs")
-nodes %<>% join(atomic_elem(cities_ports_rsp_sf), on = c("population", "city_country"), drop = "y")
-
-
-# Plot high gravity roads
-tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
-  tm_shape(subset(edges_real, gravity_rd >= 25)) +
-  tm_lines(col = "gravity_rd",
-           col.scale = tm_scale_intervals(values = "inferno", breaks = c(0, 5, 25, 125, 625, Inf)),
-           col.legend = tm_legend("Sum of Gravity", position = c("left", "bottom"), frame = FALSE, 
-                                  text.size = 1.5, title.size = 2), lwd = 2) +
-  tm_shape(subset(edges_real, gravity_rd < 25)) +
-  tm_lines(col = "grey50", lwd = 2) +
-  tm_shape(subset(nodes, city_port)) + tm_dots(size = 0.15) +
-  tm_shape(subset(nodes, !city_port & population > 0)) + tm_dots(size = 0.1, fill = "grey20") +
-  tm_shape(subset(nodes, !city_port & population <= 0)) + tm_dots(size = 0.1, fill = "grey70") +
-  tm_layout(frame = FALSE) 
-
-# 47 largest port-cities
-large_cities <- nodes %$% which(population > 2e6 | outflows > 1e6)
-length(large_cities)
-
-# Fastest Routes between them
-# igraph::all_shortest_paths(net, large_cities[1], large_cities)
-large_city_paths <- lapply(large_cities, function(i) 
-  st_network_paths(net, from = i, to = large_cities, weights = "duration", mode = "all")) |>
-  rowbind()
-
-large_city_paths <- list(nodes = unique(unlist(large_city_paths$node_paths)), 
-                         edges = unique(unlist(large_city_paths$edge_paths)))
-
-tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
-  tm_shape(subset(edges, large_city_paths$edges)) +
-  tm_lines(col = "gravity_rd",
-           col.scale = tm_scale_intervals(values = "inferno", breaks = c(0, 5, 25, 125, 625, Inf)),
-           col.legend = tm_legend("Sum of Gravity", position = c("left", "bottom"), frame = FALSE, 
-                                  text.size = 1.5, title.size = 2), lwd = 2) +
-  tm_shape(subset(edges, -large_city_paths$edges)) +
-  tm_lines(col = "grey70", lwd = 2) +
-  tm_shape(subset(nodes, large_city_paths$nodes)) + tm_dots(size = 0.2) +
-  tm_shape(subset(nodes, -large_city_paths$nodes)) + tm_dots(size = 0.1, fill = "grey50") +
-  tm_shape(subset(nodes, large_cities)) + tm_dots(size = 0.2, fill = "red") +
-  tm_layout(frame = FALSE) 
-
-net_main_routes <- as_sfnetwork(subset(edges, large_city_paths$edges), 
-                                directed = FALSE, edges_as_lines = TRUE)
-
-filter_smooth2 <- function(net, funs = list(passes = "mean", gravity = "mean", gravity_rd = "mean", gravity_dur = "mean", 
-                                            distance = "sum", duration = "sum", "ignore")) {
-  net |> 
-    tidygraph::activate("edges") |> 
-    dplyr::filter(!tidygraph::edge_is_multiple()) |> 
-    dplyr::filter(!tidygraph::edge_is_loop()) |> 
-    tidygraph::convert(to_spatial_smooth, 
-                       protect = subset(nodes, large_cities, geometry)$geometry,
-                       summarise_attributes = funs)
-}
-
-net_main_routes <- filter_smooth2(net_main_routes)
-net_main_routes <- filter_smooth2(net_main_routes)
-
-plot(net_main_routes)
-st_as_sf(net_main_routes, "edges") |> names()
-
-tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
-  tm_shape(subset(edges, -large_city_paths$edges)) + tm_lines(col = "grey70", lwd = 2) +
-  tm_shape(nodes) + tm_dots(size = 0.1, fill = "grey50") +
-  tm_shape(st_as_sf(activate(net_main_routes, "edges"))) +
-  tm_lines(col = "gravity_rd",
-           col.scale = tm_scale_intervals(values = "inferno", breaks = c(0, 5, 25, 125, 625, Inf)),
-           col.legend = tm_legend("Sum of Gravity", position = c("left", "bottom"), frame = FALSE, 
-                                  text.size = 1.5, title.size = 2), lwd = 2) +
-  tm_shape(st_as_sf(activate(net_main_routes, "nodes"))) + tm_dots(size = 0.2) +
-  tm_shape(subset(nodes, large_cities)) + tm_dots(size = 0.3, fill = "red") +
-  tm_layout(frame = FALSE) #, inner.margins = c(0.1, 0.1, 0.1, 0.1))
-
-dev.copy(pdf, "figures/transport_network/trans_africa_network_reduced_47_duration.pdf", 
-         width = 10, height = 10)
-dev.off()
-
-# Join nodes
-nodes_sf <- st_as_sf(net_main_routes, "nodes")
-nodes_sf %<>% transform(qDF(st_coordinates(.))) %>% 
-  join(transform(nodes, qDF(st_coordinates(geometry))), on  = c("X", "Y"), drop = TRUE) %>%
-  select(-X, -Y, -.tidygraph_node_index)
-net_main_routes %<>% activate("nodes") %>% dplyr::mutate(qDF(atomic_elem(nodes_sf)))
-
-results <- list(
-  fastest_routes = c(large_city_paths, list(network = net_main_routes))
-)
-
-# Now With All Routes, incl. new ones ---------------------------------------
-
-identical(st_geometry(net, "edges"), edges$geometry)
-
-net_ext_data <- rowbind(select(edges_param, from, to, add, gravity_rd, distance, duration, duration_imp, 
-                               border_dist, border_time, total_time, cost_per_km = ug_cost_km, geometry) |>
-                          mutate(total_cost = distance / 1000 * cost_per_km) , 
-                        select(add_routes_param, from, to, add, distance, duration = duration_100kmh,  
-                               border_dist, border_time, total_time = total_time_100kmh, cost_per_km = cost_km_adj, geometry) |>
-                          transform(total_cost = distance / 1000 * cost_per_km, 
-                                    gravity_rd = NA_real_, duration_imp = NA_real_))
-net_ext <- sfnetwork(nodes_param, net_ext_data, directed = FALSE)
-# Check
-identical(st_geometry(net_ext, "nodes"), st_geometry(net_param, "nodes"))
-
-large_city_paths <- lapply(large_cities, function(i) 
-  rowbind(st_network_paths(net_param, from = i, to = large_cities, weights = "distance", mode = "all"),
-          st_network_paths(net_ext, from = i, to = large_cities, weights = "distance", mode = "all"),
-          st_network_paths(net_param, from = i, to = large_cities, weights = "duration", mode = "all"))
-) |>
-  rowbind()
-
-large_city_paths <- list(nodes = unique(unlist(large_city_paths$node_paths)), 
-                         edges = unique(unlist(large_city_paths$edge_paths)))
-
-tmp = subset(st_as_sf(net_ext, "edges"), large_city_paths$edges)
-settfm(tmp, 
-       duration_imp = iif(add, duration, duration_imp),
-       duration = iif(add, (distance/1000)*60, duration)) # Setting to 1 km/h
-net_main_routes <- as_sfnetwork(tmp, directed = FALSE, edges_as_lines = TRUE)
-
-net_main_routes <- filter_smooth2(net_main_routes, 
-                                  funs = list(add = "mean", gravity_rd = "mean", 
-                                              distance = "sum", duration = "sum", duration_imp = "sum", 
-                                              border_dist = "sum", border_time = "sum", total_time = "sum",
-                                              total_cost = "sum", "ignore"))
-# net_main_routes <- tidygraph::convert(net_main_routes, to_spatial_subdivision)
-# net_main_routes <- filter_smooth2(net_main_routes)
-
-plot(net_main_routes)
-st_as_sf(net_main_routes, "edges") |> fnobs()
-
-tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
-  tm_shape(edges) + tm_lines(col = "grey70", lwd = 2) +
-  tm_shape(nodes) + tm_dots(size = 0.1, fill = "grey50") +
-  tm_shape(st_as_sf(net_main_routes, "edges")) +
-  tm_lines(col = "gravity_rd",
-           col.scale = tm_scale_intervals(values = "inferno", breaks = c(0, 5, 25, 125, 625, Inf), 
-                                          value.na = "green4", label.na = "Proposed or Mixed"),
-           col.legend = tm_legend("Sum of Gravity"), lwd = 2) +
-  tm_shape(st_as_sf(activate(net_main_routes, "nodes"))) + tm_dots(size = 0.2) +
-  tm_shape(subset(nodes, large_cities)) + tm_dots(size = 0.3, fill = "red") +
-  tm_legend(position = c("left", "bottom"), frame = FALSE, 
-            text.size = 1.5, title.size = 2) +
-  tm_layout(frame = FALSE) #, inner.margins = c(0.1, 0.1, 0.1, 0.1))
-
-dev.copy(pdf, "figures/transport_network/trans_africa_network_reduced_47_all.pdf", 
-         width = 10, height = 10)
-dev.off()
-
-# Join nodes
-nodes_sf <- st_as_sf(net_main_routes, "nodes")
-nodes_sf %<>% transform(qDF(st_coordinates(.))) %>% 
-  join(transform(nodes_param, qDF(st_coordinates(geometry))), on  = c("X", "Y"), drop = TRUE) %>%
-  select(-X, -Y, -.tidygraph_node_index)
-net_main_routes %<>% activate("nodes") %>% dplyr::mutate(qDF(atomic_elem(nodes_sf)))
-
-# Combining results
-results$all_routes <- c(large_city_paths, list(network = net_main_routes))
-
-qsave(results, "data/transport_network/largest_pcities/trans_africa_network_47_largest.qs")
-
-# Now saving as CSV ---------------------
-
-results <- qread("data/transport_network/largest_pcities/trans_africa_network_47_largest.qs")
-
-for (nname in .c(fastest_routes, all_routes)) {
-  
-  results[[nname]]$network %>% st_as_sf("nodes") %>% atomic_elem() %>% qDT() %>% 
-    select(-.tidygraph_node_index) %>% 
-    fwrite(sprintf("data/transport_network/largest_pcities/%s_graph_nodes.csv", nname))
-  
-  results[[nname]]$network %>% st_as_sf("edges") %>% atomic_elem() %>% qDT() %>% 
-    fwrite(sprintf("data/transport_network/largest_pcities/%s_graph_edges.csv", nname))
-}
-
-# Plotting --------------------------------
-
-nname <- "fastest_routes"
-# edges_real <- qread("~/Documents/IFW Kiel/Africa-Infrastructure/data/transport_network/edges_real_simplified.qs") 
-nodes <- results[[nname]]$network |> st_as_sf("nodes") 
-edges <- results[[nname]]$network |> st_as_sf("edges") 
-
-# Classification
-settfm(edges, speed_kmh = (distance / 1000) / (duration / 60))
-# settfm(edges_real, speed_kmh = (edges_param$distance/1000)/(edges_param$duration/60))
-# edges_real %<>% subset(results$fastest_routes$edges)
-
-# nodes <- fread(sprintf("data/transport_network/largest_pcities/%s_graph_nodes.csv", nname))
-settfm(nodes, major_city_port = population > 2e6 | outflows > 1e6)
-sum(nodes$major_city_port)
-largest <- c("Dakar - Senegal", "Casablanca - Morocco", "Abidjan - Côte d’Ivoire", 
-             "Kumasi - Ghana", "Algiers - Algeria", "Lagos - Nigeria", "Kano - Nigeria", "Yaoundé - Cameroon", 
-             "Luanda - Angola", "Kinshasa - Congo (Kinshasa)", "Johannesburg - South Africa", "Cape Town - South Africa",
-             "Cairo - Egypt", "Khartoum - Sudan", "Nairobi - Kenya", "Addis Ababa - Ethiopia", 
-             "Dar es Salaam - Tanzania")
-
-settfm(nodes, product = nif(major_city_port & base::match(city_country, largest, 0L) > 0L, NA_integer_, # Heterogeneous products
-                            population > 1e6 & outflows > 1e6, 5L, # Large Port-City
-                            population > 2e6, 4L,   # Large City
-                            outflows > 0, 3L,       # Port
-                            population > 2e5, 2L,   # Medium-Sized City
-                            default = 1L))          # Town/Node
-table(nodes$product, na.exclude = FALSE)
-setv(nodes$product, whichNA(nodes$product), seq_along(largest) + 5L)
-# fwrite(nodes, sprintf("data/transport_network/largest_pcities/%s_graph_nodes.csv", nname))
-attr(nodes$product, "levels") <- c("Small City/Node", "City > 200K", "Port", "City > 2M", "Large Port-City", paste("Megacity", seq_along(largest)))
-class(nodes$product) <- "factor"
-
-# Plotting
-tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
-  tm_shape(edges) + # _real
-  tm_lines(col = "speed_kmh", 
-           col.legend = tm_legend("Speed", position = c("left", "bottom"), stack = "h", 
-                                  frame = FALSE, text.size = 1.5, title.size = 2),
-           col.scale = tm_scale_continuous(6, values = "turbo"), # 7, 
-           lwd = 2) + 
-  # tm_shape(subset(nodes, !major_city_port)) + tm_dots(size = 0.1, fill = "black") +
-  # tm_shape(subset(nodes, major_city_port)) + tm_dots(size = 0.3, fill = "red") +
-  tm_shape(droplevels(mutate(nodes, product = fifelse(unclass(product) > 5L, NA, product)))) + 
-  tm_dots(fill = "product", size = 0.25, 
-          fill.scale = tm_scale_categorical(values = "turbo", value.na = "purple3", label.na = "Megacity (Own Product)"),
-          fill.legend = tm_legend("Product", position = c("left", "bottom"), # stack = "h", 
-                                  frame = FALSE, text.size = 1.5, title.size = 2)) +
-  tm_shape(subset(nodes, unclass(product) > 5L)) + tm_dots(size = 0.5, fill = "purple3") +
-  tm_layout(frame = FALSE)
-
-dev.copy(pdf, "figures/transport_network/trans_africa_network_reduced_22_products.pdf", 
-         width = 10, height = 10)
-dev.off()         
 
