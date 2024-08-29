@@ -19,8 +19,8 @@ aere <- unattrib(mean(edges$sp_distance / edges$distance))
 print(aere)
 
 # Adding distance to new edges based on average edge route efficiency
-settfm(add_routes, sp_distance = unattrib(st_length(geometry)))
-settfm(add_routes, distance = sp_distance / aere)
+settfm(add_links, sp_distance = unattrib(st_length(geometry)))
+settfm(add_links, distance = sp_distance / aere)
 
 
 # Shortest Paths ----------------------------------------------------------
@@ -40,7 +40,7 @@ rnre <- mean(sp_distances / dist_ttime_mats$distances, na.rm = TRUE) # Real NRE
 
 # Now adding edges
 identical(st_geometry(net, "edges"), edges$geometry)
-net_ext_data <- rbind(select(edges, distance, geometry), select(add_routes, distance, geometry))
+net_ext_data <- rbind(select(edges, distance, geometry), select(add_links, distance, geometry))
 net_ext <- as_sfnetwork(net_ext_data, directed = FALSE)
 plot(net_ext)
 identical(st_geometry(net_ext, "nodes"), nodes$geometry) # Not the case, thus need to recalculate spherical distance as well
@@ -56,22 +56,22 @@ rnre * (nre_ext / nre) # Reported increase
 mean(distances / distances_ext, na.rm = TRUE) 
 
 # Per link gain in NRE: takes a few mins
-add_routes$nre_per_link <- sapply(seq_row(add_routes), function(i) {
+add_links$nre_per_link <- sapply(seq_row(add_links), function(i) {
   net_extd = as_sfnetwork(rbind(select(edges, distance), 
-                                subset(add_routes, i, distance)), directed = FALSE)
+                                subset(add_links, i, distance)), directed = FALSE)
   distances_extd = st_network_cost(net_extd, weights = "distance")
   ind = ckmatch(nodes_coord, mctl(st_coordinates(st_geometry(net_extd, "nodes"))))
   mean(sp_distances / distances_extd[ind, ind], na.rm = TRUE)
 })
 # Percent increase
-add_routes$nre_gain_perc <- (unattrib(add_routes$nre_per_link / nre) - 1) * 100
-descr(add_routes$nre_gain_perc)
+add_links$nre_gain_perc <- (unattrib(add_links$nre_per_link / nre) - 1) * 100
+descr(add_links$nre_gain_perc)
 
 # Plot percent increase
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(edges) +
   tm_lines(lwd = 2, col = "grey70") +
-  tm_shape(add_routes) + 
+  tm_shape(add_links) + 
   tm_lines(col = "nre_gain_perc", 
            col.scale = tm_scale_intervals(values = "turbo", breaks = c(0, 0.002, 0.005, 0.025, 0.1, Inf)),   
            col.legend = tm_legend(expression(Delta~"%"~"NRE"), position = c("left", "bottom"), frame = FALSE, 
@@ -94,22 +94,22 @@ nre_ext_wtd / nre_wtd
 rnre_wtd * (nre_ext_wtd / nre_wtd) # Reported increase
 
 # Per link gain in NRE: weighted: takes a few mins
-add_routes$nre_wtd_per_link <- sapply(seq_row(add_routes), function(i) {
+add_links$nre_wtd_per_link <- sapply(seq_row(add_links), function(i) {
   net_extd = as_sfnetwork(rbind(select(edges, distance), 
-                                subset(add_routes, i, distance)), directed = FALSE)
+                                subset(add_links, i, distance)), directed = FALSE)
   distances_extd = st_network_cost(net_extd, weights = "distance")
   ind = ckmatch(nodes_coord, mctl(st_coordinates(st_geometry(net_extd, "nodes"))))
   fmean(unattrib(sp_distances / distances_extd[ind, ind]), w = gravity)
 })
 # Percent increase
-add_routes$nre_wtd_gain_perc <- (unattrib(add_routes$nre_wtd_per_link / nre_wtd) - 1) * 100
-descr(add_routes$nre_wtd_gain_perc)
+add_links$nre_wtd_gain_perc <- (unattrib(add_links$nre_wtd_per_link / nre_wtd) - 1) * 100
+descr(add_links$nre_wtd_gain_perc)
 
 # Plot percent increase
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(edges) +
   tm_lines(lwd = 2, col = "grey70") +
-  tm_shape(add_routes) + 
+  tm_shape(add_links) + 
   tm_lines(col = "nre_wtd_gain_perc", 
            col.scale = tm_scale_intervals(values = "turbo", breaks = c(0, 0.002, 0.005, 0.025, 0.1, Inf)),   
            col.legend = tm_legend(expression(Delta~"%"~"NRE WTD"), position = c("left", "bottom"), frame = FALSE, 
@@ -157,22 +157,22 @@ MA_ext / MA
 ma_gain_per_km <- (MA_ext - MA) * 1000
 
 # Compute change in MA from each link
-add_routes$MA_per_link <- sapply(seq_row(add_routes), function(i) {
+add_links$MA_per_link <- sapply(seq_row(add_links), function(i) {
   nete = as_sfnetwork(rbind(select(edges, distance), 
-                            subset(add_routes, i, distance)), directed = FALSE)
+                            subset(add_links, i, distance)), directed = FALSE)
   inv_dist = 1 / unclass(st_network_cost(nete, weights = "distance"))
   diag(inv_dist) = 0
   ind = ckmatch(mctl(st_coordinates(st_geometry(nete, "nodes"))), nodes_coord)
   sum(inv_dist %*% nodes$gdp[ind])
 })
 # Percent increase
-add_routes$MA_gain_perc <- (add_routes$MA_per_link / MA - 1) * 100
-descr(add_routes$MA_gain_perc)
+add_links$MA_gain_perc <- (add_links$MA_per_link / MA - 1) * 100
+descr(add_links$MA_gain_perc)
 
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(edges) +
   tm_lines(lwd = 2, col = "grey70") +
-  tm_shape(add_routes) + 
+  tm_shape(add_links) + 
   tm_lines(col = "MA_gain_perc", 
            col.scale = tm_scale_intervals(values = "turbo", breaks = c(0, 0.002, 0.005, 0.025, 0.1, Inf)),
            col.legend = tm_legend(expression(Delta~"%"~"MA"), position = c("left", "bottom"), frame = FALSE, 
@@ -222,11 +222,11 @@ edges |> qDT() |> extract(border_dist > 0, distance / border_dist) |> descr()
 edges |> qDT() |> extract(border_time > 0, duration / border_time) |> descr()
 
 # Same for Additional Routes
-add_routes$from_ctry <- nodes$iso3c[add_routes$from]
-add_routes$to_ctry <- nodes$iso3c[add_routes$to]
-add_routes$border_dist <- sapply(seq_row(add_routes), function(i) border_dist_sym[add_routes$from_ctry[i], add_routes$to_ctry[i]])
-add_routes$border_time <- sapply(seq_row(add_routes), function(i) border_time_sym[add_routes$from_ctry[i], add_routes$to_ctry[i]])
-# mapview::mapview(select(add_routes, from_ctry, to_ctry))
+add_links$from_ctry <- nodes$iso3c[add_links$from]
+add_links$to_ctry <- nodes$iso3c[add_links$to]
+add_links$border_dist <- sapply(seq_row(add_links), function(i) border_dist_sym[add_links$from_ctry[i], add_links$to_ctry[i]])
+add_links$border_time <- sapply(seq_row(add_links), function(i) border_time_sym[add_links$from_ctry[i], add_links$to_ctry[i]])
+# mapview::mapview(select(add_links, from_ctry, to_ctry))
 
 # Now: Repeat Market Access Simulations
 
@@ -243,22 +243,22 @@ MA_ext_bc / MA_bc
 ma_gain_per_km_bc <- (MA_ext_bc - MA_bc) * 1000
 
 # Compute change in MA from each link, with border costs
-add_routes$MA_per_link_bc <- sapply(seq_row(add_routes), function(i) {
+add_links$MA_per_link_bc <- sapply(seq_row(add_links), function(i) {
   nete = as_sfnetwork(rbind(select(edges, distance), 
-                            subset(add_routes, i, distance)), directed = FALSE)
+                            subset(add_links, i, distance)), directed = FALSE)
   ind = ckmatch(nodes_coord, mctl(st_coordinates(st_geometry(nete, "nodes"))))
   inv_dist = 1 / (unclass(st_network_cost(nete, weights = "distance"))[ind, ind] + bdt_nodes)
   diag(inv_dist) = 0
   sum(inv_dist %*% nodes$gdp)
 })
 # Percent increase
-add_routes$MA_gain_perc_bc <- (add_routes$MA_per_link_bc / MA_bc - 1) * 100
-descr(add_routes$MA_gain_perc_bc)
+add_links$MA_gain_perc_bc <- (add_links$MA_per_link_bc / MA_bc - 1) * 100
+descr(add_links$MA_gain_perc_bc)
 
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(edges) +
   tm_lines(lwd = 2, col = "grey70") +
-  tm_shape(add_routes) + 
+  tm_shape(add_links) + 
   tm_lines(col = "MA_gain_perc_bc", 
            col.scale = tm_scale_intervals(values = "turbo", breaks = c(0, 0.002, 0.005, 0.025, 0.1, Inf)),
            col.legend = tm_legend(expression(Delta~"%"~"MA"), position = c("left", "bottom"), frame = FALSE, 
@@ -273,17 +273,17 @@ dev.off()
 # Compute Ratios
 perch_to_diff <- function(lev, perch) lev - (lev / (perch / 100 + 1))
 
-settfm(add_routes, 
+settfm(add_links, 
        MA_gain_bc_ratio = perch_to_diff(MA_per_link_bc, MA_gain_perc_bc) / perch_to_diff(MA_per_link, MA_gain_perc), 
        MA_gain_perc_bc_ratio = MA_gain_perc_bc / MA_gain_perc)
 
-add_routes |> gvr("ratio") |> descr()
-add_routes$MA_gain_bc_ratio |> replace_outliers(c(0, 1), "clip", set = TRUE)
+add_links |> gvr("ratio") |> descr()
+add_links$MA_gain_bc_ratio |> replace_outliers(c(0, 1), "clip", set = TRUE)
 
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(edges) +
   tm_lines(lwd = 2, col = "grey70") +
-  tm_shape(add_routes) + 
+  tm_shape(add_links) + 
   tm_lines(col = "MA_gain_bc_ratio", 
            col.scale = tm_scale_intervals(values = "turbo", breaks = seq(0, 1, 0.2)),
            col.legend = tm_legend(expression(Delta~"MA Ratio"), position = c("left", "bottom"), frame = FALSE, 
@@ -299,7 +299,7 @@ dev.off()
 # Now doing the same with re-optimization of routing by Agents --------------------------------
 
 # Adding border costs
-settfm(add_routes, total_dist = distance + border_dist)
+settfm(add_links, total_dist = distance + border_dist)
 settfm(edges, total_dist = distance + border_dist, total_time = duration + border_time)
 
 # Recalculating distances
@@ -313,7 +313,7 @@ mean(distances) / mean(edges$distance)
 mean(distances_bc) / mean(edges$total_dist)
 
 net_ext <- as_sfnetwork(rbind(select(edges, distance, total_dist), 
-                              select(add_routes, distance, total_dist)), directed = FALSE)
+                              select(add_links, distance, total_dist)), directed = FALSE)
 plot(net_ext)
 ind_ext <- ckmatch(nodes_coord, mctl(st_coordinates(st_geometry(net_ext, "nodes"))))
 sp_distances_ext <- st_distance(st_geometry(net_ext, "nodes"))[ind_ext, ind_ext]
@@ -336,22 +336,22 @@ MA_ext_bc_opt / MA_bc_opt
 ma_gain_per_km_bc_opt <- (MA_ext_bc_opt - MA_bc_opt) * 1000
 
 # Compute change in MA from each link, with border costs
-add_routes$MA_per_link_bc_opt <- sapply(seq_row(add_routes), function(i) {
+add_links$MA_per_link_bc_opt <- sapply(seq_row(add_links), function(i) {
   nete = as_sfnetwork(rbind(select(edges, total_dist), 
-                            subset(add_routes, i, total_dist)), directed = FALSE)
+                            subset(add_links, i, total_dist)), directed = FALSE)
   ind = ckmatch(mctl(st_coordinates(st_geometry(nete, "nodes"))), nodes_coord)
   inv_dist = 1 / unclass(st_network_cost(nete, weights = "total_dist"))
   diag(inv_dist) = 0
   sum(inv_dist %*% nodes$gdp[ind])
 })
 # Percent increase
-add_routes$MA_gain_perc_bc_opt <- (add_routes$MA_per_link_bc_opt / MA_bc_opt - 1) * 100
-descr(add_routes$MA_gain_perc_bc_opt)
+add_links$MA_gain_perc_bc_opt <- (add_links$MA_per_link_bc_opt / MA_bc_opt - 1) * 100
+descr(add_links$MA_gain_perc_bc_opt)
 
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(edges) +
   tm_lines(lwd = 2, col = "grey70") +
-  tm_shape(add_routes) + 
+  tm_shape(add_links) + 
   tm_lines(col = "MA_gain_perc_bc_opt", 
            col.scale = tm_scale_intervals(values = "turbo", breaks = c(0, 0.002, 0.005, 0.025, 0.1, Inf)),
            col.legend = tm_legend(expression(Delta~"%"~"MA"), position = c("left", "bottom"), frame = FALSE, 
@@ -364,17 +364,17 @@ dev.copy(pdf, "figures/transport_network/trans_africa_network_MA_gain_perc_bc_op
 dev.off()
 
 # Compute Ratios
-settfm(add_routes, 
+settfm(add_links, 
        MA_gain_bc_opt_ratio = replace_outliers(perch_to_diff(MA_per_link_bc_opt, MA_gain_perc_bc_opt) / 
                                                perch_to_diff(MA_per_link, MA_gain_perc), c(0, 3), "clip"), 
        MA_gain_perc_bc_opt_ratio = replace_outliers(MA_gain_perc_bc_opt / MA_gain_perc, c(0, 4), "clip"))
 
-add_routes |> gvr("ratio") |> descr()
+add_links |> gvr("ratio") |> descr()
 
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(edges) +
   tm_lines(lwd = 2, col = "grey70") +
-  tm_shape(add_routes) + 
+  tm_shape(add_links) + 
   tm_lines(col = "MA_gain_bc_opt_ratio", 
            col.scale = tm_scale_intervals(values = "turbo", breaks = c(seq(0, 1, 0.2), 2, 3)),
            col.legend = tm_legend(expression(Delta~"MA Ratio"), position = c("left", "bottom"), frame = FALSE, 
@@ -389,31 +389,31 @@ dev.off()
 
 # Estimating Network Building Costs -------------------------------------------
 
-# add_routes_buff_3km <- st_buffer(add_routes, as_units(3000, "m"))
+# add_links_buff_3km <- st_buffer(add_links, as_units(3000, "m"))
 # edges_buff_3km <- st_buffer(edges, as_units(3000, "m"))
 #
 # # Adding Ruggedness: https://diegopuga.org/data/rugged/
 # rugg <- terra::rast("/Users/sebastiankrantz/Documents/Data/Ruggedness/tri.txt")
 # # max(rugg)
-# add_routes$rugg <- exactextractr::exact_extract(rugg, add_routes_buff_3km, fun = "mean")
+# add_links$rugg <- exactextractr::exact_extract(rugg, add_links_buff_3km, fun = "mean")
 # edges$rugg <- exactextractr::exact_extract(rugg, edges_buff_3km, fun = "mean")
 # # Adding Population (WorldPop 2020 1km2 global)
 # pop_wpop <- terra::rast("/Users/sebastiankrantz/Documents/Data/WorldPop/africa_pop_2020_1km.tif")
 # # max(pop_wpop)
-# add_routes$pop_wpop <- exactextractr::exact_extract(pop_wpop, add_routes_buff_3km, fun = "sum") 
-# add_routes$pop_wpop_km2 <- unattrib(add_routes$pop_wpop / (st_area(add_routes_buff_3km) / 1e6))
+# add_links$pop_wpop <- exactextractr::exact_extract(pop_wpop, add_links_buff_3km, fun = "sum") 
+# add_links$pop_wpop_km2 <- unattrib(add_links$pop_wpop / (st_area(add_links_buff_3km) / 1e6))
 # edges$pop_wpop <- exactextractr::exact_extract(pop_wpop, edges_buff_3km, fun = "sum")
 # edges$pop_wpop_km2 <- unattrib(edges$pop_wpop / (st_area(edges_buff_3km) / 1e6))
 
 # Loading precomputed version
 rugg_pop <- qread("data/transport_network/edges_rugg_pop.qs")
-add_routes %<>% join(rugg_pop$add_routes)
+add_links %<>% join(rugg_pop$add_links)
 edges %<>% join(rugg_pop$edges)
 rm(rugg_pop)
 
 # Plot Ruggedness
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
-  tm_shape(mutate(rbind(select(edges, rugg), select(add_routes, rugg)), rugg = rugg / 1000)) +
+  tm_shape(mutate(rbind(select(edges, rugg), select(add_links, rugg)), rugg = rugg / 1000)) +
   tm_lines(col = "rugg",
            col.scale = tm_scale_continuous_log1p(10, values = "turbo"),
            col.legend = tm_legend("Ruggedness", position = c("left", "bottom"), frame = FALSE, 
@@ -425,12 +425,12 @@ tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
 dev.copy(pdf, "figures/transport_network/trans_africa_network_rugg.pdf", width = 10, height = 10)
 dev.off()
 
-add_routes |> gvr("_km2") |> descr()
+add_links |> gvr("_km2") |> descr()
 edges |> gvr("_km2") |> descr()
 
 # Plot Population Density
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
-  tm_shape(rbind(select(edges, pop_wpop_km2), select(add_routes, pop_wpop_km2))) +
+  tm_shape(rbind(select(edges, pop_wpop_km2), select(add_links, pop_wpop_km2))) +
   tm_lines(col = "pop_wpop_km2",
            col.scale = tm_scale_continuous_log1p(10, values = "turbo"),
            col.legend = tm_legend(expression("Population/km"^2), position = c("left", "bottom"), frame = FALSE, 
@@ -525,20 +525,20 @@ mean(with(edges, exp(log(120e3) - 0.11 * (distance > 50e3) + 0.12 * log(rugg) + 
 settfm(edges, cost_km = exp(log(120e3) - 0.11 * (distance > 50e3) + 0.12 * log(rugg) + 0.085 * log(pop_wpop_km2+1))) # 0.00085 * pop_wpop_km2
 descr(edges$cost_km)
 
-settfm(add_routes, cost_km = exp(log(120e3) - 0.11 * (distance > 50e3) + 0.12 * log(rugg) + 0.085 * log(pop_wpop_km2+1))) # 0.00085 * pop_wpop_km2
-descr(add_routes$cost_km)
+settfm(add_links, cost_km = exp(log(120e3) - 0.11 * (distance > 50e3) + 0.12 * log(rugg) + 0.085 * log(pop_wpop_km2+1))) # 0.00085 * pop_wpop_km2
+descr(add_links$cost_km)
 
-descr(rbind(select(edges, cost_km), select(add_routes, cost_km)))
+descr(rbind(select(edges, cost_km), select(add_links, cost_km)))
 
 # Total Network Length and Cost
 sum(edges$distance / 1000) / 1e3
 sum(edges$cost_km * edges$distance / 1000) / 1e9
-sum(add_routes$distance / 1000) / 1e3
-sum(add_routes$cost_km * add_routes$distance / 1000) / 1e9
+sum(add_links$distance / 1000) / 1e3
+sum(add_links$cost_km * add_links$distance / 1000) / 1e9
 
 # Plots
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
-  tm_shape(rbind(select(edges, cost_km), select(add_routes, cost_km))) +
+  tm_shape(rbind(select(edges, cost_km), select(add_links, cost_km))) +
   tm_lines(col = "cost_km",
            col.scale = tm_scale_continuous(10, values = "turbo"), 
            col.legend = tm_legend("USD'15/km", position = c("left", "bottom"), frame = FALSE, 
@@ -551,9 +551,9 @@ dev.copy(pdf, "figures/transport_network/trans_africa_network_cost_km.pdf", widt
 dev.off()
 
 # Algeria-Morocco roads partly exists -> I let them be 3x cheaper
-alg_mor <- which((nodes$iso3c[add_routes$from] == "DZA" & nodes$iso3c[add_routes$to] == "MAR") | (nodes$iso3c[add_routes$from] == "MAR" & nodes$iso3c[add_routes$to] == "DZA"))
-add_routes$cost_km_adj <- add_routes$cost_km
-add_routes$cost_km_adj[alg_mor] <- add_routes$cost_km_adj[alg_mor] / 3
+alg_mor <- which((nodes$iso3c[add_links$from] == "DZA" & nodes$iso3c[add_links$to] == "MAR") | (nodes$iso3c[add_links$from] == "MAR" & nodes$iso3c[add_links$to] == "DZA"))
+add_links$cost_km_adj <- add_links$cost_km
+add_links$cost_km_adj[alg_mor] <- add_links$cost_km_adj[alg_mor] / 3
 # rm(alg_mor)
 
 tmap_mode("plot")
@@ -561,7 +561,7 @@ tmap_mode("plot")
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(edges) +
   tm_lines(lwd = 2, col = "grey70") +
-  tm_shape(select(add_routes, cost_km_adj)) +
+  tm_shape(select(add_links, cost_km_adj)) +
   tm_lines(col = "cost_km_adj",
            col.scale = tm_scale_continuous(10, values = "turbo"), 
            col.legend = tm_legend("USD'15/km", position = c("left", "bottom"), frame = FALSE, 
@@ -578,7 +578,7 @@ dev.off()
 # Cost-Benefit Analysis: Adding New Links -------------------------------------------
 
 # Total Cost-Benefit Ratios
-descr(add_routes$cost_km)
+descr(add_links$cost_km)
 # AFR_GDP <- africamonitor::am_data(series = "NY_GDP_MKTP_KD", expand.date = TRUE, gen = "Year", keep.date = FALSE) |> 
 #            group_by(year = Year) |> summarise(gdp = fsum(NY_GDP_MKTP_KD))
 # 
@@ -588,23 +588,23 @@ descr(add_routes$cost_km)
 # No Frictions
 AFRGDP22 <- 2811259831806 # Africa GDP 2022 in constant 2015 USD
 ma_gain_per_km / 1e9 # MA gain in billions
-ma_gain_per_km / sum(with(add_routes, cost_km_adj * distance / 1000)) # MA gain per investment
+ma_gain_per_km / sum(with(add_links, cost_km_adj * distance / 1000)) # MA gain per investment
 # With Frictions
 ma_gain_per_km_bc / 1e9 # MA gain in billions
-ma_gain_per_km_bc / sum(with(add_routes, cost_km_adj * distance / 1000)) # MA gain per investment
+ma_gain_per_km_bc / sum(with(add_links, cost_km_adj * distance / 1000)) # MA gain per investment
 # With Frictions and Optimizing Agents
 ma_gain_per_km_bc_opt / 1e9 # MA gain in billions
-ma_gain_per_km_bc_opt / sum(with(add_routes, cost_km_adj * distance / 1000)) # MA gain per investment
+ma_gain_per_km_bc_opt / sum(with(add_links, cost_km_adj * distance / 1000)) # MA gain per investment
 
 # MA Gain per Dollar
-settfm(add_routes, MA_gain_pusd = perch_to_diff(MA_per_link, MA_gain_perc) * 1000 / (cost_km * distance / 1000)) # * 1216
-descr(add_routes$MA_gain_pusd)
-proportions(table(add_routes$MA_gain_pusd < 1))
+settfm(add_links, MA_gain_pusd = perch_to_diff(MA_per_link, MA_gain_perc) * 1000 / (cost_km * distance / 1000)) # * 1216
+descr(add_links$MA_gain_pusd)
+proportions(table(add_links$MA_gain_pusd < 1))
 
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(edges) +
   tm_lines(lwd = 2, col = "grey70") +
-  tm_shape(add_routes) + 
+  tm_shape(add_links) + 
   tm_lines(col = "MA_gain_pusd", 
            col.scale = tm_scale_intervals(values = "turbo", breaks = c(0, 1, 2, 5, 10, 20, 50, 100)),
            col.legend = tm_legend(expression(Delta~"MA/USD"), position = c("left", "bottom"), frame = FALSE, 
@@ -617,13 +617,13 @@ dev.copy(pdf, "figures/transport_network/trans_africa_network_MA_gain_pusd.pdf",
 dev.off()
 
 # Under Frictions: Static
-settfm(add_routes, MA_gain_pusd_bc = perch_to_diff(MA_per_link_bc, MA_gain_perc_bc) * 1000 / (cost_km * distance / 1000)) # * 1216
-descr(add_routes$MA_gain_pusd_bc)
+settfm(add_links, MA_gain_pusd_bc = perch_to_diff(MA_per_link_bc, MA_gain_perc_bc) * 1000 / (cost_km * distance / 1000)) # * 1216
+descr(add_links$MA_gain_pusd_bc)
 
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(edges) +
   tm_lines(lwd = 2, col = "grey70") +
-  tm_shape(add_routes) + 
+  tm_shape(add_links) + 
   tm_lines(col = "MA_gain_pusd_bc", 
            col.scale = tm_scale_intervals(values = "turbo", breaks = c(0, 1, 2, 5, 10, 20, 50, 100)),
            col.legend = tm_legend(expression(Delta~"MA/USD"), position = c("left", "bottom"), frame = FALSE, 
@@ -636,13 +636,13 @@ dev.copy(pdf, "figures/transport_network/trans_africa_network_MA_gain_pusd_bc.pd
 dev.off()
 
 # Under Frictions: Optimizing Agents
-settfm(add_routes, MA_gain_pusd_bc_opt = perch_to_diff(MA_per_link_bc_opt, MA_gain_perc_bc_opt) * 1000 / (cost_km * distance / 1000)) # * 1216
-descr(add_routes$MA_gain_pusd_bc_opt)
+settfm(add_links, MA_gain_pusd_bc_opt = perch_to_diff(MA_per_link_bc_opt, MA_gain_perc_bc_opt) * 1000 / (cost_km * distance / 1000)) # * 1216
+descr(add_links$MA_gain_pusd_bc_opt)
 
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(edges) +
   tm_lines(lwd = 2, col = "grey70") +
-  tm_shape(add_routes) + 
+  tm_shape(add_links) + 
   tm_lines(col = "MA_gain_pusd_bc_opt", 
            col.scale = tm_scale_intervals(values = "turbo", breaks = c(0, 1, 2, 5, 10, 20, 50, 100)),
            col.legend = tm_legend(expression(Delta~"MA/USD"), position = c("left", "bottom"), frame = FALSE, 
@@ -655,14 +655,14 @@ dev.copy(pdf, "figures/transport_network/trans_africa_network_MA_gain_pusd_bc_op
 dev.off()
 
 # Consensus Package
-settfm(add_routes, 
+settfm(add_links, 
        consensus = MA_gain_pusd > 1 & (MA_gain_pusd_bc > 1 | MA_gain_pusd_bc_opt > 1),
        MA_gain_pusd_cons = pmean(MA_gain_pusd, MA_gain_pusd_bc, MA_gain_pusd_bc_opt))
 
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(edges) +
   tm_lines(lwd = 2, col = "grey70") +
-  tm_shape(subset(add_routes, consensus, MA_gain_pusd_cons)) + 
+  tm_shape(subset(add_links, consensus, MA_gain_pusd_cons)) + 
   tm_lines(col = "MA_gain_pusd_cons", 
            col.scale = tm_scale_intervals(values = "turbo", breaks = c(0, 1, 2, 5, 10, 20, 50, 100)),
            col.legend = tm_legend(expression(Delta~"MA/USD"), position = c("left", "bottom"), frame = FALSE, 
@@ -675,11 +675,11 @@ dev.copy(pdf, "figures/transport_network/trans_africa_network_MA_gain_pusd_cons.
 dev.off()
 
 # Consensus Gains
-nrow(subset(add_routes, consensus)) / nrow(add_routes)
-subset(add_routes, consensus) |> with(sum(cost_km_adj * distance / 1000)) |> divide_by(1e9)
+nrow(subset(add_links, consensus)) / nrow(add_links)
+subset(add_links, consensus) |> with(sum(cost_km_adj * distance / 1000)) |> divide_by(1e9)
 
 net_ext_cons <- as_sfnetwork(rbind(select(edges, distance, total_dist), 
-                                   subset(add_routes, consensus & seq_along(consensus) %!in% alg_mor, # Without Algeria-Morocco Links
+                                   subset(add_links, consensus & seq_along(consensus) %!in% alg_mor, # Without Algeria-Morocco Links
                                           distance, total_dist)), directed = FALSE)
 plot(net_ext_cons)
 ind_ext_cons <- ckmatch(nodes_coord, mctl(st_coordinates(st_geometry(net_ext_cons, "nodes"))))
@@ -701,7 +701,7 @@ MA_ext_cons_bc_opt / MA_bc_opt
 ma_gain_per_km_cons <- (MA_ext_cons_bc_opt - MA_bc_opt) * 1000
 
 ma_gain_per_km_cons / 1e9 # MA gain in billions
-ma_gain_per_km_cons / sum(with(subset(add_routes, consensus), cost_km_adj * distance / 1000)) # MA gain per investment
+ma_gain_per_km_cons / sum(with(subset(add_links, consensus), cost_km_adj * distance / 1000)) # MA gain per investment
 
 
 
@@ -782,13 +782,13 @@ dev.off()
 kmh_to_mmin <- function(speed_kmh) speed_kmh * 1000 / 60 
 # Function to convert meters/min to km/h
 mmin_to_kmh <- function(speed_mmin) speed_mmin * 60 / 100
-settfm(add_routes, 
+settfm(add_links, 
        duration_100kmh = distance / kmh_to_mmin(100), 
        duration_65kmh = distance / kmh_to_mmin(65))
 
 # Temporary networks as needed
 net_ext_tmp <- as_sfnetwork(rbind(select(edges, duration = duration_imp), 
-                                  select(add_routes, duration = duration_100kmh)), directed = FALSE)
+                                  select(add_links, duration = duration_100kmh)), directed = FALSE)
 ind_ext_tmp <- ckmatch(nodes_coord, mctl(st_coordinates(st_geometry(net_ext_tmp, "nodes"))))
 times_ext_tmp <- st_network_cost(net_ext_tmp, weights = "duration")[ind_ext_tmp, ind_ext_tmp]
 
@@ -803,22 +803,22 @@ rm(list = ls()[endsWith(ls(), "_tmp")]); gc()
 # Simulating gains from new 100km/h links under existing and improved network ---------
 
 # Existing Network
-add_routes$MA_per_link_100kmh <- sapply(seq_row(add_routes), function(i) {
+add_links$MA_per_link_100kmh <- sapply(seq_row(add_links), function(i) {
   nete = as_sfnetwork(rbind(select(edges, duration), 
-                            subset(add_routes, i, duration = duration_100kmh)), directed = FALSE)
+                            subset(add_links, i, duration = duration_100kmh)), directed = FALSE)
   ind = ckmatch(mctl(st_coordinates(st_geometry(nete, "nodes"))), nodes_coord)
   inv_dur = 1 / unclass(st_network_cost(nete, weights = "duration"))
   diag(inv_dur) = 0
   sum(inv_dur %*% nodes$gdp[ind])
 })
 # Percent increase
-add_routes$MA_per_link_100kmh_perc <- (add_routes$MA_per_link_100kmh / MA - 1) * 100
-descr(add_routes$MA_per_link_100kmh_perc)
+add_links$MA_per_link_100kmh_perc <- (add_links$MA_per_link_100kmh / MA - 1) * 100
+descr(add_links$MA_per_link_100kmh_perc)
 
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(edges) +
   tm_lines(lwd = 2, col = "grey70") +
-  tm_shape(add_routes) + 
+  tm_shape(add_links) + 
   tm_lines(col = "MA_per_link_100kmh_perc", 
            col.scale = tm_scale_intervals(values = "turbo", breaks = c(0, 0.005, 0.01, 0.025, 0.1, Inf)),
            col.legend = tm_legend(expression(Delta~"%"~"MA [GDP/min]"), 
@@ -832,22 +832,22 @@ dev.copy(pdf, "figures/transport_network/trans_africa_network_MA_per_link_100kmh
 dev.off()
 
 # Improved network
-add_routes$MA_per_link_100kmh_imp <- sapply(seq_row(add_routes), function(i) {
+add_links$MA_per_link_100kmh_imp <- sapply(seq_row(add_links), function(i) {
   nete = as_sfnetwork(rbind(select(edges, duration = duration_imp), 
-                            subset(add_routes, i, duration = duration_100kmh)), directed = FALSE)
+                            subset(add_links, i, duration = duration_100kmh)), directed = FALSE)
   ind = ckmatch(mctl(st_coordinates(st_geometry(nete, "nodes"))), nodes_coord)
   inv_dur = 1 / unclass(st_network_cost(nete, weights = "duration"))
   diag(inv_dur) = 0
   sum(inv_dur %*% nodes$gdp[ind])
 })
 # Percent increase
-add_routes$MA_per_link_100kmh_imp_perc <- (add_routes$MA_per_link_100kmh_imp / MA_imp - 1) * 100
-descr(add_routes$MA_per_link_100kmh_imp_perc)
+add_links$MA_per_link_100kmh_imp_perc <- (add_links$MA_per_link_100kmh_imp / MA_imp - 1) * 100
+descr(add_links$MA_per_link_100kmh_imp_perc)
 
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(edges) +
   tm_lines(lwd = 2, col = "grey70") +
-  tm_shape(add_routes) + 
+  tm_shape(add_links) + 
   tm_lines(col = "MA_per_link_100kmh_imp_perc", 
            col.scale = tm_scale_intervals(values = "turbo", breaks = c(0, 0.005, 0.01, 0.025, 0.1, Inf)),
            col.legend = tm_legend(expression(Delta~"%"~"MA [GDP/min]"), 
@@ -861,17 +861,17 @@ dev.copy(pdf, "figures/transport_network/trans_africa_network_MA_per_link_100kmh
 dev.off()
 
 # Compute Ratios
-settfm(add_routes, 
+settfm(add_links, 
        MA_per_link_100kmh_ratio = replace_outliers(perch_to_diff(MA_per_link_100kmh_imp, MA_per_link_100kmh_imp_perc) / 
                                                    perch_to_diff(MA_per_link_100kmh, MA_per_link_100kmh_perc), c(0, 3), "clip"), 
        MA_per_link_100kmh_perc_ratio = replace_outliers(MA_per_link_100kmh_imp_perc / MA_per_link_100kmh_perc, c(0, 4), "clip"))
 
-descr(add_routes$MA_per_link_100kmh_perc_ratio)
+descr(add_links$MA_per_link_100kmh_perc_ratio)
 
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(edges) +
   tm_lines(lwd = 2, col = "grey70") +
-  tm_shape(add_routes) + 
+  tm_shape(add_links) + 
   tm_lines(col = "MA_per_link_100kmh_ratio", 
            col.scale = tm_scale_intervals(values = "turbo", breaks = c(seq(0, 1, 0.2), 2, 3)),
            col.legend = tm_legend(expression(Delta~"MA Ratio"), 
@@ -885,8 +885,8 @@ dev.copy(pdf, "figures/transport_network/trans_africa_network_MA_per_link_100kmh
 dev.off()
 
 # Excursus: Check overlap with consensus extension
-intersect(add_routes |> subset(MA_per_link_100kmh_ratio > 1, id) |> extract2("id"),
-          add_routes |> subset(consensus, id) |> extract2("id"))
+intersect(add_links |> subset(MA_per_link_100kmh_ratio > 1, id) |> extract2("id"),
+          add_links |> subset(consensus, id) |> extract2("id"))
 
 
 
@@ -1211,11 +1211,11 @@ ma_gain_per_min_cons / sum(with(subset(edges, consensus), ug_cost_km * distance 
 
 # Cost-Benefit Analysis: Joint Scenarios ---------------------------------------------------
 
-settfm(add_routes, total_time_100kmh = duration_100kmh + border_time, total_time_65kmh = duration_65kmh + border_time)
+settfm(add_links, total_time_100kmh = duration_100kmh + border_time, total_time_65kmh = duration_65kmh + border_time)
 
 # Plot All Costs
 all_costs <- rowbind(existing = select(edges, cost_km = ug_cost_km, distance, duration, duration_imp, border_time, total_time, total_time_imp), 
-                     new = select(add_routes, cost_km = cost_km_adj, distance, duration_imp = duration_100kmh, 
+                     new = select(add_links, cost_km = cost_km_adj, distance, duration_imp = duration_100kmh, 
                                   border_time, total_time_imp = total_time_100kmh) |> 
                            transform(duration = duration_imp, total_time = total_time_imp), 
                      idcol = "type")
@@ -1244,31 +1244,31 @@ sum(all_costs$cost_km * all_costs$distance / 1000) / 1e9
 # Need to repeat simulations for new links with MA denominated in time 
 
 # Added Cost Scenario
-add_routes$MA_per_link_100kmh_bt <- sapply(seq_row(add_routes), function(i) {
+add_links$MA_per_link_100kmh_bt <- sapply(seq_row(add_links), function(i) {
   nete = as_sfnetwork(rbind(select(edges, duration), 
-                            subset(add_routes, i, duration = duration_100kmh)), directed = FALSE)
+                            subset(add_links, i, duration = duration_100kmh)), directed = FALSE)
   ind = ckmatch(nodes_coord, mctl(st_coordinates(st_geometry(nete, "nodes"))))
   inv_dur = 1 / (unclass(st_network_cost(nete, weights = "duration"))[ind, ind] + btt_nodes)
   diag(inv_dur) = 0
   sum(inv_dur %*% nodes$gdp)
 })
-add_routes$MA_per_link_100kmh_bt_perc <- (add_routes$MA_per_link_100kmh_bt / MA_bt - 1) * 100
-descr(add_routes$MA_per_link_100kmh_bt_perc)
+add_links$MA_per_link_100kmh_bt_perc <- (add_links$MA_per_link_100kmh_bt / MA_bt - 1) * 100
+descr(add_links$MA_per_link_100kmh_bt_perc)
 
 # Optimizing Agents Scenario
-add_routes$MA_per_link_100kmh_bt_opt <- sapply(seq_row(add_routes), function(i) {
+add_links$MA_per_link_100kmh_bt_opt <- sapply(seq_row(add_links), function(i) {
   nete = as_sfnetwork(rbind(select(edges, duration = total_time), 
-                            subset(add_routes, i, duration = total_time_100kmh)), directed = FALSE)
+                            subset(add_links, i, duration = total_time_100kmh)), directed = FALSE)
   ind = ckmatch(mctl(st_coordinates(st_geometry(nete, "nodes"))), nodes_coord)
   inv_dur = 1 / unclass(st_network_cost(nete, weights = "duration"))
   diag(inv_dur) = 0
   sum(inv_dur %*% nodes$gdp[ind])
 })
-add_routes$MA_per_link_100kmh_bt_opt_perc <- (add_routes$MA_per_link_100kmh_bt_opt / MA_bt_opt - 1) * 100
-descr(add_routes$MA_per_link_100kmh_bt_opt_perc)
+add_links$MA_per_link_100kmh_bt_opt_perc <- (add_links$MA_per_link_100kmh_bt_opt / MA_bt_opt - 1) * 100
+descr(add_links$MA_per_link_100kmh_bt_opt_perc)
 
 # Computing Cost-Benefit Ratios
-settfm(add_routes, 
+settfm(add_links, 
    MA_gain_100kmh_pusd = perch_to_diff(MA_per_link_100kmh, MA_per_link_100kmh_perc) / (cost_km_adj * distance / 1000),
    MA_gain_100kmh_pusd_bt = perch_to_diff(MA_per_link_100kmh_bt, MA_per_link_100kmh_bt_perc) / (cost_km_adj * distance / 1000),
    MA_gain_100kmh_pusd_bt_opt = perch_to_diff(MA_per_link_100kmh_bt_opt, MA_per_link_100kmh_bt_opt_perc) / (cost_km_adj * distance / 1000)
@@ -1276,7 +1276,7 @@ settfm(add_routes,
 
 # Combining Datasets
 all_cb_ratios <- rbind(edges |> select(MA_gain_pusd, MA_gain_pusd_bt, MA_gain_pusd_bt_opt),
-                       add_routes |> select(MA_gain_100kmh_pusd, MA_gain_100kmh_pusd_bt, MA_gain_100kmh_pusd_bt_opt) |> rm_stub("100kmh_", regex = TRUE))
+                       add_links |> select(MA_gain_100kmh_pusd, MA_gain_100kmh_pusd_bt, MA_gain_100kmh_pusd_bt_opt) |> rm_stub("100kmh_", regex = TRUE))
 tfm(all_cb_ratios) <- all_costs |> atomic_elem()
 descr(all_cb_ratios)
 
@@ -1376,7 +1376,7 @@ inv_PDV <- function(PDV = 40e9, ...) {
 inv_PDV(my_PDV())
 
 packages <- c(
-  "Full Extension" = 56.1e9, # sum(add_routes$cost_km * add_routes$distance / 1000) 
+  "Full Extension" = 56.1e9, # sum(add_links$cost_km * add_links$distance / 1000) 
   "Consensus Extension" = 12.1e9,
   "Full Upgrade" = 105.7e9,  # sum(edges$ug_cost_km * edges$distance / 1000) 
   "Consensus Upgrade" = 45e9,
@@ -1411,9 +1411,9 @@ graph_orig <- edges |> qDT() |>
          rugg, pop_wpop, pop_wpop_km2, cost_km, cost_km_adj = cost_km, upgrade_cat, ug_cost_km)
 
 
-settfm(add_routes, total_time_100kmh = duration_100kmh + border_time, total_time_65kmh = duration_65kmh + border_time)
+settfm(add_links, total_time_100kmh = duration_100kmh + border_time, total_time_65kmh = duration_65kmh + border_time)
 
-graph_add <- add_routes |> qDT() |> 
+graph_add <- add_links |> qDT() |> 
   select(from, from_ctry, to, to_ctry, sp_distance, distance, duration_100kmh, 
          duration_65kmh, border_dist, border_time, total_dist, total_time_100kmh, total_time_65kmh,
          rugg, pop_wpop, pop_wpop_km2, cost_km, cost_km_adj)
@@ -1456,7 +1456,7 @@ nodes %<>% transform(qDF(round(st_coordinates(.), 5))) %>%
   join(tfm(graphs$graph_nodes, X = round(lon, 5), Y = round(lat, 5)), 
        on = c("X", "Y", "population", "city_port"), drop = "x", overid = 2) %>% select(-X, -Y)
 edges %<>% join(graphs$graph_orig, on = c("from", "to", "distance"), drop = "x", overid = 2)
-add_routes %<>% join(graphs$graph_add, on = c("from", "to"), drop = "x", overid = 2)
+add_links %<>% join(graphs$graph_add, on = c("from", "to"), drop = "x", overid = 2)
 
 # Check that network aligns with nodes
 allv(st_distance(st_geometry(net, "nodes"), st_geometry(nodes), by_element = TRUE), 0)
@@ -1471,7 +1471,7 @@ TAN_env <- new.env()
 load("data/transport_network/trans_africa_network.RData", envir = TAN_env)
 TAN_env$nodes_param <- nodes
 TAN_env$edges_param <- edges
-TAN_env$add_routes_param <- add_routes
+TAN_env$add_links_param <- add_links
 TAN_env$net_param <- net
 save(list = ls(TAN_env), file = "data/transport_network/trans_africa_network_param.RData", envir = TAN_env)
 
@@ -1509,7 +1509,7 @@ edges_real <- qread("data/transport_network/edges_real_simplified.qs")
 pdf("figures/transport_network/trans_africa_network_GE_parameterization_latest.pdf", width = 12, height = 12)
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(mutate(edges_real, speed_kmh = (edges$distance/1000)/(edges$duration/60)) |> 
-             rowbind(mutate(add_routes, speed_kmh = 0) |> st_cast("MULTILINESTRING"), fill = TRUE)) +
+             rowbind(mutate(add_links, speed_kmh = 0) |> st_cast("MULTILINESTRING"), fill = TRUE)) +
   tm_lines(col = "speed_kmh", 
            col.legend = tm_legend("Speed (km/h)", position = tm_pos_in(0, 0.475), stack = "h", frame = FALSE, text.size = 1.3, title.size = 1.6),
            col.scale = tm_scale_continuous(values = "turbo"), # 7, 

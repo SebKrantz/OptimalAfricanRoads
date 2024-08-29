@@ -109,7 +109,7 @@ identical(st_geometry(net_param, "edges"), edges_param$geometry)
 net_ext_data <- rowbind(select(edges_param, from, to, add, gravity_rd, distance, duration, duration_imp, 
                                border_dist, border_time, total_time, cost_per_km = ug_cost_km, geometry) |>
                           mutate(total_cost = distance / 1000 * cost_per_km) , 
-                        select(add_routes_param, from, to, add, distance, duration = duration_100kmh,  
+                        select(add_links_param, from, to, add, distance, duration = duration_100kmh,  
                                border_dist, border_time, total_time = total_time_100kmh, cost_per_km = cost_km_adj, geometry) |>
                           transform(total_cost = distance / 1000 * cost_per_km, 
                                     gravity_rd = NA_real_, duration_imp = NA_real_))

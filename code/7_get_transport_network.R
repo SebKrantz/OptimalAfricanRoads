@@ -453,22 +453,22 @@ edges$duration <- sym_time_mat[edges_ind]
 
 # Loading, Integrating and Plotting Additional Connections ---------------------------------------------------
 
-# -> To generate the 'add_routes' file, execute '7.1_add_routes.R' in a clean R session
+# -> To generate the 'add_links' file, execute '7.1_add_links.R' in a clean R session
 
-add_routes <- qread("data/transport_network/add_routes_network_30km_alpha45_mrEU_fmr15_adjusted.qs")
-add_routes_df <- line2points(add_routes)
-dmat <- st_distance(nodes$geometry, add_routes_df$geometry)
-add_routes_df$node <- dapply(dmat, which.min)
-add_routes_df$geometry <- nodes$geometry[add_routes_df$node]
-add_routes <- add_routes_df |> group_by(id) |> 
+add_links <- qread("data/transport_network/add_links_network_30km_alpha45_mrEU_fmr15_adjusted.qs")
+add_links_df <- line2points(add_links)
+dmat <- st_distance(nodes$geometry, add_links_df$geometry)
+add_links_df$node <- dapply(dmat, which.min)
+add_links_df$geometry <- nodes$geometry[add_links_df$node]
+add_links <- add_links_df |> group_by(id) |> 
               summarise(from = ffirst(node),
                         to = flast(node),
                         geometry = st_combine(geometry)) |> st_cast("LINESTRING")
 # Checks
-all(line2df(add_routes) %>% select(fx, fy) %in% qDF(st_coordinates(nodes)))
-all(line2df(add_routes) %>% select(tx, ty) %in% qDF(st_coordinates(nodes)))
-all(select(line2df(add_routes), fx:ty) %!in% select(line2df(edges), fx:ty))
-rm(dmat, add_routes_df)
+all(line2df(add_links) %>% select(fx, fy) %in% qDF(st_coordinates(nodes)))
+all(line2df(add_links) %>% select(tx, ty) %in% qDF(st_coordinates(nodes)))
+all(select(line2df(add_links), fx:ty) %!in% select(line2df(edges), fx:ty))
+rm(dmat, add_links_df)
 
 tmap_mode("plot")
 
@@ -478,7 +478,7 @@ tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
            col.scale = tm_scale_intervals(values = "inferno", breaks = c(0, 5, 25, 125, 625, Inf)),
            col.legend = tm_legend("Sum of Gravity", position = c("left", "bottom"), frame = FALSE, 
                                   text.size = 1.5, title.size = 2), lwd = 2) +
-  tm_shape(add_routes) + tm_lines(col = "green4", lwd = 1) + 
+  tm_shape(add_links) + tm_lines(col = "green4", lwd = 1) + 
   tm_shape(subset(nodes, city_port)) + tm_dots(size = 0.2) +
   tm_shape(subset(nodes, !city_port)) + tm_dots(size = 0.1, fill = "grey70") +
   tm_layout(frame = FALSE) 
@@ -534,7 +534,7 @@ tmp <- net |> st_as_sf("edges") |> atomic_elem() |> qDT() |>
 net %<>% activate("edges") %>% dplyr::mutate(tmp)
 rm(tmp)
 
-save(nodes, edges, edges_ind, nodes_coord, net, add_routes, WC24_Africa, 
+save(nodes, edges, edges_ind, nodes_coord, net, add_links, WC24_Africa, 
      cities_ports, cities_ports_sf, cities_ports_rsp_sf, 
      dist_ttime_mats, sym_dist_mat, sym_time_mat, 
      file = "data/transport_network/trans_africa_network.RData")
@@ -555,7 +555,7 @@ tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
            col.scale = tm_scale_intervals(values = "inferno", breaks = c(0, 5, 25, 125, 625, Inf)),
            col.legend = tm_legend("Sum of Gravity", position = c("left", "bottom"), frame = FALSE, 
                                   text.size = 1.5, title.size = 2), lwd = 2) +
-  tm_shape(add_routes) + tm_lines(col = "green4", lwd = 1) + 
+  tm_shape(add_links) + tm_lines(col = "green4", lwd = 1) + 
   tm_shape(subset(nodes, city_port)) + tm_dots(size = 0.2) +
   tm_shape(subset(nodes, !city_port)) + tm_dots(size = 0.1, fill = "grey70") +
   tm_layout(frame = FALSE) 
@@ -595,7 +595,7 @@ tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
            col.scale = tm_scale_intervals(values = "inferno", breaks = c(0, 5, 25, 125, 625, Inf)),
            col.legend = tm_legend("Sum of Gravity", position = c("left", "bottom"), frame = FALSE, 
                                   text.size = 1.5, title.size = 2), lwd = 2) +
-  tm_shape(add_routes) + tm_lines(col = "green4", lwd = 1) + # limegreen # , lty = "twodash"
+  tm_shape(add_links) + tm_lines(col = "green4", lwd = 1) + # limegreen # , lty = "twodash"
   tm_shape(subset(nodes, city_port)) + tm_dots(size = 0.15) +
   tm_shape(subset(nodes, !city_port & population > 0)) + tm_dots(size = 0.1, fill = "grey20") +
   tm_shape(subset(nodes, !city_port & population <= 0)) + tm_dots(size = 0.1, fill = "grey70") +
