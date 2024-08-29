@@ -4,7 +4,7 @@ Replication materials for the paper **Optimal Investments in Africa's Road Netwo
 
 **Notes**
 
-- The code is organized sequentially, but outputs from each script that are inputs to other scripts are saved under `data/` or `results/`. Thus, each script can be executed on its own, without the need to execute earlier scripts.  
+- The code is organized sequentially, but outputs from each script that are inputs to other scripts are saved under `data/` or `results/`. Thus, each script can be executed on its own, without the need to execute earlier scripts. Also within longer scripts important intermediate results are saved. This is usually indicated at the beginning of a section.   
 
 - Each script should be executed in a clean R session, due to global options being set in the scripts.
 
