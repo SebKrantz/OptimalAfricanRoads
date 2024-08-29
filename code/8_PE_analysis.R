@@ -142,7 +142,8 @@ rm(d, ind, w, nodes_coord_mat, outcomes_coords, OUTCOMES); gc()
 fndistinct(atomic_elem(nodes))
 
 # Computing total market access
-(MA <- total_MA(distances, nodes$gdp)) # dist_ttime_mats$distances # ^3.8
+(MA_real <- total_MA(dist_ttime_mats$distances, nodes$gdp))
+(MA <- total_MA(distances, nodes$gdp)) # ^3.8
 
 # Total gain
 (MA_ext <- total_MA(distances_ext, nodes$gdp)) # ^3.8 
@@ -228,15 +229,15 @@ add_routes$border_time <- sapply(seq_row(add_routes), function(i) border_time_sy
 
 # Computing total real market access
 bdt_nodes <- border_dist_transit[nodes$iso3c, nodes$iso3c]
-MA <- total_MA(distances + bdt_nodes, nodes$gdp) # dist_ttime_mats$distances
+MA_bc <- total_MA(distances + bdt_nodes, nodes$gdp) # dist_ttime_mats$distances
 
 # Total gain
-MA_ext <- total_MA(distances_ext + bdt_nodes, nodes$gdp) 
+MA_ext_bc <- total_MA(distances_ext + bdt_nodes, nodes$gdp) 
 
-MA_ext / MA
+MA_ext_bc / MA_bc
 
 # Needed for later
-ma_gain_per_km_bc <- (MA_ext - MA) * 1000
+ma_gain_per_km_bc <- (MA_ext_bc - MA_bc) * 1000
 
 # Compute change in MA from each link, with border costs
 add_routes$MA_per_link_bc <- sapply(seq_row(add_routes), function(i) {
@@ -248,7 +249,7 @@ add_routes$MA_per_link_bc <- sapply(seq_row(add_routes), function(i) {
   sum(inv_dist %*% nodes$gdp)
 })
 # Percent increase
-add_routes$MA_gain_perc_bc <- (add_routes$MA_per_link_bc / MA - 1) * 100
+add_routes$MA_gain_perc_bc <- (add_routes$MA_per_link_bc / MA_bc - 1) * 100
 descr(add_routes$MA_gain_perc_bc)
 
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
@@ -321,15 +322,15 @@ sum(distances_ext_bc) / sum(distances_ext)
 mean(distances_ext_bc / distances_ext, na.rm = TRUE)
 
 # Computing total real market access
-MA <- total_MA(distances_bc, nodes$gdp)
+MA_bc_opt <- total_MA(distances_bc, nodes$gdp)
 
 # Total gain
-MA_ext <- total_MA(distances_ext_bc, nodes$gdp)
+MA_ext_bc_opt <- total_MA(distances_ext_bc, nodes$gdp)
 
-MA_ext / MA
+MA_ext_bc_opt / MA_bc_opt
 
 # Needed for later
-ma_gain_per_km_bc_opt <- (MA_ext - MA) * 1000
+ma_gain_per_km_bc_opt <- (MA_ext_bc_opt - MA_bc_opt) * 1000
 
 # Compute change in MA from each link, with border costs
 add_routes$MA_per_link_bc_opt <- sapply(seq_row(add_routes), function(i) {
@@ -341,7 +342,7 @@ add_routes$MA_per_link_bc_opt <- sapply(seq_row(add_routes), function(i) {
   sum(inv_dist %*% nodes$gdp[ind])
 })
 # Percent increase
-add_routes$MA_gain_perc_bc_opt <- (add_routes$MA_per_link_bc_opt / MA - 1) * 100
+add_routes$MA_gain_perc_bc_opt <- (add_routes$MA_per_link_bc_opt / MA_bc_opt - 1) * 100
 descr(add_routes$MA_gain_perc_bc_opt)
 
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
@@ -385,9 +386,9 @@ dev.off()
 
 # Estimating Network Building Costs -------------------------------------------
 
-add_routes_buff_3km <- st_buffer(add_routes, as_units(3000, "m"))
-edges_buff_3km <- st_buffer(edges, as_units(3000, "m"))
-
+# add_routes_buff_3km <- st_buffer(add_routes, as_units(3000, "m"))
+# edges_buff_3km <- st_buffer(edges, as_units(3000, "m"))
+#
 # # Adding Ruggedness: https://diegopuga.org/data/rugged/
 # rugg <- terra::rast("/Users/sebastiankrantz/Documents/Data/Ruggedness/tri.txt")
 # # max(rugg)
@@ -689,15 +690,12 @@ distances_ext_bc_cons <- st_network_cost(net_ext_cons, weights = "total_dist")[i
 sum(distances_ext_bc_cons) / sum(distances_ext_cons)
 mean(distances_ext_bc_cons / distances_ext_cons, na.rm = TRUE)
 
-# Computing total real market access
-(MA <- total_MA(distances_bc, nodes$gdp)) # + bdt_nodes
-
 # Total gain
-(MA_ext <- total_MA(distances_ext_bc_cons, nodes$gdp)) # + bdt_nodes
+(MA_ext_cons_bc_opt <- total_MA(distances_ext_bc_cons, nodes$gdp)) # + bdt_nodes
 
-MA_ext / MA
+MA_ext_cons_bc_opt / MA_bc_opt
 
-ma_gain_per_km_cons <- (MA_ext - MA) * 1000
+ma_gain_per_km_cons <- (MA_ext_cons_bc_opt - MA_bc_opt) * 1000
 
 ma_gain_per_km_cons / 1e9 # MA gain in billions
 ma_gain_per_km_cons / sum(with(subset(add_routes, consensus), cost_km_adj * distance / 1000)) # MA gain per investment
@@ -738,14 +736,15 @@ descr(edges, cols = .c(duration, duration_imp))
 times_imp <- st_network_cost(net, weights = edges$duration_imp)
 
 # Computing total real market access
-(MA <- total_MA(times, nodes$gdp)) # dist_ttime_mats$durations # Original: 1748.128 billion USD/min
+(MA_real <- total_MA(dist_ttime_mats$durations, nodes$gdp)) # Original: 1748.128 billion USD/min
+(MA <- total_MA(times, nodes$gdp)) #  
 
 # Total gain
 (MA_imp <- total_MA(times_imp, nodes$gdp))
 
 MA_imp / MA
 # Gain from original: 
-(MA_imp / MA) * 1748.128
+(MA_imp / MA) * MA_real
 
 # Needed for later
 ma_gain_per_min <- MA_imp - MA
@@ -793,7 +792,7 @@ times_ext_tmp <- st_network_cost(net_ext_tmp, weights = "duration")[ind_ext_tmp,
 # Total gain
 (MA_tmp <- total_MA(times_ext_tmp, nodes$gdp)) / 1e9
 
-MA_tmp / MA # * 1748.128
+MA_tmp / MA # * MA_real
 (MA_tmp - MA) / 1e9
 rm(list = ls()[endsWith(ls(), "_tmp")]); gc()
 
@@ -895,11 +894,11 @@ btt_nodes <- border_time_transit[nodes$iso3c, nodes$iso3c]
 # Computing total real market access
 (MA_bt <- total_MA(times + btt_nodes, nodes$gdp)) / 1e9 # dist_ttime_mats$durations 
 
-MA_bt / MA * 1748.128 # Reported increase
+MA_bt / MA * MA_real # Reported increase
 
 # Total gain
 (MA_imp_bt <- total_MA(times_imp + btt_nodes, nodes$gdp)) / 1e9
-MA_imp_bt / MA_imp * 1.420647 * 1748.128 # Reported
+MA_imp_bt / MA * MA_real # Reported 
 MA_imp_bt / MA_bt # 27% gains, vs. 42% without frictions
 
 # Needed for later
@@ -912,7 +911,6 @@ edges$MA_100_min_speed_bt <- sapply(seq_row(edges), function(i) {
   diag(inv_dur) = 0 
   sum(inv_dur %*% nodes$gdp) 
 })
-
 # Percent increase
 edges$MA_100_min_speed_bt_perc <- (edges$MA_100_min_speed_bt / MA_bt - 1) * 100
 descr(edges$MA_100_min_speed_bt_perc)
@@ -987,7 +985,6 @@ edges$MA_100_min_speed_bt_opt <- sapply(seq_row(edges), function(i) {
   diag(inv_dur) = 0 
   sum(inv_dur %*% nodes$gdp) 
 })
-
 # Percent increase
 edges$MA_100_min_speed_bt_opt_perc <- (edges$MA_100_min_speed_bt_opt / MA_bt_opt - 1) * 100
 descr(edges$MA_100_min_speed_bt_opt_perc)
@@ -1252,7 +1249,7 @@ add_routes$MA_per_link_100kmh_bt <- sapply(seq_row(add_routes), function(i) {
   diag(inv_dur) = 0
   sum(inv_dur %*% nodes$gdp)
 })
-
+# Percent increase
 add_routes$MA_per_link_100kmh_bt_perc <- (add_routes$MA_per_link_100kmh_bt / MA_bt - 1) * 100
 descr(add_routes$MA_per_link_100kmh_bt_perc)
 
