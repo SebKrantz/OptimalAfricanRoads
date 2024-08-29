@@ -1505,31 +1505,30 @@ graph_nodes |> qDT() |>
 # load("data/transport_network/trans_africa_network.RData")
 edges_real <- qread("data/transport_network/edges_real_simplified.qs")
 
+pdf("figures/transport_network/trans_africa_network_GE_parameterization_latest.pdf", width = 12, height = 12)
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(mutate(edges_real, speed_kmh = (edges$distance/1000)/(edges$duration/60)) |> 
              rowbind(mutate(add_routes, speed_kmh = 0) |> st_cast("MULTILINESTRING"), fill = TRUE)) +
   tm_lines(col = "speed_kmh", 
-           col.legend = tm_legend("Speed (km/h)", position = tm_pos_in(-0.25, 0.5), stack = "h", frame = FALSE, text.size = 1.3, title.size = 1.6),
+           col.legend = tm_legend("Speed (km/h)", position = tm_pos_in(0, 0.475), stack = "h", frame = FALSE, text.size = 1.3, title.size = 1.6),
            col.scale = tm_scale_continuous(values = "turbo"), # 7, 
            lwd = 2) + 
   tm_shape(subset(graph_nodes, citys == 4L) |>
              mutate(ofl = round(outflows / 1e6, 1))) + 
   tm_dots(size = "ofl", 
           size.scale = tm_scale_intervals(5, style = "jenks", values.scale = 2), # 
-          size.legend = tm_legend("Port Outflows (M)", position = tm_pos_in(-0.25, 0.5), frame = FALSE, text.size = 1.3, title.size = 1.6),
+          size.legend = tm_legend("Port Outflows (M)", position = tm_pos_in(0, 0.475), frame = FALSE, text.size = 1.3, title.size = 1.6),
           fill = scales::alpha("black", 0.25)) +
   tm_shape(subset(graph_nodes, population > 0) |> mutate(pop = population / 1000)) + 
   tm_dots(size = "pop", 
           size.scale = tm_scale_intervals(breaks = c(0, 200, 1000, Inf),
                                           values = c(1, 3, 5)*0.12),
-          size.legend = tm_legend("City Population (K)", position = tm_pos_in(-0.25, 0.05), stack = "h", frame = FALSE, text.size = 1.3, title.size = 1.6),
+          size.legend = tm_legend("City Population (K)", position = tm_pos_in(0, 0.2), stack = "h", frame = FALSE, text.size = 1.3, title.size = 1.6),
           fill = "IWI",
           size.free = TRUE,
           fill.scale = tm_scale_intervals(values = "inferno"), #viridis::inferno(5, alpha = 0.5, direction = -1)),
-          fill.legend = tm_legend("City Productivity (IWI)", position = tm_pos_in(-0.25, 0.05), frame = FALSE, text.size = 1.3, title.size = 1.6)) +
+          fill.legend = tm_legend("City Productivity (IWI)", position = tm_pos_in(0, 0.2), frame = FALSE, text.size = 1.3, title.size = 1.6)) +
   tm_shape(subset(nodes, population <= 0)) + tm_dots(size = 0.1, fill = "grey70") +
   tm_layout(frame = FALSE)
-
-dev.copy(pdf, "figures/transport_network/trans_africa_network_GE_parameterization_latest.pdf", width = 12, height = 12)
 dev.off()
 
