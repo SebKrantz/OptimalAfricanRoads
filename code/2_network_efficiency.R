@@ -5,9 +5,9 @@
 library(fastverse)
 fastverse_extend(qs, ggplot2, install = TRUE)
 
-africa_dist <- qread("data/africa_full_distance_matrix_r9_adjusted.qs")
+africa_dist <- qread("data/full_network/africa_full_distance_matrix_r9_adjusted.qs")
 
-spherical_dist <- qread("data/africa_full_spherical_distance_matrix_r9.qs")
+spherical_dist <- qread("data/full_network/africa_full_spherical_distance_matrix_r9.qs")
 identical(spherical_dist$centroids, africa_dist$centroids)
 
 # TRA(spherical_dist$distances, africa_dist$centroids$pop_wpop, "fill") %/=%

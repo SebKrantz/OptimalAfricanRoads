@@ -6,7 +6,7 @@ library(fastverse)
 fastverse_extend(qs, s2, install = TRUE)
 
 # Note: need to generate using '0_get_distance_matrix.R' or download from https://drive.google.com/file/d/1oE_9i3SdqvYKcdl880uS9q774dD9KXmS/view?usp=sharing
-africa_dist <- qread("data/africa_full_distance_matrix_r9.qs")
+africa_dist <- qread("data/full_network/africa_full_distance_matrix_r9.qs")
 fnobs.default(africa_dist$durations)
 fnobs.default(africa_dist$distances)
 N <- fnobs(africa_dist$durations)
@@ -38,7 +38,7 @@ africa_dist$sources[N > 200, ] %$% plot(lon, lat, pch = 16, cex = 0.25, main = "
 # points(-6.5, 23, col = "red", pch = "x") # This is in the middle of nowhere, no connections...
 par(mfrow = c(1, 1))
 
-dev.copy(pdf, "figures/route_starting_points.pdf", width = 14, height = 8.27)
+dev.copy(pdf, "figures/full_network/route_starting_points.pdf", width = 14, height = 8.27)
 dev.off()
 
 # # Plot real stating positions 
@@ -192,11 +192,11 @@ list(durations = durations_adj,
      distances_nosphere = distances_adj_nosphere, 
      sources = sources_adj, 
      centroids = africa_dist$centroids) %>% 
-  qsave("data/africa_full_distance_matrix_r9_adjusted.qs")
+  qsave("data/full_network/africa_full_distance_matrix_r9_adjusted.qs")
 
 list(distances = spherical_distances, 
      centroids = africa_dist$centroids) %>% 
-  qsave("data/africa_full_spherical_distance_matrix_r9.qs")
+  qsave("data/full_network/africa_full_spherical_distance_matrix_r9.qs")
 
 # Save as csv 
 durations_adj %>% 

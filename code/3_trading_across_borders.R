@@ -6,7 +6,7 @@ library(fastverse)
 set_collapse(mask = "manip")
 fastverse_extend(africamonitor, tmap, sf, qs) # tmap >= 3.99
 
-africa_ctry_shp <- qread("data/africa_countries.qs")
+africa_ctry_shp <- qread("data/other_inputs/africa_countries.qs")
   
 ################################
 # Doing Business 
@@ -23,7 +23,7 @@ time_transit <- 48 * (60 / 4) # time_border_compliance %>% num_vars() %>% fmedia
 dist_transit <- 48 * 4 * (1000 / 1.6) # Multiply by 1000 since meters
 
 # Getting export and import time vectors
-africa_dist <- qread("data/africa_full_distance_matrix_r9_adjusted.qs")
+africa_dist <- qread("data/full_network/africa_full_distance_matrix_r9_adjusted.qs")
 iso3c <- unique(africa_dist$centroids$ISO3)
 export_time_cost <- exc_data %$% set_names(IC_EXP_TMBC * (60 / 4) + IC_EXP_TMDC * (60 / 10), ISO3) %>% extract(iso3c) %>% set_names(iso3c)
 import_time_cost <- exc_data %$% set_names(IC_IMP_TMBC * (60 / 4) + IC_IMP_TMDC * (60 / 10), ISO3) %>% extract(iso3c) %>% set_names(iso3c)
@@ -42,7 +42,7 @@ export_dist_cost["ERI"] <- mean(export_dist_cost[c("ETH", "SDN")])
 import_dist_cost["ERI"] <- mean(import_dist_cost[c("ETH", "SDN")]) 
 
 # CEPII GeoDist: Do countries have contiguous border?
-geodist <- fread("data/africa_contig.csv")
+geodist <- fread("data/other_inputs/africa_contig.csv")
 geodist_mat <- psmat(geodist, contig ~ iso3_o, ~ iso3_d)[iso3c, iso3c]
 diag(geodist_mat) <- 1
 
@@ -118,7 +118,7 @@ exc_data |>
 # Manually getting domestic transport information for 2020 from: 
 # https://archive.doingbusiness.org/en/data/exploreeconomies
 
-dom_trans <- fread("data/DB20_domestic_transport.csv")
+dom_trans <- fread("data/other_inputs/DB20_domestic_transport.csv")
 
 # Average travel speed
 dom_trans |> 
@@ -254,7 +254,7 @@ dev.off()
 ######################################
 
 # WIIW NTM Database
-NTM_AGG <- qread("data/WIIW_NTM_AGG.qs")
+NTM_AGG <- qread("data/other_inputs/WIIW_NTM_AGG.qs")
 frange(NTM_AGG$NTM_AGG$year)
 
 NTM_AGG$NTM_AGG |> subset(year == flast(year, imp_iso3, "fill") & aff_iso3 == "WTO") |>
