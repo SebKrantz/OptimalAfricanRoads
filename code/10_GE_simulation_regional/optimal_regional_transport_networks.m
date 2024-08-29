@@ -1,11 +1,13 @@
-addpath("code/QSE/OptimalTransportNetworkToolbox_v/Code")
+% Download OptimalTransportNetworkToolbox from https://github.com/SebKrantz/OptimalTransportNetworkToolbox
+% and set the path to the lib folder here. Possibly also need to add a path to Ipopt if not detected. See docs/User Guide.pdf
+addpath("code/OptimalTransportNetworkToolbox/lib")
 % Read Undirected Graph
-graph_orig = readtable('data/OTN/trans_africa_network/graph_orig.csv');
+graph_orig = readtable('data/transport_network/csv/graph_orig.csv');
 graph_orig.add = false(height(graph_orig), 1);
 graph_orig.Properties.VariableNames{'ug_cost_km'} = 'cost_per_km';
 
 % Read Additional Links 
-graph_add = readtable('data/OTN/trans_africa_network/graph_add.csv');
+graph_add = readtable('data/transport_network/csv/graph_add.csv');
 graph_add.add = true(height(graph_add), 1);
 graph_add.Properties.VariableNames{'duration_100kmh'} = 'duration';
 graph_add.Properties.VariableNames{'cost_km'} = 'cost_per_km';
@@ -32,7 +34,7 @@ for i = 1:height(graph)
 end
 
 % Read Nodes Data
-nodes = readtable('data/OTN/trans_africa_network/graph_nodes.csv');
+nodes = readtable('data/transport_network/csv/graph_nodes.csv');
 nodes.population = nodes.population / 1000; % Convert to thousands
 nodes.outflows = nodes.outflows / 1000;     % Adjust in line with population
 % Describe function is not directly available in MATLAB. Instead, you can use summary.
@@ -158,8 +160,8 @@ param.Hj = population .* (1-alpha); % TG: I normalise this because the general u
 g.delta_i = infra_building_matrix;
 g.delta_tau = iceberg_matrix;
 
-% Naming conventions: if IRS -> 'cgc_irs'; if alpha = 0.1 -> add '_alpha01'; if frictions -> add '_friction'; if frictions -> add '_bc' (border cost)
-filename = '4g_50b_fixed_cgc_sigma15';
+% Naming conventions: if IRS -> 'cgc_irs'; if alpha = 0.1 -> add '_alpha01'; if with_ports = false -> add '_noport'; if frictions -> add '_bc' (border cost)
+filename = '4g_50b_fixed_cgc_sigma15'; % adjust if sigma != 1.5
 fprintf('File extension: %s\n', filename)
 
 % Solve allocation from existing infrastructure
@@ -196,7 +198,7 @@ for n=1:N
    res_nodes = setfield(res_nodes, ['Yj_', num2str(n)], res_opt.Yjn(:,n));
    res_nodes = setfield(res_nodes, ['Pj_', num2str(n)], res_opt.Pjn(:,n));
 end
-writetable(res_nodes, sprintf('data/OTN/trans_africa_network/results_latest/nodes_results_%s.csv', filename))
+writetable(res_nodes, sprintf('results/transport_network/regional/nodes_results_%s.csv', filename))
 
 % Saving: Graph / Edges
 res_graph = graph;
@@ -205,5 +207,5 @@ res_graph.Ijk = res_to_vec(res_opt.Ijk, graph);
 for n=1:N
    res_graph = setfield(res_graph, ['Qjk_', num2str(n)], res_to_vec(res_opt.Qjkn(:,:,n), graph));
 end
-writetable(res_graph, sprintf('data/OTN/trans_africa_network/results_latest/edges_results_%s.csv', filename));
+writetable(res_graph, sprintf('results/transport_network/regional/edges_results_%s.csv', filename));
 
