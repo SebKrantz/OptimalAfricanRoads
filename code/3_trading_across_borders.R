@@ -3,6 +3,7 @@
 ################################
 
 library(fastverse)
+set_collapse(mask = "manip")
 fastverse_extend(africamonitor, tmap, sf, qs) # tmap >= 3.99
 
 africa_ctry_shp <- qread("data/africa_countries.qs")
@@ -14,7 +15,7 @@ africa_ctry_shp <- qread("data/africa_countries.qs")
 # Using Doing Business Estimates
 SERIES <- am_series()
 exc <- SERIES[startsWith(Topic, "25"), Series]
-exc_data <- am_data(series = exc, from = 2019) |> gby(ISO3) |> flast()
+exc_data <- am_data(series = exc, from = 2019, to = 2020) |> group_by(ISO3) |> flast()
 exc_data %>% num_vars() %>% pwcor()
 
 # Add transit time whenever more than 2 countries involved
@@ -80,36 +81,37 @@ border_dist_mat_transit %>% qDF("iso3c") %>%
 
 SERIES = am_series()
 exc = SERIES[startsWith(Topic, "25"), Series]
-exc_data = am_data(ctry = NULL, series = exc, from = 2019)
+exc_data = am_data(ctry = NULL, series = exc, from = 2019, to = 2020)
 
-exc_table = exc_data |> slt(-Date) |> 
+exc_table = exc_data |> select(-Date) |> 
   join(wlddev, on = c("ISO3" = "iso3c")) |> 
-  gby(region) |> gvr("IC_") |> fmean() 
+  group_by(region) |> gvr("IC_") |> fmean() 
 
 # By Region (selected)
-exc_table |> sbt(region %ilike% "Europe|South|Latin|Middle|Sub-") |> 
+exc_table |> subset(region %ilike% "Europe|South|Latin|Middle|Sub-") |> 
   xtable::xtable(digits = 1) |> print(include.rownames = FALSE)
 
 # By OECD Membership
-exc_data |> slt(-Date) |> 
+exc_data |> select(-Date) |> 
   join(wlddev, on = c("ISO3" = "iso3c")) |> 
-  gby(OECD) |> gvr("IC_") |> fmean() |> 
+  group_by(OECD) |> gvr("IC_") |> fmean() |> 
   xtable::xtable(digits = 1) |> print(include.rownames = FALSE)
 
 # By Income Status
-exc_data |> slt(-Date) |> 
+exc_data |> select(-Date) |> 
   join(wlddev, on = c("ISO3" = "iso3c")) |> 
-  gby(income) |> gvr("IC_") |> fmean() |> 
+  group_by(income) |> gvr("IC_") |> fmean() |> 
   xtable::xtable(digits = 1) |> print(include.rownames = FALSE)
 
 # GDP weighted all Africa Average
-gdp_ppp = am_data(ctry = NULL, series = "NY_GDP_MKTP_PP_CD", from = 2017, to = 2019) |> gby(ISO3) |> flast()
+gdp_ppp = am_data(ctry = NULL, series = "NY_GDP_MKTP_PP_CD", from = 2017, to = 2019) |> 
+          group_by(ISO3) |> flast()
 
 exc_data |> 
   join(gdp_ppp, on = "ISO3", drop = TRUE) |> 
-  sbt(ISO3 %in% am_countries$ISO3) |>
-  mtt(Africa = 1L) |> 
-  gby(Africa) |> gvr("IC_|_PP_") |> 
+  subset(ISO3 %in% am_countries$ISO3) |>
+  mutate(Africa = 1L) |> 
+  group_by(Africa) |> gvr("IC_|_PP_") |> 
   fmean(NY_GDP_MKTP_PP_CD, keep.w = FALSE) |> 
   xtable::xtable(digits = 1) |> print(include.rownames = FALSE)
 
@@ -120,10 +122,10 @@ dom_trans <- fread("data/DB20_domestic_transport.csv")
 
 # Average travel speed
 dom_trans |> 
-  tfm(speed = distance_km / time_hours) |> 
+  transform(speed = distance_km / time_hours) |> 
   collap(speed ~ variable, list(mean = fmean, median = fmedian))
 
-fsubset(dom_trans, variable == "Import") %$% plot(x = time_hours, y = cost_usd)
+subset(dom_trans, variable == "Import") %$% plot(x = time_hours, y = cost_usd)
 
 lm(cost_usd ~ time_hours + variable, dom_trans)
 lm(cost_usd ~ distance_km + variable, dom_trans)
@@ -167,20 +169,20 @@ esttex(m1, m2)
 exc_data |> namlab()
 
 exc_data_long <- exc_data |> pivot(1:2, labels = TRUE) |> 
-  tfm(type = iif(label %like% "Export", "Export", "Import"),
+  transform(type = iif(label %like% "Export", "Export", "Import"),
       compliance = iif(label %like% "Border", "Border", "Documentary"),
-      measure = iif(label %like% "Time", "Time", "Cost")) |> 
+         measure = iif(label %like% "Time", "Time", "Cost")) |> 
   pivot(c("ISO3", "Date", "type"), "value", names = c("compliance", "measure"), how = "w") |> 
-  rnm(type = variable)
+  rename(type = variable)
 
 exc_data_long |> 
-  sbt(ISO3 %in% am_countries$ISO3) |> 
-  tfm(Border_Ratio = Border_Cost / Border_Time, 
-      Documentary_Ratio = Documentary_Cost / Documentary_Time) |> 
-  gby(variable) |> num_vars() |> fmean()
+  subset(ISO3 %in% am_countries$ISO3) |> 
+  transform(Border_Ratio = Border_Cost / Border_Time, 
+            Documentary_Ratio = Documentary_Cost / Documentary_Time) |> 
+  group_by(variable) |> num_vars() |> fmean()
 
-m3 <- feols(Border_Cost ~ Border_Time + variable, sbt(exc_data_long, ISO3 %in% am_countries$ISO3), vcov = "hetero")
-m4 <- feols(Documentary_Cost ~ Documentary_Time + variable, sbt(exc_data_long, ISO3 %in% am_countries$ISO3), vcov = "hetero")
+m3 <- feols(Border_Cost ~ Border_Time + variable, subset(exc_data_long, ISO3 %in% am_countries$ISO3), vcov = "hetero")
+m4 <- feols(Documentary_Cost ~ Documentary_Time + variable, subset(exc_data_long, ISO3 %in% am_countries$ISO3), vcov = "hetero")
 
 # This is Table 4
 esttable(m1, m2, m3, m4)
@@ -192,46 +194,46 @@ esttex(m1, m2, m3, m4)
 ######################################
 
 tt = SERIES[startsWith(Topic, "24"), Series]
-tt_data = am_data(ctry = NULL, series = tt, from = 2019, to = 2020) |> gby(ISO3) |> flast()
+tt_data = am_data(ctry = NULL, series = tt, from = 2018, to = 2021) |> group_by(ISO3) |> flast()
 
-tt_table = tt_data |> slt(-Date) |> 
+tt_table = tt_data |> select(-Date) |> 
   join(wlddev, on = c("ISO3" = "iso3c")) |> 
-  gby(region) |> gvr("_MRCH_|_MANF_") |> fmean() 
+  group_by(region) |> gvr("_MRCH_|_MANF_") |> fmean() 
 
 tt_table |> namlab()
 
 # By Region (selected)
-tt_table  |> sbt(region %ilike% "Europe|South|Latin|Middle|Sub-") |> 
+tt_table  |> subset(region %ilike% "Europe|South|Latin|Middle|Sub-") |> 
   xtable::xtable(digits = 1) |> print(include.rownames = FALSE)
 
 # By OECD Membership
-tt_data |> slt(-Date) |> 
+tt_data |> select(-Date) |> 
   join(wlddev, on = c("ISO3" = "iso3c")) |> 
-  gby(OECD) |> gvr("_MRCH_|_MANF_") |> fmean() |> 
+  group_by(OECD) |> gvr("_MRCH_|_MANF_") |> fmean() |> 
   xtable::xtable(digits = 1) |> print(include.rownames = FALSE)
 
 # By Income Status
-tt_data |> slt(-Date) |> 
+tt_data |> select(-Date) |> 
   join(wlddev, on = c("ISO3" = "iso3c")) |> 
-  gby(income) |> gvr("_MRCH_|_MANF_") |> fmean() |> 
+  group_by(income) |> gvr("_MRCH_|_MANF_") |> fmean() |> 
   xtable::xtable(digits = 1) |> print(include.rownames = FALSE)
 
 # GDP weighted all Africa Average
-gdp_ppp = am_data(ctry = NULL, series = "NY_GDP_MKTP_PP_CD", from = 2018, to = 2020) |> gby(ISO3) |> flast()
+gdp_ppp = am_data(ctry = NULL, series = "NY_GDP_MKTP_PP_CD", from = 2018, to = 2021) |> group_by(ISO3) |> flast()
 
 tt_data |> 
   join(gdp_ppp, on = "ISO3", drop = TRUE) |> 
-  sbt(ISO3 %in% am_countries$ISO3) |>
-  mtt(Africa = 1L) |> 
-  gby(Africa) |> gvr("_MRCH_|_MANF_|_PP_") |> 
+  subset(ISO3 %in% am_countries$ISO3) |>
+  mutate(Africa = 1L) |> 
+  group_by(Africa) |> gvr("_MRCH_|_MANF_|_PP_") |> 
   fmean(NY_GDP_MKTP_PP_CD, keep.w = FALSE) |> 
   xtable::xtable(digits = 1) |> print(include.rownames = FALSE)
 
 # Plot
 africa_ctry_shp %<>% join(
   tt_data |> 
-    fsubset(order(ISO3, Date), ISO3, Date, TM_TAX_MRCH_WM_AR_ZS) |>
-    fsubset(Date == flast(Date, ISO3, "fill") & ISO3 %in% am_countries$ISO3), 
+    subset(order(ISO3, Date), ISO3, Date, TM_TAX_MRCH_WM_AR_ZS) |>
+    subset(Date == flast(Date, ISO3, "fill") & ISO3 %in% am_countries$ISO3), 
   on = "ISO3"
 )
 
@@ -255,17 +257,17 @@ dev.off()
 NTM_AGG <- qread("data/WIIW_NTM_AGG.qs")
 frange(NTM_AGG$NTM_AGG$year)
 
-NTM_AGG$NTM_AGG |> fsubset(year == flast(year, imp_iso3, "fill") & aff_iso3 == "WTO") |>
-  fgroup_by(Africa = imp_iso3 %in% am_countries$ISO3) |> fselect(N) |> fmean()
+NTM_AGG$NTM_AGG |> subset(year == flast(year, imp_iso3, "fill") & aff_iso3 == "WTO") |>
+  group_by(Africa = imp_iso3 %in% am_countries$ISO3) |> select(N) |> fmean()
 
-NTM_AGG$NTM_AGG |> fsubset(year == flast(year, imp_iso3, "fill") & aff_iso3 == "WTO") |>
-  fgroup_by(Africa = imp_iso3 %in% am_countries$ISO3) |> 
-  fsummarise(.data[topn(N)])
+NTM_AGG$NTM_AGG |> subset(year == flast(year, imp_iso3, "fill") & aff_iso3 == "WTO") |>
+  group_by(Africa = imp_iso3 %in% am_countries$ISO3) |> 
+  summarise(.data[topn(N)])
 
 # Plot
 africa_ctry_shp %<>% join(
   NTM_AGG$NTM_AGG |> 
-    fsubset(year == flast(year, imp_iso3, "fill")) |>
+    subset(year == flast(year, imp_iso3, "fill")) |>
     fcount(imp_iso3, w = N), 
   on = c("ISO3" = "imp_iso3")
 )
