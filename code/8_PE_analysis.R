@@ -9,8 +9,9 @@ source("code/helpers.R")
 fastverse_conflicts()
 
 # All essential objects from previous sections
-# Need only load("data/transport_network/trans_africa_network_param.RData"), the result of 7_get_transport_network.R
-# This is the result of 8_PE_analysis.R, which adds some information to the network and also works as input
+# Need only load("data/transport_network/trans_africa_network.RData"), the result of 7_get_transport_network.R
+# This .RData file with the _param suffix is created at the end of this file and adds a 'parameterized' version 
+# of the network using results computed in this file. It thus also works as input data. 
 load("data/transport_network/trans_africa_network_param.RData")
 
 # Average route efficiency per edge
