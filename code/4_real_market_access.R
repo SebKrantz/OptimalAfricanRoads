@@ -10,7 +10,7 @@ africa_dist <- qread("data/africa_full_distance_matrix_r9_adjusted.qs")
 names(africa_dist)
 
 # Loading Network Efficiency Estimates 
-NE <- qread("data/network_efficiency.qs")
+NE <- qread("results/full_network/network_efficiency.qs")
 
 OUTCOMES <- fread("data/QSE/QSE_model_calibration_data_ctry_min_imp.csv") %>%
             fmutate(total_wealth = IWI * pop_wpop)
@@ -65,7 +65,7 @@ centroids %>%
         legend.key.width = unit(2, "mm"), 
         plot.margin = margin())
 
-ggsave("figures/gdp_per_hour.pdf", width = 6, height = 6)
+ggsave("figures/full_network/gdp_per_hour.pdf", width = 6, height = 6)
 
 # Theta == 3.8 (Jedwab & Storeygard, 2022)
 market_access <- (1/durations^3.8) %*% centroids$GDP_PPP
@@ -90,7 +90,7 @@ centroids %>%
         legend.key.width = unit(2, "mm"), 
         plot.margin = margin())
 
-ggsave("figures/gdp_per_hour_theta_3.8.pdf", width = 6, height = 6)
+ggsave("figures/full_network/gdp_per_hour_theta_3.8.pdf", width = 6, height = 6)
 
 
 # Using Road Distance  -------------------------------
@@ -118,7 +118,7 @@ centroids %>%
         legend.key.width = unit(2, "mm"), 
         plot.margin = margin())
 
-ggsave("figures/gdp_per_km.pdf", width = 6, height = 6)
+ggsave("figures/full_network/gdp_per_km.pdf", width = 6, height = 6)
 
 
 # Theta == 3.8 (Jedwab & Storeygard, 2022)
@@ -144,7 +144,7 @@ centroids %>%
         legend.key.width = unit(2, "mm"), 
         plot.margin = margin())
 
-ggsave("figures/gdp_per_km_theta_3.8.pdf", width = 6, height = 6)
+ggsave("figures/full_network/gdp_per_km_theta_3.8.pdf", width = 6, height = 6)
 
 # # Interactive Plot
 # data <- centroids %>% 
@@ -187,7 +187,7 @@ centroids %>%
         legend.key.width = unit(2, "mm"), 
         plot.margin = margin())
 
-ggsave("figures/wealth_per_hour.pdf", width = 6, height = 6)
+ggsave("figures/full_network/wealth_per_hour.pdf", width = 6, height = 6)
 
 # Theta == 3.8 (Jedwab & Storeygard, 2022)
 market_access <- (1/durations^3.8) %*% centroids$total_wealth
@@ -212,7 +212,7 @@ centroids %>%
         legend.key.width = unit(2, "mm"), 
         plot.margin = margin())
 
-ggsave("figures/wealth_per_hour_theta_3.8.pdf", width = 6, height = 6)
+ggsave("figures/full_network/wealth_per_hour_theta_3.8.pdf", width = 6, height = 6)
 
 
 # Using Road Distance  -------------------------------
@@ -240,7 +240,7 @@ centroids %>%
         legend.key.width = unit(2, "mm"), 
         plot.margin = margin())
 
-ggsave("figures/wealth_per_km.pdf", width = 6, height = 6)
+ggsave("figures/full_network/wealth_per_km.pdf", width = 6, height = 6)
 
 
 # Theta == 3.8 (Jedwab & Storeygard, 2022)
@@ -266,7 +266,7 @@ centroids %>%
         legend.key.width = unit(2, "mm"), 
         plot.margin = margin())
 
-ggsave("figures/wealth_per_km_theta_3.8.pdf", width = 6, height = 6)
+ggsave("figures/full_network/wealth_per_km_theta_3.8.pdf", width = 6, height = 6)
 
 
 
@@ -330,7 +330,7 @@ centroids %>%
         legend.key.width = unit(2, "mm"), 
         plot.margin = margin())
 
-ggsave("figures/gdp_per_hour_btime.pdf", width = 6, height = 6)
+ggsave("figures/full_network/gdp_per_hour_btime.pdf", width = 6, height = 6)
 
 # Theta == 3.8 (Jedwab & Storeygard, 2022)
 market_access <- (1/durations_borders^3.8) %*% centroids$GDP_PPP
@@ -355,7 +355,7 @@ centroids %>%
         legend.key.width = unit(2, "mm"), 
         plot.margin = margin())
 
-ggsave("figures/gdp_per_hour_btime_theta_3.8.pdf", width = 6, height = 6)
+ggsave("figures/full_network/gdp_per_hour_btime_theta_3.8.pdf", width = 6, height = 6)
 
 
 # Using Road Distance  -------------------------------
@@ -383,7 +383,7 @@ centroids %>%
         legend.key.width = unit(2, "mm"), 
         plot.margin = margin())
 
-ggsave("figures/gdp_per_km_bdist.pdf", width = 6, height = 6)
+ggsave("figures/full_network/gdp_per_km_bdist.pdf", width = 6, height = 6)
 
 
 # Theta == 3.8 (Jedwab & Storeygard, 2022)
@@ -409,7 +409,7 @@ centroids %>%
         legend.key.width = unit(2, "mm"), 
         plot.margin = margin())
 
-ggsave("figures/gdp_per_km_bdist_theta_3.8.pdf", width = 6, height = 6)
+ggsave("figures/full_network/gdp_per_km_bdist_theta_3.8.pdf", width = 6, height = 6)
 
 
 ########################################
@@ -442,7 +442,7 @@ centroids %>%
         legend.key.width = unit(2, "mm"), 
         plot.margin = margin())
 
-ggsave("figures/wealth_per_hour_btime.pdf", width = 6, height = 6)
+ggsave("figures/full_network/wealth_per_hour_btime.pdf", width = 6, height = 6)
 
 # Theta == 3.8 (Jedwab & Storeygard, 2022)
 market_access <- (1/durations_borders^3.8) %*% centroids$total_wealth
@@ -467,7 +467,7 @@ centroids %>%
         legend.key.width = unit(2, "mm"), 
         plot.margin = margin())
 
-ggsave("figures/wealth_per_hour_btime_theta_3.8.pdf", width = 6, height = 6)
+ggsave("figures/full_network/wealth_per_hour_btime_theta_3.8.pdf", width = 6, height = 6)
 
 
 # Using Road Distance  -------------------------------
@@ -496,7 +496,7 @@ centroids %>%
         legend.key.width = unit(2, "mm"), 
         plot.margin = margin())
 
-ggsave("figures/wealth_per_km_bdist.pdf", width = 6, height = 6)
+ggsave("figures/full_network/wealth_per_km_bdist.pdf", width = 6, height = 6)
 
 
 # Theta == 3.8 (Jedwab & Storeygard, 2022)
@@ -522,7 +522,7 @@ centroids %>%
         legend.key.width = unit(2, "mm"), 
         plot.margin = margin())
 
-ggsave("figures/wealth_per_km_bdist_theta_3.8.pdf", width = 6, height = 6)
+ggsave("figures/full_network/wealth_per_km_bdist_theta_3.8.pdf", width = 6, height = 6)
 
 
 
@@ -552,7 +552,7 @@ market_access_all_cor <- market_access_all |>
 list(RAW = market_access_all_dt, 
      SUM = market_access_all_sum, 
      COR = market_access_all_cor) |>
-  qsave("data/real_market_access.qs")
+  qsave("results/full_network/real_market_access.qs")
 
 # MA in billions of min or km
 options(scipen = 1000)
@@ -589,7 +589,7 @@ market_access_all_dt |>
         legend.key.width = unit(2, "mm"), 
         plot.margin = margin())
 
-ggsave("figures/gdp_per_km_MA_loss_perc_theta_1.pdf", width = 11, height = 6)
+ggsave("figures/full_network/gdp_per_km_MA_loss_perc_theta_1.pdf", width = 11, height = 6)
 
 
 
