@@ -42,7 +42,7 @@ nodes.population = nodes.population / 1000; % Convert to thousands
 nodes.outflows = nodes.outflows / 1000;     % Adjust in line with population
 summary(nodes);
 
-% Create Infrastructure Matrix: Following Graff (2024)
+% Create Infrastructure Matrix: Following Graff (2024) = average speed in km/h: length of route is accounted for in cost function
 infra_matrix = zeros(n, n);
 for i = 1:height(graph)
     if graph.add(i)
@@ -117,7 +117,7 @@ end
 
 [J, N] = size(productivity);
 
-%% Infrastructure Bounds
+% Infrastructure Bounds
 min_mask = infra_matrix;                        
 max_mask = max(infra_matrix, adj_matrix * 100);   
 
@@ -151,6 +151,7 @@ rho = 0; % inequality aversion: not possible to solve model if enabled (= 2) -> 
 param = init_parameters('Annealing', 'on', 'ADiGator', 'off', 'LaborMobility', 'off', 'CrossGoodCongestion', 'on', ...
                         'a', a, 'sigma', sigma, 'N', N, 'alpha', alpha, 'beta', beta, 'gamma', gamma, 'rho', rho, ...
                         'verbose', 'on', 'K', K, 'TolKappa', 1e-5);
+
 [param, g] = create_graph(param,[],[],'X',nodes.lon,'Y',nodes.lat,'Type','custom','Adjacency',adj_matrix);
 
 param.Lj = population; 
@@ -173,6 +174,9 @@ res_stat = solve_allocation(param, g, infra_matrix, true);
 strcat("Started P_opt on ", datestr(datetime('now')))
 res_opt = optimal_network(param, g, infra_matrix, min_mask, max_mask, false);
 % res_ann = annealing(param,g,res.Ijk,'Il',min_mask,'Iu',max_mask); % Annealing is enabled by default if gamma > beta
+
+% Check: should be 1
+K / sum(sum(res_opt.Ijk .* g.delta_i))
 
 % Plot Network
 plot_graph(param, g, res_opt.Ijk, 'Margin', 0.01);
