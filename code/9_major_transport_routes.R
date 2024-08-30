@@ -191,7 +191,7 @@ for (nname in .c(fastest_routes, all_routes)) {
 
 nname <- "fastest_routes"
 # edges_real <- qread("data/transport_network/edges_real_simplified.qs") 
-nodes <- results[[nname]]$network |> st_as_sf("nodes") 
+nodes <- results[[nname]]$network |> st_as_sf("nodes") |> select(-.tidygraph_node_index)
 edges <- results[[nname]]$network |> st_as_sf("edges") 
 
 # Classification
@@ -217,7 +217,8 @@ settfm(nodes, product = nif(major_city_port & base::match(city_country, largest,
                             default = 1L))          # Town/Node
 table(nodes$product, na.exclude = FALSE)
 setv(nodes$product, whichNA(nodes$product), seq_along(largest) + 5L)
-# fwrite(nodes, sprintf("data/transport_network/largest_pcities/%s_graph_nodes.csv", nname))
+# Need to write this to ensure product classification is available for GE simulation !!!!
+nodes |> atomic_elem() |> qDT() |> fwrite(sprintf("data/transport_network/largest_pcities/%s_graph_nodes.csv", nname))
 attr(nodes$product, "levels") <- c("Small City/Node", "City > 200K", "Port", "City > 2M", "Large Port-City", paste("Megacity", seq_along(largest)))
 class(nodes$product) <- "factor"
 
