@@ -3,7 +3,7 @@
 #####################################################################
 
 library(fastverse)
-set_collapse(mask = c("manip", "helper", "special"), nthreads = 4)
+set_collapse(mask = c("manip", "helper", "special"))
 fastverse_extend(qs, sf, units, sfnetworks, tmap)
 source("code/helpers/helpers.R")
 fastverse_conflicts()
