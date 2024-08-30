@@ -9,7 +9,7 @@
 library(fastverse)
 set_collapse(mask = c("manip", "helper", "special"), nthreads = 4)
 fastverse_extend(qs, sf, s2, units, sfnetworks, stplanr, install = TRUE)
-source("code/helpers.R")
+source("code/helpers/helpers.R")
 fastverse_conflicts()
 
 net <- qread("data/transport_network/old/net_discrete_final.qs")

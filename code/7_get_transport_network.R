@@ -5,7 +5,7 @@
 library(fastverse)
 set_collapse(mask = c("manip", "helper", "special"), nthreads = 4)
 fastverse_extend(qs, sf, s2, units, stplanr, sfnetworks, osrm, tmap, install = TRUE)
-source("code/helpers.R")
+source("code/helpers/helpers.R")
 fastverse_conflicts()
 
 ####################################
@@ -134,7 +134,7 @@ dist_ttime_mats |> qsave("data/transport_network/cities_ports_dist_ttime_mats.qs
 
 # Cleanup
 rm(list = ls())
-source("code/helpers.R")
+source("code/helpers/helpers.R")
 fastverse_conflicts()
 
 ####################################

@@ -101,7 +101,7 @@ osrmTable(loc = nowhere_to_cape_town, measure = c('duration', 'distance'))
 # Load Grid centroids
 calib_data <- qDF(fread("data/QSE/QSE_model_calibration_data.csv"))
 rownames(calib_data) <- calib_data$cell
-source("code/helpers.R")
+source("code/helpers/helpers.R")
 
 # Should be only a few seconds with your own server...
 result <- split_large_dist_matrix(fselect(calib_data, lon, lat), chunk_size = 3000, verbose = TRUE)
@@ -117,7 +117,7 @@ qsave(result, "data/full_network/africa_full_distance_matrix_r9.qs")
 # Load Grid centroids
 calib_data <- qDF(fread("data/QSE/QSE_model_calibration_data.csv"))
 rownames(calib_data) <- calib_data$cell
-source("code/helpers.R")
+source("code/helpers/helpers.R")
 
 # Probably takes at least 1 hour...
 result <- split_large_dist_matrix(fselect(calib_data, lon, lat), chunk_size = 100, verbose = TRUE)

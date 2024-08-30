@@ -5,7 +5,7 @@
 library(fastverse)
 set_collapse(mask = c("manip", "helper", "special"), nthreads = 4)
 fastverse_extend(qs, sf, units, sfnetworks, tmap)
-source("code/helpers.R")
+source("code/helpers/helpers.R")
 fastverse_conflicts()
 
 # All essential objects from previous sections
