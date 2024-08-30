@@ -40,7 +40,6 @@ end
 nodes = readtable('data/transport_network/csv/graph_nodes.csv');
 nodes.population = nodes.population / 1000; % Convert to thousands
 nodes.outflows = nodes.outflows / 1000;     % Adjust in line with population
-% Describe function is not directly available in MATLAB. Instead, you can use summary.
 summary(nodes);
 
 % Create Infrastructure Matrix: Following Graff (2024)
@@ -71,7 +70,6 @@ for i = 1:height(graph)
     infra_building_matrix(graph.from(i), graph.to(i)) = graph.total_cost(i);
     infra_building_matrix(graph.to(i), graph.from(i)) = graph.total_cost(i);
 end
-
 
 % Basic characteristics of the economy
 population = nodes.population;
@@ -129,7 +127,7 @@ K_inv = sum(sum(infra_building_matrix)) / 2;
 infra_building_matrix = infra_building_matrix ./ (max_mask - infra_matrix);
 infra_building_matrix(isinf(infra_building_matrix)) = 0;
 infra_building_matrix(isnan(infra_building_matrix)) = 0;
-K_base = sum(sum(infra_building_matrix .* infra_matrix)) / 2;
+K_base = sum(sum(infra_building_matrix .* infra_matrix)) / 2; % Baseline budget = cost of existing infrastructure
 % Now setting budget
 K = (K_base + 50e3) * 2 % 50 billion USD'15 investment volume (*2 because symmetric)
 
