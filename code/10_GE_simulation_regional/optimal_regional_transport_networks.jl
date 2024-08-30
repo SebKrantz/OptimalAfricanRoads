@@ -133,7 +133,7 @@ g[:delta_i] = infra_building_matrix
 g[:delta_tau] = iceberg_matrix
 
 # Naming conventions: if IRS -> "cgc_irs"; if alpha = 0.1 -> add "_alpha01"; if with_ports = false -> add "_noport"; if frictions -> add "_bc" (border cost)
-filename = "4g_50b_fixed_cgc_sigma15" # adjust if sigma != 1.5
+filename = "4g_50b_fixed_cgc_sigma15_julia" # adjust if sigma != 1.5
 println("File extension: $filename")
 
 # Recommended to use coin HSL linear solvers. See README of OptimalTransportNetworks.jl and Ipopt.jl
