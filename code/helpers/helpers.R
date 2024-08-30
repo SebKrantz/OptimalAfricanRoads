@@ -240,6 +240,18 @@ total_MA <- function(distances, weights) {
   sum(market_access)
 }
 
+perch_to_diff <- function(lev, perch) lev - (lev / (perch / 100 + 1))
+
+# Function to convert km/h to meters/min
+kmh_to_mmin <- function(speed_kmh) speed_kmh * 1000 / 60 
+
+# Function to convert meters/min to km/h
+mmin_to_kmh <- function(speed_mmin) speed_mmin * 60 / 100
+
+# Remove outliers
+clip5perc <- function(x) replace_outliers(x, .quantile(x, c(0.025, 0.975), type = 8L), "clip")
+
+
 # Utility functions for GE model
 
 utility <- function(cj, alpha = 0.7, hj = 1-alpha, rho = 0) {

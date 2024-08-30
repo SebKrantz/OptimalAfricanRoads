@@ -271,8 +271,6 @@ dev.copy(pdf, "figures/transport_network/trans_africa_network_MA_gain_perc_bc.pd
 dev.off()
 
 # Compute Ratios
-perch_to_diff <- function(lev, perch) lev - (lev / (perch / 100 + 1))
-
 settfm(add_links, 
        MA_gain_bc_ratio = perch_to_diff(MA_per_link_bc, MA_gain_perc_bc) / perch_to_diff(MA_per_link, MA_gain_perc), 
        MA_gain_perc_bc_ratio = MA_gain_perc_bc / MA_gain_perc)
@@ -777,11 +775,6 @@ dev.copy(pdf, "figures/transport_network/trans_africa_network_MA_100_min_speed_p
 dev.off()
 
 # Considering the addition of proposed links under 100km/h or 65km/h assumption
-
-# Function to convert km/h to meters/min
-kmh_to_mmin <- function(speed_kmh) speed_kmh * 1000 / 60 
-# Function to convert meters/min to km/h
-mmin_to_kmh <- function(speed_mmin) speed_mmin * 60 / 100
 settfm(add_links, 
        duration_100kmh = distance / kmh_to_mmin(100), 
        duration_65kmh = distance / kmh_to_mmin(65))
@@ -1059,8 +1052,6 @@ descr(with(edges, # subset(edges, upgrade_cat == "Mixed Works"),
            exp(log(64.6e3) - 0.11 * (distance > 50e3) + 0.12 * log(rugg) + 0.085 * log(pop_wpop_km2+1)))) 
 descr(with(edges, # subset(edges, upgrade_cat == "Upgrade"), 
            exp(log(101.6e3) - 0.11 * (distance > 50e3) + 0.12 * log(rugg) + 0.085 * log(pop_wpop_km2+1)))) 
-
-clip5perc <- function(x) replace_outliers(x, .quantile(x, c(0.025, 0.975), type = 8L), "clip")
 
 edges %<>%
   mutate(ug_cost_km = -0.11 * (distance > 50e3) + 0.12 * log(rugg) + 0.085 * log(pop_wpop_km2+1), 
