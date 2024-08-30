@@ -137,7 +137,7 @@ extrema(res_graph.Ijk ./ res_to_vec(infra_matrix, graph))
 @time res_opt = optimal_network(param, g, I0 = infra_matrix_opt, solve_allocation = true, verbose = true)
 
 # File extension 'res_alpha07' means we 'resolved' the problem with alpha = 0.7 (or whatever parameter we changed)
-fileext = "res_alpha07"
+fileext = "res_alpha07_julia"
 println("File extension: $fileext")
 
 # Saving: Nodes
