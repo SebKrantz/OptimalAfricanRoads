@@ -239,3 +239,14 @@ total_MA <- function(distances, weights) {
   market_access <- inv_distance %*% weights
   sum(market_access)
 }
+
+# Utility functions for GE model
+
+utility <- function(cj, alpha = 0.7, hj = 1-alpha, rho = 0) {
+  ((cj / alpha) ^ alpha * (hj / (1-alpha)) ^ (1-alpha)) ^ (1-rho) / (1-rho)
+}
+
+inv_utility <- function(uj, alpha = 0.7, hj = 1-alpha, rho = 0) {
+  ((uj *  (1-rho))^(1/(1-rho)) / (hj / (1-alpha)) ^ (1-alpha))^(1/alpha) * alpha
+}
+
