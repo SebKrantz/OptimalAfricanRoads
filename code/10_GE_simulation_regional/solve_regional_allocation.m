@@ -1,5 +1,5 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% This file loads an optimal infratsructure investment allocation and solves the 
+% This file loads an optimal infrastructure investment allocation and solves the 
 % spatial allocation of goods, trade, and welfare using potentially different 
 % model parameters than used to generate the infrastructure allocation.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
