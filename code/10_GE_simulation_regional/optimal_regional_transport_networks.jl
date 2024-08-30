@@ -1,6 +1,7 @@
 # Please also see performance notes at https://github.com/SebKrantz/OptimalTransportNetworks.jl
 using DataFrames, CSV, LinearAlgebra, Statistics, StatsBase, Plots, NaNStatistics
 using OptimalTransportNetworks
+include("../helpers/helpers.jl")
 
 # Read Undirected Graph
 graph_orig = CSV.read("data/transport_network/csv/graph_orig.csv", DataFrame)
@@ -151,16 +152,6 @@ K / sum(res_opt[:Ijk] .* g[:delta_i])
 # Plot Network
 plot_graph(g, res_opt[:Ijk], height = 800) # , node_sizes = res_opt[:Cj])
 plot_graph(g, res_opt[:Ijk] - infra_matrix, height = 800)
-
-# Save
-function res_to_vec(Ijk, graph)
-    n = size(graph, 1)
-    rv = zeros(n)
-    for i in 1:n
-        rv[i] = (Ijk[graph.from[i], graph.to[i]] + Ijk[graph.to[i], graph.from[i]]) / 2
-    end
-    return rv
-end
 
 # Saving: Nodes
 res_nodes = deepcopy(nodes)
