@@ -8,7 +8,7 @@
 % and set the path to the lib folder here. Possibly also need to add a path to Ipopt if not detected. See docs/User Guide.pdf
 addpath("code/OptimalTransportNetworkToolbox/lib")
 % Read helper functions
-addpath("code/matlab_helpers")
+addpath("code/helpers")
 
 % Read Undirected Graph
 graph_orig = readtable('data/transport_network/csv/graph_orig.csv');
