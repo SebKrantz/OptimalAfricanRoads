@@ -1,6 +1,9 @@
 % Download OptimalTransportNetworkToolbox from https://github.com/SebKrantz/OptimalTransportNetworkToolbox
 % and set the path to the lib folder here. Possibly also need to add a path to Ipopt if not detected. See docs/User Guide.pdf
 addpath("code/OptimalTransportNetworkToolbox/lib")
+% Read helper functions
+addpath("code/matlab_helpers")
+
 % Read Undirected Graph
 graph_orig = readtable('data/transport_network/csv/graph_orig.csv');
 graph_orig.add = false(height(graph_orig), 1);
