@@ -128,7 +128,7 @@ filename = "4g_50b_fixed_cgc_sigma15_alpha01" # adjust if sigma != 1.5
 println("Input file: $filename")
 
 # Read optimal infrastructure investments and generate matrix
-res_graph = CSV.read("results/transport_network/regional/edges_results_$(filename).csv", DataFrame)
+res_graph = CSV.read("results/transport_network/GE/regional/edges_results_$(filename).csv", DataFrame)
 infra_matrix_opt = vec_to_res(n, res_graph.Ijk, graph)
 
 # Check: should be >= 1
@@ -160,7 +160,7 @@ for n in 1:N
    res_nodes[!, Symbol("Yj_$(n)")] = res_opt[:Yjn][:,n]
    res_nodes[!, Symbol("Pj_$(n)")] = res_opt[:Pjn][:,n]
 end
-res_nodes |> CSV.write("results/transport_network/regional/nodes_results_$(filename)_$(fileext).csv")
+res_nodes |> CSV.write("results/transport_network/GE/regional/nodes_results_$(filename)_$(fileext).csv")
 
 # Saving: Graph / Edges
 res_graph = deepcopy(graph)
@@ -169,5 +169,5 @@ res_graph.Ijk = res_to_vec(infra_matrix_opt, graph)
 for n in 1:N
    res_graph[!, Symbol("Qjk_$(n)")] = res_to_vec(res_opt[:Qjkn][:,:,n], graph)
 end
-res_graph |> CSV.write("results/transport_network/regional/edges_results_$(filename)_$(fileext).csv")
+res_graph |> CSV.write("results/transport_network/GE/regional/edges_results_$(filename)_$(fileext).csv")
 

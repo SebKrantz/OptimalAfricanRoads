@@ -203,7 +203,7 @@ for n=1:N
    res_nodes = setfield(res_nodes, ['Yj_', num2str(n)], res_opt.Yjn(:,n));
    res_nodes = setfield(res_nodes, ['Pj_', num2str(n)], res_opt.Pjn(:,n));
 end
-writetable(res_nodes, sprintf('results/transport_network/regional/nodes_results_%s.csv', filename))
+writetable(res_nodes, sprintf('results/transport_network/GE/regional/nodes_results_%s.csv', filename))
 
 % Saving: Graph / Edges
 res_graph = graph;
@@ -212,5 +212,5 @@ res_graph.Ijk = res_to_vec(res_opt.Ijk, graph);
 for n=1:N
    res_graph = setfield(res_graph, ['Qjk_', num2str(n)], res_to_vec(res_opt.Qjkn(:,:,n), graph));
 end
-writetable(res_graph, sprintf('results/transport_network/regional/edges_results_%s.csv', filename));
+writetable(res_graph, sprintf('results/transport_network/GE/regional/edges_results_%s.csv', filename));
 

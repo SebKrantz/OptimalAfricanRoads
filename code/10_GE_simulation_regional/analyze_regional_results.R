@@ -14,8 +14,8 @@ load("data/transport_network/trans_africa_network_param.RData")
 res_name <- "4g_50b_fixed_cgc_sigma15"
 
 results <- list(
-  nodes = fread(sprintf("results/transport_network/regional/nodes_results_%s.csv", res_name)),
-  edges = fread(sprintf("results/transport_network/regional/edges_results_%s.csv", res_name))
+  nodes = fread(sprintf("results/transport_network/GE/regional/nodes_results_%s.csv", res_name)),
+  edges = fread(sprintf("results/transport_network/GE/regional/edges_results_%s.csv", res_name))
 )
 
 results$edges %<>% join(x = rowbind(select(edges, from, to), select(add_links, from, to)), 
@@ -237,8 +237,8 @@ dev.off()
 tmap_options(raster.max.cells = 1e6)
 
 # res_name <- "4g_50b_fixed_cgc_sigma15"
-edges_res <- list(NoFR = fread(sprintf("results/transport_network/regional/edges_results_%s.csv", res_name)),
-                  FR = fread(sprintf("results/transport_network/regional/edges_results_%s_bc.csv", res_name)))
+edges_res <- list(NoFR = fread(sprintf("results/transport_network/GE/regional/edges_results_%s.csv", res_name)),
+                  FR = fread(sprintf("results/transport_network/GE/regional/edges_results_%s_bc.csv", res_name)))
 edges_res %<>% lapply(select, from, to, Ijk, Ijk_orig) %>% 
   rowbind(idcol = "data") %>% 
   mutate(perc_ug = pmin(pmax((Ijk - Ijk_orig)/(100 - Ijk_orig)*100, 0), 100)) %>% 
@@ -268,8 +268,8 @@ dev.off()
 tmap_options(raster.max.cells = 1e7)
 
 # res_name <- "4g_50b_fixed_cgc_sigma15"
-edges_res <- list(NoFR = fread(sprintf("results/transport_network/regional/edges_results_%s.csv", res_name)),
-                  FR = fread(sprintf("results/transport_network/regional/edges_results_%s_bc.csv", res_name)))
+edges_res <- list(NoFR = fread(sprintf("results/transport_network/GE/regional/edges_results_%s.csv", res_name)),
+                  FR = fread(sprintf("results/transport_network/GE/regional/edges_results_%s_bc.csv", res_name)))
 edges_res %<>% lapply(gvr, "^from$|^to$|^Qjk_") # %>% rowbind(idcol = "data")
 edges_res$Ratio <- edges_res$FR %>% tfm(slt(., Qjk_1:Qjk_4) %c/% slt(join(slt(edges_res$FR, from, to), edges_res$NoFR), Qjk_1:Qjk_4) %>% 
                                           replace_outliers(c(0, 100), "clip"))
