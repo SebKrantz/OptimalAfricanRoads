@@ -22,12 +22,11 @@ graph_add.Properties.VariableNames{'duration_100kmh'} = 'duration';
 graph_add.Properties.VariableNames{'cost_km'} = 'cost_per_km';
 
 % Combining
-graph = [graph_orig(:, {'add', 'from', 'to', 'sp_distance', 'distance', 'duration', 'cost_per_km', 'border_dist'}); ...
-         graph_add(:, {'add', 'from', 'to', 'sp_distance', 'distance', 'duration', 'cost_per_km', 'border_dist'})];
+graph = [graph_orig(:, {'add', 'from', 'to', 'distance', 'duration', 'cost_per_km', 'border_dist'}); ...
+         graph_add(:, {'add', 'from', 'to', 'distance', 'duration', 'cost_per_km', 'border_dist'})];
 
 % Adjusting 
 graph.distance = graph.distance / 1000;          % Convert to km
-graph.sp_distance = graph.sp_distance / 1000;    % Convert to km
 graph.border_dist = graph.border_dist / 1000;    % Convert to km
 graph.duration = graph.duration / 60;            % Convert to hours
 graph.cost_per_km = graph.cost_per_km / 1000000; % Convert to millions

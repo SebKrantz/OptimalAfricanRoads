@@ -15,13 +15,12 @@ graph_orig.add .= false
 graph_add = CSV.read("data/transport_network/csv/graph_add.csv", DataFrame)
 graph_add.add .= true
 # Combining
-graph = vcat(select(graph_orig, :add, :from, :to, :sp_distance, :distance, :duration, :ug_cost_km => :cost_per_km, :border_dist), 
-             select(graph_add, :add, :from, :to, :sp_distance, :distance, :duration_100kmh => :duration, :cost_km => :cost_per_km, :border_dist))
+graph = vcat(select(graph_orig, :add, :from, :to, :distance, :duration, :ug_cost_km => :cost_per_km, :border_dist), 
+             select(graph_add, :add, :from, :to, :distance, :duration_100kmh => :duration, :cost_km => :cost_per_km, :border_dist))
 histogram(graph.cost_per_km, bins=100)
 
 # Adjusting 
 graph.distance /= 1000    # Convert to km
-graph.sp_distance /= 1000 # Convert to km
 graph.border_dist /= 1000 # Convert to km
 graph.duration /= 60      # Convert to hours
 graph.cost_per_km /= 1e6  # Convert to millions
