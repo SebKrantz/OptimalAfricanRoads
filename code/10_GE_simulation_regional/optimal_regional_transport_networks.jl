@@ -124,7 +124,7 @@ rho = 0 # inequality aversion: not possible to solve model if enabled (= 2) -> s
 # Initialise geography
 param = init_parameters(annealing = true, labor_mobility = false, cross_good_congestion = true, 
                         a = a, sigma = sigma, N = N, alpha = alpha, beta = beta, gamma = gamma, rho = rho, 
-                        K = K, tol = 1e-5, min_iter = 15, max_iter = 45);
+                        K = K, tol = 1e-5, min_iter = 15, max_iter = 45, verbose = true)
 
 param, g = create_graph(param, type = "custom", x = nodes.lon, y = nodes.lat, adjacency = adj_matrix, 
                         Lj = population, Zjn = productivity, Hj = population .* (1-alpha)); # TG: I normalise this because the general utility function has a (h_j/(1-alpha))^(1-alpha) thing with it
