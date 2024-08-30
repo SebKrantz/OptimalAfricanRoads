@@ -1,5 +1,5 @@
 # Please also see performance notes at https://github.com/SebKrantz/OptimalTransportNetworks.jl
-using DataFrames, CSV, LinearAlgebra, Statistics, StatsBase, Plots, NaNStatistics
+using DataFrames, CSV, LinearAlgebra, Statistics, Plots
 using OptimalTransportNetworks
 include("../helpers/helpers.jl")
 
