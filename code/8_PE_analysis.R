@@ -80,7 +80,7 @@ tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(subset(nodes, population <= 0)) + tm_dots(size = 0.1, fill = "grey70") +
   tm_layout(frame = FALSE) 
 
-dev.copy(pdf, "figures/transport_network/trans_africa_network_NRE_gain_perc.pdf", width = 10, height = 10)
+dev.copy(pdf, "figures/transport_network/PE/trans_africa_network_NRE_gain_perc.pdf", width = 10, height = 10)
 dev.off()
 
 # Gravity weighted versions
@@ -118,7 +118,7 @@ tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(subset(nodes, population <= 0)) + tm_dots(size = 0.1, fill = "grey70") +
   tm_layout(frame = FALSE) 
 
-dev.copy(pdf, "figures/transport_network/trans_africa_network_NRE_wtd_gain_perc.pdf", width = 10, height = 10)
+dev.copy(pdf, "figures/transport_network/PE/trans_africa_network_NRE_wtd_gain_perc.pdf", width = 10, height = 10)
 dev.off()
 
 
@@ -181,7 +181,7 @@ tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(subset(nodes, population <= 0)) + tm_dots(size = 0.1, fill = "grey70") +
   tm_layout(frame = FALSE) 
 
-dev.copy(pdf, "figures/transport_network/trans_africa_network_MA_gain_perc.pdf", width = 10, height = 10)
+dev.copy(pdf, "figures/transport_network/PE/trans_africa_network_MA_gain_perc.pdf", width = 10, height = 10)
 dev.off()
 
 
@@ -267,7 +267,7 @@ tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(subset(nodes, population <= 0)) + tm_dots(size = 0.1, fill = "grey70") +
   tm_layout(frame = FALSE) 
 
-dev.copy(pdf, "figures/transport_network/trans_africa_network_MA_gain_perc_bc.pdf", width = 10, height = 10)
+dev.copy(pdf, "figures/transport_network/PE/trans_africa_network_MA_gain_perc_bc.pdf", width = 10, height = 10)
 dev.off()
 
 # Compute Ratios
@@ -290,7 +290,7 @@ tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(subset(nodes, population <= 0)) + tm_dots(size = 0.1, fill = "grey70") +
   tm_layout(frame = FALSE) 
 
-dev.copy(pdf, "figures/transport_network/trans_africa_network_MA_gain_bc_ratio.pdf", width = 10, height = 10)
+dev.copy(pdf, "figures/transport_network/PE/trans_africa_network_MA_gain_bc_ratio.pdf", width = 10, height = 10)
 dev.off()
 
 
@@ -358,7 +358,7 @@ tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(subset(nodes, population <= 0)) + tm_dots(size = 0.1, fill = "grey70") +
   tm_layout(frame = FALSE) 
 
-dev.copy(pdf, "figures/transport_network/trans_africa_network_MA_gain_perc_bc_opt.pdf", width = 10, height = 10)
+dev.copy(pdf, "figures/transport_network/PE/trans_africa_network_MA_gain_perc_bc_opt.pdf", width = 10, height = 10)
 dev.off()
 
 # Compute Ratios
@@ -381,7 +381,7 @@ tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(subset(nodes, population <= 0)) + tm_dots(size = 0.1, fill = "grey70") +
   tm_layout(frame = FALSE) 
 
-dev.copy(pdf, "figures/transport_network/trans_africa_network_MA_gain_bc_opt_ratio.pdf", width = 10, height = 10)
+dev.copy(pdf, "figures/transport_network/PE/trans_africa_network_MA_gain_bc_opt_ratio.pdf", width = 10, height = 10)
 dev.off()
 
 
@@ -611,7 +611,7 @@ tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(subset(nodes, population <= 0)) + tm_dots(size = 0.1, fill = "grey70") +
   tm_layout(frame = FALSE) 
 
-dev.copy(pdf, "figures/transport_network/trans_africa_network_MA_gain_pusd.pdf", width = 10, height = 10)
+dev.copy(pdf, "figures/transport_network/PE/trans_africa_network_MA_gain_pusd.pdf", width = 10, height = 10)
 dev.off()
 
 # Under Frictions: Static
@@ -630,7 +630,7 @@ tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(subset(nodes, population <= 0)) + tm_dots(size = 0.1, fill = "grey70") +
   tm_layout(frame = FALSE) 
 
-dev.copy(pdf, "figures/transport_network/trans_africa_network_MA_gain_pusd_bc.pdf", width = 10, height = 10)
+dev.copy(pdf, "figures/transport_network/PE/trans_africa_network_MA_gain_pusd_bc.pdf", width = 10, height = 10)
 dev.off()
 
 # Under Frictions: Optimizing Agents
@@ -649,7 +649,7 @@ tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(subset(nodes, population <= 0)) + tm_dots(size = 0.1, fill = "grey70") +
   tm_layout(frame = FALSE) 
 
-dev.copy(pdf, "figures/transport_network/trans_africa_network_MA_gain_pusd_bc_opt.pdf", width = 10, height = 10)
+dev.copy(pdf, "figures/transport_network/PE/trans_africa_network_MA_gain_pusd_bc_opt.pdf", width = 10, height = 10)
 dev.off()
 
 # Consensus Package
@@ -669,7 +669,7 @@ tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(subset(nodes, population <= 0)) + tm_dots(size = 0.1, fill = "grey70") +
   tm_layout(frame = FALSE) 
 
-dev.copy(pdf, "figures/transport_network/trans_africa_network_MA_gain_pusd_cons.pdf", width = 10, height = 10)
+dev.copy(pdf, "figures/transport_network/PE/trans_africa_network_MA_gain_pusd_cons.pdf", width = 10, height = 10)
 dev.off()
 
 # Consensus Gains
@@ -771,7 +771,7 @@ tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(subset(nodes, population <= 0)) + tm_dots(size = 0.1, fill = "grey70") +
   tm_layout(frame = FALSE)
 
-dev.copy(pdf, "figures/transport_network/trans_africa_network_MA_100_min_speed_perc.pdf", width = 10, height = 10)
+dev.copy(pdf, "figures/transport_network/PE/trans_africa_network_MA_100_min_speed_perc.pdf", width = 10, height = 10)
 dev.off()
 
 # Considering the addition of proposed links under 100km/h or 65km/h assumption
@@ -821,7 +821,7 @@ tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(subset(nodes, population <= 0)) + tm_dots(size = 0.1, fill = "grey70") +
   tm_layout(frame = FALSE) 
 
-dev.copy(pdf, "figures/transport_network/trans_africa_network_MA_per_link_100kmh_perc.pdf", width = 10, height = 10)
+dev.copy(pdf, "figures/transport_network/PE/trans_africa_network_MA_per_link_100kmh_perc.pdf", width = 10, height = 10)
 dev.off()
 
 # Improved network
@@ -850,7 +850,7 @@ tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(subset(nodes, population <= 0)) + tm_dots(size = 0.1, fill = "grey70") +
   tm_layout(frame = FALSE) 
 
-dev.copy(pdf, "figures/transport_network/trans_africa_network_MA_per_link_100kmh_imp_perc.pdf", width = 10, height = 10)
+dev.copy(pdf, "figures/transport_network/PE/trans_africa_network_MA_per_link_100kmh_imp_perc.pdf", width = 10, height = 10)
 dev.off()
 
 # Compute Ratios
@@ -874,7 +874,7 @@ tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(subset(nodes, population <= 0)) + tm_dots(size = 0.1, fill = "grey70") +
   tm_layout(frame = FALSE)
 
-dev.copy(pdf, "figures/transport_network/trans_africa_network_MA_per_link_100kmh_ratio.pdf", width = 10, height = 10)
+dev.copy(pdf, "figures/transport_network/PE/trans_africa_network_MA_per_link_100kmh_ratio.pdf", width = 10, height = 10)
 dev.off()
 
 # Excursus: Check overlap with consensus extension
@@ -922,7 +922,7 @@ tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(subset(nodes, population <= 0)) + tm_dots(size = 0.1, fill = "grey70") +
   tm_layout(frame = FALSE)
 
-dev.copy(pdf, "figures/transport_network/trans_africa_network_MA_100_min_speed_bt_perc.pdf", width = 10, height = 10)
+dev.copy(pdf, "figures/transport_network/PE/trans_africa_network_MA_100_min_speed_bt_perc.pdf", width = 10, height = 10)
 dev.off()
 
 
@@ -944,7 +944,7 @@ tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(subset(nodes, population <= 0)) + tm_dots(size = 0.1, fill = "grey70") +
   tm_layout(frame = FALSE)
 
-dev.copy(pdf, "figures/transport_network/trans_africa_network_MA_100_min_speed_bt_ratio.pdf", width = 10, height = 10)
+dev.copy(pdf, "figures/transport_network/PE/trans_africa_network_MA_100_min_speed_bt_ratio.pdf", width = 10, height = 10)
 dev.off()
 
 
@@ -996,7 +996,7 @@ tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(subset(nodes, population <= 0)) + tm_dots(size = 0.1, fill = "grey70") +
   tm_layout(frame = FALSE)
 
-dev.copy(pdf, "figures/transport_network/trans_africa_network_MA_100_min_speed_bt_opt_perc.pdf", width = 10, height = 10)
+dev.copy(pdf, "figures/transport_network/PE/trans_africa_network_MA_100_min_speed_bt_opt_perc.pdf", width = 10, height = 10)
 dev.off()
 
 
@@ -1018,7 +1018,7 @@ tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(subset(nodes, population <= 0)) + tm_dots(size = 0.1, fill = "grey70") +
   tm_layout(frame = FALSE)
 
-dev.copy(pdf, "figures/transport_network/trans_africa_network_MA_100_min_speed_bt_opt_ratio.pdf", width = 10, height = 10)
+dev.copy(pdf, "figures/transport_network/PE/trans_africa_network_MA_100_min_speed_bt_opt_ratio.pdf", width = 10, height = 10)
 dev.off()
 
 
@@ -1111,7 +1111,7 @@ tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(subset(nodes, population <= 0)) + tm_dots(size = 0.1, fill = "grey70") +
   tm_layout(frame = FALSE)
 
-dev.copy(pdf, "figures/transport_network/trans_africa_network_MA_gain_100_min_speed_pusd.pdf", width = 10, height = 10)
+dev.copy(pdf, "figures/transport_network/PE/trans_africa_network_MA_gain_100_min_speed_pusd.pdf", width = 10, height = 10)
 dev.off()
 
 # Under Frictions: Static
@@ -1130,7 +1130,7 @@ tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(subset(nodes, population <= 0)) + tm_dots(size = 0.1, fill = "grey70") +
   tm_layout(frame = FALSE)
 
-dev.copy(pdf, "figures/transport_network/trans_africa_network_MA_gain_100_min_speed_pusd_bt.pdf", width = 10, height = 10)
+dev.copy(pdf, "figures/transport_network/PE/trans_africa_network_MA_gain_100_min_speed_pusd_bt.pdf", width = 10, height = 10)
 dev.off()
 
 # Under Frictions: Optimizing Agents
@@ -1149,7 +1149,7 @@ tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(subset(nodes, population <= 0)) + tm_dots(size = 0.1, fill = "grey70") +
   tm_layout(frame = FALSE)
 
-dev.copy(pdf, "figures/transport_network/trans_africa_network_MA_gain_100_min_speed_pusd_bt_opt.pdf", width = 10, height = 10)
+dev.copy(pdf, "figures/transport_network/PE/trans_africa_network_MA_gain_100_min_speed_pusd_bt_opt.pdf", width = 10, height = 10)
 dev.off()
 
 # Consensus Package
@@ -1169,7 +1169,7 @@ tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(subset(nodes, population <= 0)) + tm_dots(size = 0.1, fill = "grey70") +
   tm_layout(frame = FALSE)
 
-dev.copy(pdf, "figures/transport_network/trans_africa_network_MA_gain_100_min_speed_pusd_cons.pdf", width = 10, height = 10)
+dev.copy(pdf, "figures/transport_network/PE/trans_africa_network_MA_gain_100_min_speed_pusd_cons.pdf", width = 10, height = 10)
 dev.off()
 
 # Consensus Gains
@@ -1284,7 +1284,7 @@ for (v in .c(pusd, pusd_bt, pusd_bt_opt)) {
     tm_shape(subset(nodes, population <= 0)) + tm_dots(size = 0.1, fill = "grey70") +
     tm_layout(frame = FALSE)
   print(pl)
-  dev.copy(pdf, sprintf("figures/transport_network/trans_africa_network_MA_gain_all_100kmh_%s.pdf", v), 
+  dev.copy(pdf, sprintf("figures/transport_network/PE/trans_africa_network_MA_gain_all_100kmh_%s.pdf", v), 
           width = 10, height = 10)
   dev.off()
 }; rm(v)
@@ -1309,7 +1309,7 @@ pl <- tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_layout(frame = FALSE) 
 print(pl)
 
-dev.copy(pdf, sprintf("figures/transport_network/trans_africa_network_MA_gain_all_100kmh_pusd_cons_MAg%d.pdf", i), width = 10, height = 10)
+dev.copy(pdf, sprintf("figures/transport_network/PE/trans_africa_network_MA_gain_all_100kmh_pusd_cons_MAg%d.pdf", i), width = 10, height = 10)
 dev.off()
 
 # Consensus Gains
