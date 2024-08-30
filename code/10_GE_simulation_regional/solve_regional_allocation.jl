@@ -4,7 +4,7 @@
 # model parameters than used to generate the infrastructure allocation.
 ##################################################################################
 
-using DataFrames, CSV, LinearAlgebra, Statistics, StatsBase, Plots, NaNStatistics
+using DataFrames, CSV, LinearAlgebra, Statistics, Plots
 using OptimalTransportNetworks
 include("../helpers/helpers.jl")
 
@@ -109,11 +109,10 @@ rho = 0 # inequality aversion: not possible to solve model if enabled (= 2) -> s
 
 # Initialise geography
 param = init_parameters(annealing = false, labor_mobility = false, cross_good_congestion = true, 
-                        a = a, sigma = sigma, N = N, alpha = alpha, beta = beta, gamma = gamma, rho = rho, 
-                        K = K, tol = 1e-5, min_iter = 15, max_iter = 45, verbose = true);
+                        a = a, sigma = sigma, N = N, alpha = alpha, beta = beta, gamma = gamma, rho = rho)
 
 param, g = create_graph(param, type = "custom", x = nodes.lon, y = nodes.lat, adjacency = adj_matrix, 
-                        Lj = population, Zjn = productivity, Hj = population .* (1-alpha)); # TG: I normalise this because the general utility function has a (h_j/(1-alpha))^(1-alpha) thing with it
+                        Lj = population, Zjn = productivity, Hj = population .* (1-alpha)) # TG: I normalise this because the general utility function has a (h_j/(1-alpha))^(1-alpha) thing with it
 
 g[:delta_i] = infra_building_matrix
 g[:delta_tau] = iceberg_matrix
@@ -129,14 +128,14 @@ filename = "4g_50b_fixed_cgc_sigma15_alpha01" # adjust if sigma != 1.5
 println("Input file: $filename")
 
 # Read optimal infrastructure investments and generate matrix
-res_graph = CSV.read("results/transport_network/regional/edges_results_$filename.csv", DataFrame)
+res_graph = CSV.read("results/transport_network/regional/edges_results_$(filename).csv", DataFrame)
 infra_matrix_opt = vec_to_res(n, res_graph.Ijk, graph)
 
 # Check: should be >= 1
 extrema(res_graph.Ijk ./ res_to_vec(infra_matrix, graph))
 
 # Solve allocation from optimal infrastructure investments
-@time res_opt = optimal_network(param, g, I0 = infra_matrix_opt, solve_allocation = true, verbose = false)
+@time res_opt = optimal_network(param, g, I0 = infra_matrix_opt, solve_allocation = true, verbose = true)
 
 # File extension 'res_alpha07' means we 'resolved' the problem with alpha = 0.7 (or whatever parameter we changed)
 fileext = "res_alpha07"
