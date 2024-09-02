@@ -4,7 +4,7 @@ using OptimalTransportNetworks
 include("../helpers/helpers.jl")
 
 # Read Undirected Graph
-graph = CSV.read("data/transport_network/largest_pcities/fastest_routes_graph_edges.csv", DataFrame)
+graph = CSV.read("data/transport_network/trans_african/fastest_routes_graph_edges.csv", DataFrame)
 histogram(graph.ug_cost, bins=100)
 # Adjusting 
 graph.distance /= 1000    # Convert to km
@@ -21,7 +21,7 @@ for i in 1:size(graph, 1)
 end
 
 # Read Nodes Data
-nodes = CSV.read("data/transport_network/largest_pcities/fastest_routes_graph_nodes.csv", DataFrame)
+nodes = CSV.read("data/transport_network/trans_african/fastest_routes_graph_nodes.csv", DataFrame)
 nodes.population /= 1000 # Convert to thousands
 nodes.outflows /= 1000   # Adjust in line with population
 describe(nodes)
@@ -150,7 +150,7 @@ for n in 1:N
    res_nodes[Symbol("Yj_$(n)")] = res_opt[:Yjn][:,n]
    res_nodes[Symbol("Pj_$(n)")] = res_opt[:Pjn][:,n]
 end
-res_nodes |> CSV.write("results/transport_network/GE/largest_pcities/nodes_results_$(filename).csv")
+res_nodes |> CSV.write("results/transport_network/GE/trans_african/nodes_results_$(filename).csv")
 
 # Saving: Graph / Edges
 res_graph = deepcopy(graph)
@@ -159,7 +159,7 @@ res_graph.Ijk = res_to_vec(res_opt[:Ijk], graph)
 for n in 1:N
     res_graph[!, Symbol("Qjk_$(n)")] = res_to_vec(res_opt[:Qjkn][:,:,n], graph)
 end
-res_graph |> CSV.write("results/transport_network/GE/largest_pcities/edges_results_$(filename).csv")
+res_graph |> CSV.write("results/transport_network/GE/trans_african/edges_results_$(filename).csv")
 
 
 

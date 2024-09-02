@@ -5,7 +5,7 @@ addpath('code/OptimalTransportNetworkToolbox/lib');
 addpath('code/helpers');
 
 % Read Undirected Graph
-graph = readtable("data/transport_network/largest_pcities/fastest_routes_graph_edges.csv");
+graph = readtable("data/transport_network/trans_african/fastest_routes_graph_edges.csv");
 % histogram(graph.ug_cost, 'BinWidth', 100);
 % Adjusting 
 graph.distance = graph.distance / 1000;       % Convert to km
@@ -23,7 +23,7 @@ for i = 1:height(graph)
 end
 
 % Read Nodes Data
-nodes = readtable("data/transport_network/largest_pcities/fastest_routes_graph_nodes.csv");
+nodes = readtable("data/transport_network/trans_african/fastest_routes_graph_nodes.csv");
 nodes.population = nodes.population / 1000; % Convert to thousands
 nodes.outflows = nodes.outflows / 1000;     % Adjust in line with population
 summary(nodes);
@@ -158,7 +158,7 @@ for n = 1:N
    res_nodes = setfield(res_nodes, ['Yj_', num2str(n)], res_opt.Yjn(:,n));
    res_nodes = setfield(res_nodes, ['Pj_', num2str(n)], res_opt.Pjn(:,n));
 end
-writetable(res_nodes, sprintf('results/transport_network/GE/largest_pcities/nodes_results_%s.csv', filename));
+writetable(res_nodes, sprintf('results/transport_network/GE/trans_african/nodes_results_%s.csv', filename));
 
 % Saving: Graph / Edges
 res_graph = graph;
@@ -167,4 +167,4 @@ res_graph.Ijk = res_to_vec(res_opt.Ijk, graph);
 for n = 1:N
     res_graph = setfield(res_graph, ['Qjk_', num2str(n)], res_to_vec(res_opt.Qjkn(:,:,n), graph));
 end
-writetable(res_graph, sprintf('results/transport_network/GE/largest_pcities/edges_results_%s.csv', filename));
+writetable(res_graph, sprintf('results/transport_network/GE/trans_african/edges_results_%s.csv', filename));

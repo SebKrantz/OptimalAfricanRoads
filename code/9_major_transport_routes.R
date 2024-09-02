@@ -171,20 +171,20 @@ net_main_routes %<>% activate("nodes") %>% dplyr::mutate(qDF(atomic_elem(nodes_s
 # Combining results
 results$all_routes <- c(large_city_paths, list(network = net_main_routes))
 
-qsave(results, "data/transport_network/largest_pcities/trans_africa_network_47_largest.qs")
+qsave(results, "data/transport_network/trans_african/trans_africa_network_47_largest.qs")
 
 # Now saving as CSV ---------------------
 
-results <- qread("data/transport_network/largest_pcities/trans_africa_network_47_largest.qs")
+results <- qread("data/transport_network/trans_african/trans_africa_network_47_largest.qs")
 
 for (nname in .c(fastest_routes, all_routes)) {
   
   results[[nname]]$network %>% st_as_sf("nodes") %>% atomic_elem() %>% qDT() %>% 
     select(-.tidygraph_node_index) %>% 
-    fwrite(sprintf("data/transport_network/largest_pcities/%s_graph_nodes.csv", nname))
+    fwrite(sprintf("data/transport_network/trans_african/%s_graph_nodes.csv", nname))
   
   results[[nname]]$network %>% st_as_sf("edges") %>% atomic_elem() %>% qDT() %>% 
-    fwrite(sprintf("data/transport_network/largest_pcities/%s_graph_edges.csv", nname))
+    fwrite(sprintf("data/transport_network/trans_african/%s_graph_edges.csv", nname))
 }
 
 # Plotting --------------------------------
@@ -199,7 +199,7 @@ settfm(edges, speed_kmh = (distance / 1000) / (duration / 60))
 # settfm(edges_real, speed_kmh = (edges_param$distance/1000)/(edges_param$duration/60))
 # edges_real %<>% subset(results$fastest_routes$edges)
 
-# nodes <- fread(sprintf("data/transport_network/largest_pcities/%s_graph_nodes.csv", nname))
+# nodes <- fread(sprintf("data/transport_network/trans_african/%s_graph_nodes.csv", nname))
 settfm(nodes, major_city_port = population > 2e6 | outflows > 1e6)
 sum(nodes$major_city_port)
 largest <- c("Dakar - Senegal", "Casablanca - Morocco", "Abidjan - Cote d'Ivoire", 
@@ -218,7 +218,7 @@ settfm(nodes, product = nif(major_city_port & base::match(city_country, largest,
 table(nodes$product, na.exclude = FALSE)
 setv(nodes$product, whichNA(nodes$product), seq_along(largest) + 5L)
 # Need to write this to ensure product classification is available for GE simulation !!!!
-nodes |> atomic_elem() |> qDT() |> fwrite(sprintf("data/transport_network/largest_pcities/%s_graph_nodes.csv", nname))
+nodes |> atomic_elem() |> qDT() |> fwrite(sprintf("data/transport_network/trans_african/%s_graph_nodes.csv", nname))
 attr(nodes$product, "levels") <- c("Small City/Node", "City > 200K", "Port", "City > 2M", "Large Port-City", paste("Megacity", seq_along(largest)))
 class(nodes$product) <- "factor"
 
