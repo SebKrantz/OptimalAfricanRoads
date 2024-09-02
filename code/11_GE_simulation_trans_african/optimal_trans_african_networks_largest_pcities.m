@@ -4,6 +4,9 @@ addpath('code/OptimalTransportNetworkToolbox/lib');
 % Read helper functions
 addpath('code/helpers');
 
+% NOTE: can use fastest_routes or all_routes (incl. shortest routes -> larger graph)
+% With all_routes, need to set beta = 1 and CrossGoodCongestion 'off' to use efficient dual solution
+
 % Read Undirected Graph
 graph = readtable("data/transport_network/trans_african/fastest_routes_graph_edges.csv");
 % histogram(graph.ug_cost, 'BinWidth', 100);
