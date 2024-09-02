@@ -103,11 +103,11 @@ a = 1; % F&S: 1; TG: 0.7; Returns to scale to labor in production function Zn * 
 rho = 0; % 2 % inequality aversion
 
 % Initialise geography
-param = init_parameters('Annealing', 'on', 'LaborMobility', 'off', 'CrossGoodCongestion', 'on', ...
+param = init_parameters('Annealing', 'on', 'ADiGator', 'off', 'LaborMobility', 'off', 'CrossGoodCongestion', 'on', ...
                         'a', a, 'sigma', sigma, 'N', N, 'alpha', alpha, 'beta', beta, 'gamma', gamma, 'rho', rho, ...
                         'verbose', 'on', 'K', K, 'TolKappa', 1e-5);
 
-[param, g] = create_graph(param, 'Type', 'custom', 'X', nodes.lon, 'Y', nodes.lat, 'Adjacency', adj_matrix); 
+[param, g] = create_graph(param,[],[],'X',nodes.lon,'Y',nodes.lat,'Type','custom','Adjacency',adj_matrix); 
 
 param.Lj = population; 
 param.Zjn = productivity;
