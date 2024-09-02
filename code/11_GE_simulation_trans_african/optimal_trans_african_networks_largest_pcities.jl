@@ -42,7 +42,7 @@ for i in 1:size(graph, 1)
 end
 iceberg_matrix[iceberg_matrix .< 0] .= 0
 
-# From Collier et al. (2016):
+# Create Infrastructure Building Cost Matrix: Following Graff (2024)
 infra_building_matrix = zeros(n, n)
 for i in 1:size(graph, 1)
     infra_building_matrix[graph.from[i], graph.to[i]] = infra_building_matrix[graph.to[i], graph.from[i]] = graph.total_cost[i]
@@ -64,7 +64,7 @@ for i in 1:n
     end
 end
 extrema(productivity)
-all(sum(productivity .> 0, dims = 2) .== 1) # Check armington assumption
+all(sum(productivity .> 0, dims = 2) .== 1) # Check for Armington parameterization
 
 J, N = size(productivity)
 
