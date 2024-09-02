@@ -10,7 +10,7 @@ fastverse_conflicts()
 
 net <- "fastest_routes" # Or 'all_routes' to also include shortest routes
 dir <- "trans_african"  # Or 'trans_african_add' to get shortest routes results  
-res_name <- "22g_10b_fixed_cgc_sigma3.8_rho0_julia" 
+res_name <- "22g_10b_fixed_cgc_sigma3.8_rho0_julia" # '22g_add_10b_fixed_duality_sigma3'
 
 results <- list(
   nodes = fread(sprintf("results/transport_network/GE/%s/nodes_results_%s.csv", dir, res_name)),
@@ -98,7 +98,7 @@ qDF(results$nodes) |> mutate(ugain = uj / uj_orig) |>
 results$nodes |> with(sum(Cj) / sum(Cj_orig)) # Global
 results$nodes |> with(descr(Cj / Cj_orig))    # Local
 
-# Consumption Percent by City Type
+# Consumption Percent by City Type: May need to change Dj -> Cj if cgc is off (all_routes/dual solutions)
 # Overall
 qDT(results$nodes) |> group_by(product) |> gvr("^Dj_") |> select(-Dj_orig) |> fsum() |> 
   tfmv(-1, fsum, TRA = "%", apply = FALSE) |> qM(1) %>% {set_names(diag(.), rownames(.))}
