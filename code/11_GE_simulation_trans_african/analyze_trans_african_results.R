@@ -8,15 +8,17 @@ fastverse_extend(qs, sf, units, sfnetworks, tmap)
 source("code/helpers/helpers.R")
 fastverse_conflicts()
 
+net <- "fastest_routes" # Or 'all_routes' to also include shortest routes
+dir <- "trans_african"  # Or 'trans_african_add' to get shortest routes results  
 res_name <- "22g_10b_fixed_cgc_sigma3.8_rho0_julia" 
 
 results <- list(
-  nodes = fread(sprintf("results/transport_network/GE/trans_african/nodes_results_%s.csv", res_name)),
-  edges = fread(sprintf("results/transport_network/GE/trans_african/edges_results_%s.csv", res_name))
+  nodes = fread(sprintf("results/transport_network/GE/%s/nodes_results_%s.csv", dir, res_name)),
+  edges = fread(sprintf("results/transport_network/GE/%s/edges_results_%s.csv", dir, res_name))
 )
 
 network <- qread("data/transport_network/trans_african/trans_africa_network_47_largest.qs") |> 
-           extract2("fastest_routes") |> extract2("network") # "all_routes"
+           extract2(net) |> extract2("network") 
 nodes <- network |> st_as_sf("nodes")
 edges <- network |> st_as_sf("edges")
 
@@ -118,7 +120,7 @@ results$nodes %<>% mutate(prod2 = set_attr(product, "levels", gsub("/Node|Large 
 tmap_options(raster.max.cells = 1e6)
 
 # Final Network
-pdf(sprintf("figures/transport_network/GE/trans_african/trans_africa_network_GE_%s.pdf", res_name), width = 8, height = 8.3)
+pdf(sprintf("figures/transport_network/GE/%s/trans_africa_network_GE_%s.pdf", dir, res_name), width = 8, height = 8.3)
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(results$edges) +
   tm_lines(col = "Ijk", 
@@ -135,7 +137,7 @@ tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
 dev.off()
 
 # Difference (Intensive Margin)
-pdf(sprintf("figures/transport_network/GE/trans_african/trans_africa_network_GE_%s_diff.pdf", res_name), width = 8, height = 8.3)
+pdf(sprintf("figures/transport_network/GE/%s/trans_africa_network_GE_%s_diff.pdf", dir, res_name), width = 8, height = 8.3)
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(mutate(results$edges, diff = pmin(pmax(Ijk - Ijk_orig, 0), 100))) +
   tm_lines(col = "diff", 
@@ -152,7 +154,7 @@ tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
 dev.off()
 
 # Upgrade Percent (Extensive Margin)
-pdf(sprintf("figures/transport_network/GE/trans_african/trans_africa_network_GE_%s_perc_ug.pdf", res_name), width = 8, height = 8.3)
+pdf(sprintf("figures/transport_network/GE/%s/trans_africa_network_GE_%s_perc_ug.pdf", dir, res_name), width = 8, height = 8.3)
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(mutate(results$edges, perc_ug = pmin(pmax((Ijk - Ijk_orig)/(100 - Ijk_orig)*100, 0), 100))) +
   tm_lines(col = "perc_ug", 
@@ -169,7 +171,7 @@ tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
 dev.off()
 
 # Local Welfare (Utility Per Worker) Gains
-pdf(sprintf("figures/transport_network/GE/trans_african/trans_africa_network_GE_%s_upw_gain.pdf", res_name), width = 8, height = 8)
+pdf(sprintf("figures/transport_network/GE/%s/trans_africa_network_GE_%s_upw_gain.pdf", dir, res_name), width = 8, height = 8)
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(mutate(results$nodes, ugain = (uj / uj_orig - 1) * 100) |>
              st_as_sf(coords = .c(lon, lat), crs = 4326)) +
@@ -186,7 +188,7 @@ dev.off()
 tmap_options(raster.max.cells = 1e7)
 
 # Flow of Goods: All Cities
-pdf(sprintf("figures/transport_network/GE/trans_african/trans_africa_network_GE_%s_good_flows.pdf", res_name), width = 10, height = 12)
+pdf(sprintf("figures/transport_network/GE/%s/trans_africa_network_GE_%s_good_flows.pdf", dir, res_name), width = 10, height = 12)
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
 tm_shape(results$edges |> gvr("Qjk_") |> pivot("geometry") |> 
            mutate(variable = set_attr(variable, "levels", stringi::stri_trans_general(levels(results$nodes$product), "latin-ascii")))) +
@@ -201,7 +203,7 @@ tm_shape(results$edges |> gvr("Qjk_") |> pivot("geometry") |>
 dev.off()
 
 # Flow of Goods: 4 Cities
-pdf(sprintf("figures/transport_network/GE/trans_african/trans_africa_network_GE_%s_good_flows_4_city.pdf", res_name), width = 5, height = 5)
+pdf(sprintf("figures/transport_network/GE/%s/trans_africa_network_GE_%s_good_flows_4_city.pdf", dir, res_name), width = 5, height = 5)
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(results$edges |> gvr("Qjk_") |> pivot("geometry") |> 
              mutate(variable = set_attr(variable, "levels", sub(" (Kinshasa)", "", stringi::stri_trans_general(levels(results$nodes$product), "latin-ascii"), fixed = TRUE))) |>
@@ -222,8 +224,8 @@ dev.off()
 tmap_options(raster.max.cells = 1e6)
 
 # res_name <- "22g_10b_fixed_cgc_sigma3.8_rho0_julia"
-edges_res <- list(NoFR = fread(sprintf("results/transport_network/GE/trans_african/edges_results_%s.csv", res_name)),
-                  FR = fread(sprintf("results/transport_network/GE/trans_african/edges_results_%s.csv", sub("_julia", "_bc_julia", res_name))))
+edges_res <- list(NoFR = fread(sprintf("results/transport_network/GE/%s/edges_results_%s.csv", dir, res_name)),
+                  FR = fread(sprintf("results/transport_network/GE/%s/edges_results_%s.csv", dir, sub("_julia", "_bc_julia", res_name))))
 edges_res %<>% lapply(select, from, to, Ijk, Ijk_orig) %>% 
   rowbind(idcol = "data") %>% 
   mutate(perc_ug = pmin(pmax((Ijk - Ijk_orig)/(100 - Ijk_orig)*100, 0), 100)) %>% 
@@ -234,7 +236,7 @@ edges_res %<>% join(x = edges, on = c("from", "to"))
 descr(edges_res$perc_ug_diff)
 
 # Different in % Upgraded (Extensive Margin)
-pdf(sprintf("figures/transport_network/GE/trans_african/trans_africa_network_GE_%s_Ijk_bc_perc_ug_diff.pdf", res_name), width = 8, height = 8)
+pdf(sprintf("figures/transport_network/GE/%s/trans_africa_network_GE_%s_Ijk_bc_perc_ug_diff.pdf", dir, res_name), width = 8, height = 8)
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(edges_res) +
   tm_lines(col = "perc_ug_diff", 
@@ -253,8 +255,8 @@ dev.off()
 tmap_options(raster.max.cells = 1e7)
 
 # res_name <- "22g_10b_fixed_cgc_sigma3.8_rho0_julia"
-edges_res <- list(NoFR = fread(sprintf("results/transport_network/GE/trans_african/edges_results_%s.csv", res_name)),
-                  FR = fread(sprintf("results/transport_network/GE/trans_african/edges_results_%s.csv", sub("_julia", "_bc_julia", res_name))))
+edges_res <- list(NoFR = fread(sprintf("results/transport_network/GE/%s/edges_results_%s.csv", dir, res_name)),
+                  FR = fread(sprintf("results/transport_network/GE/%s/edges_results_%s.csv", dir, sub("_julia", "_bc_julia", res_name))))
 edges_res %<>% lapply(gvr, "^from$|^to$|^Qjk_") # %>% rowbind(idcol = "data")
 edges_res$Ratio <- edges_res$FR %>% tfm(slt(., Qjk_1:Qjk_22) %c/% slt(join(slt(edges_res$FR, from, to), edges_res$NoFR), Qjk_1:Qjk_22) %>% 
                                           replace_outliers(c(0, 100), "clip"))
@@ -263,7 +265,7 @@ edges_res %<>% lapply(join, x = edges, on = c("from", "to"))
 descr(atomic_elem(edges_res$Ratio))
 edges_res %>% lapply(. %>% atomic_elem() %>% num_vars() %>% fsum())
 
-pdf(sprintf("figures/transport_network/GE/trans_african/trans_africa_network_GE_%s_good_flows_bc_ratio.pdf", res_name), width = 10, height = 10)
+pdf(sprintf("figures/transport_network/GE/%s/trans_africa_network_GE_%s_good_flows_bc_ratio.pdf", dir, res_name), width = 10, height = 10)
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(edges_res$Ratio |> gvr("Qjk_") |> pivot("geometry") |> 
            mutate(variable = set_attr(variable, "levels", stringi::stri_trans_general(levels(results$nodes$product), "latin-ascii"))) |> na_omit()) +
