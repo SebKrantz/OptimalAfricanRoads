@@ -11,12 +11,12 @@ fastverse_conflicts()
 res_name <- "22g_10b_fixed_cgc_sigma3.8_rho0_julia" 
 
 results <- list(
-  nodes = fread(sprintf("results/transport_network/GE/largest_pcities/standard/nodes_results_%s.csv", res_name)),
-  edges = fread(sprintf("results/transport_network/GE/largest_pcities/standard/edges_results_%s.csv", res_name))
+  nodes = fread(sprintf("results/transport_network/GE/largest_pcities/nodes_results_%s.csv", res_name)),
+  edges = fread(sprintf("results/transport_network/GE/largest_pcities/edges_results_%s.csv", res_name))
 )
 
 network <- qread("data/transport_network/largest_pcities/trans_africa_network_47_largest.qs") |> 
-           extract2("all_routes") |> extract2("network") 
+           extract2("fastest_routes") |> extract2("network") # "all_routes"
 nodes <- network |> st_as_sf("nodes")
 edges <- network |> st_as_sf("edges")
 
@@ -89,7 +89,7 @@ results$nodes |> with(sum(uj * Lj) / sum(uj_orig * Lj_orig))
 # Local Welfare Gains (Ratio)
 results$nodes |> with(descr(uj / uj_orig))
 # Correlates of Local Welfare Gains (Ratio)
-results$nodes |> mutate(ugain = uj / uj_orig) |>
+qDF(results$nodes) |> mutate(ugain = uj / uj_orig) |>
   select(ugain, population, gdp_cap, IWI, gdp, wealth) |> pwcor()
 
 # Consumption Gains
@@ -98,15 +98,16 @@ results$nodes |> with(descr(Cj / Cj_orig))    # Local
 
 # Consumption Percent by City Type
 # Overall
-results$nodes |> group_by(type) |> gvr("Dj_") |> select(-Dj_orig) |> fsum() |> 
-  subset(type > 0) |> tfmv(-1, fsum, TRA = "%", apply = FALSE)
+qDT(results$nodes) |> group_by(product) |> gvr("^Dj_") |> select(-Dj_orig) |> fsum() |> 
+  tfmv(-1, fsum, TRA = "%", apply = FALSE) |> qM(1) %>% {set_names(diag(.), rownames(.))}
 # At the city level + median aggregation 
-results$nodes |> group_by(type) |> gvr("Dj_") |> select(-Dj_orig) %>%
-  dapply(`/`, psum(.)/100) |> fmedian() |> subset(type > 0)
+qDT(results$nodes) |> group_by(product) |> gvr("^Dj_") |> select(-Dj_orig) %>%
+  dapply(`/`, psum(.)) |> fmedian() |> qM(1) %>% {set_names(diag(.), rownames(.))}
 # Per capita
-results$nodes |> group_by(type) |> gvr("Dj_|pop") |> select(-Dj_orig) |> 
+qDT(results$nodes) |> group_by(product) |> gvr("^Dj_|pop") |> select(-Dj_orig) |> 
   tfmv(-population, `/`, population+1) |>
-  fmedian() |> subset(type > 0) |> tfmv(-(1:2), fsum, TRA = "%", apply = FALSE)
+  fmedian() |> tfmv(-(1:2), fsum, TRA = "%", apply = FALSE) |> select(-population) |>
+  qM(1) %>% {set_names(diag(.), rownames(.))}
 
 
 # Plots of Final Network and Optimal Investments ---------------------------------------------------
@@ -253,7 +254,7 @@ tmap_options(raster.max.cells = 1e7)
 
 # res_name <- "22g_10b_fixed_cgc_sigma3.8_rho0_julia"
 edges_res <- list(NoFR = fread(sprintf("results/transport_network/GE/largest_pcities/edges_results_%s.csv", res_name)),
-                  FR = fread(sprintf("results/transport_network/GE/largest_pcities/edges_results_%s_bc.csv", res_name)))
+                  FR = fread(sprintf("results/transport_network/GE/largest_pcities/edges_results_%s.csv", sub("_julia", "_bc_julia", res_name))))
 edges_res %<>% lapply(gvr, "^from$|^to$|^Qjk_") # %>% rowbind(idcol = "data")
 edges_res$Ratio <- edges_res$FR %>% tfm(slt(., Qjk_1:Qjk_22) %c/% slt(join(slt(edges_res$FR, from, to), edges_res$NoFR), Qjk_1:Qjk_22) %>% 
                                           replace_outliers(c(0, 100), "clip"))
