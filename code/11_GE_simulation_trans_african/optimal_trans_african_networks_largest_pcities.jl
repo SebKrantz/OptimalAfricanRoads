@@ -145,10 +145,10 @@ res_nodes.Cj = res_opt[:Cj]
 res_nodes.Dj = res_opt[:Dj]
 res_nodes.PCj = res_opt[:PCj]
 for n in 1:N
-   res_nodes[Symbol("Lj_$(n)")] = res_opt[:Ljn][:,n]
-   res_nodes[Symbol("Dj_$(n)")] = res_opt[:Djn][:,n]
-   res_nodes[Symbol("Yj_$(n)")] = res_opt[:Yjn][:,n]
-   res_nodes[Symbol("Pj_$(n)")] = res_opt[:Pjn][:,n]
+   res_nodes[!, Symbol("Lj_$(n)")] = res_opt[:Ljn][:,n]
+   res_nodes[!, Symbol("Dj_$(n)")] = res_opt[:Djn][:,n]
+   res_nodes[!, Symbol("Yj_$(n)")] = res_opt[:Yjn][:,n]
+   res_nodes[!, Symbol("Pj_$(n)")] = res_opt[:Pjn][:,n]
 end
 res_nodes |> CSV.write("results/transport_network/GE/trans_african/nodes_results_$(filename).csv")
 
