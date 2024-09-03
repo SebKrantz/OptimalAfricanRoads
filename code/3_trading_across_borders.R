@@ -4,7 +4,7 @@
 
 library(fastverse)
 set_collapse(mask = "manip")
-fastverse_extend(africamonitor, tmap, sf, qs) # tmap >= 3.99
+fastverse_extend(africamonitor, tmap, sf, qs, install = TRUE) # tmap >= 3.99
 
 africa_ctry_shp <- qread("data/other_inputs/africa_countries.qs")
   

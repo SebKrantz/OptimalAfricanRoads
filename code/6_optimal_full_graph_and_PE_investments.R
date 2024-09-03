@@ -368,7 +368,7 @@ MA_new %<>% join(graph_count, on = "cell", drop = TRUE)
 
 qsu(MA_new)
 
-fastverse_extend(ggplot2, viridis)
+fastverse_extend(ggplot2, viridis, install = TRUE)
 
 # Average Travel Time Reduction (Investment)
 MA_new %>% 
@@ -442,7 +442,7 @@ ggsave("figures/full_network/MA_50kmh_NTE_gain_per_minute.pdf", width = 6, heigh
 MA_new <- qread("results/full_network/africa_full_MA_0.85_NRE.qs")
 qsu(MA_new)
 
-fastverse_extend(ggplot2, viridis)
+fastverse_extend(ggplot2, viridis, install = TRUE)
 
 # Average Road Distance Reduction (Investment)
 MA_new %>% 

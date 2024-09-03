@@ -4,13 +4,13 @@
 
 library(fastverse)
 set_collapse(mask = c("manip", "helper", "special"))
-fastverse_extend(qs, sf, units, sfnetworks, tmap)
+fastverse_extend(qs, sf, units, sfnetworks, tmap, install = TRUE)
 source("code/helpers/helpers.R")
 fastverse_conflicts()
 
 net <- "fastest_routes" # Or 'all_routes' to also include shortest routes
 dir <- "trans_african"  # Or 'trans_african_add' to get shortest routes results  
-res_name <- "22g_10b_fixed_cgc_sigma3.8_rho0_julia" # '22g_add_10b_fixed_duality_sigma3'
+res_name <- "22g_10b_fixed_cgc_sigma38_rho0_julia" # '22g_add_10b_fixed_duality_sigma3'
 
 results <- list(
   nodes = fread(sprintf("results/transport_network/GE/%s/nodes_results_%s.csv", dir, res_name)),
