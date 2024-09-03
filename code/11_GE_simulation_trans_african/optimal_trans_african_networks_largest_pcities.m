@@ -128,7 +128,7 @@ fprintf('File extension: %s\n', filename);
 strcat("Started P_stat on ", datestr(datetime('now')))
 res_stat = solve_allocation(param, g, infra_matrix, true);
 
-% Solve Optimal Network
+% Solve Optimal Network (this can take long - up to 48h)
 strcat("Started P_opt on ", datestr(datetime('now')))
 res_opt = optimal_network(param, g, infra_matrix, min_mask, max_mask, false);
 

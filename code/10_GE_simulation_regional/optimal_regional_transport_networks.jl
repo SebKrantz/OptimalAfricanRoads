@@ -142,7 +142,7 @@ println("File extension: $filename")
 # Solve allocation from existing infrastructure
 @time res_stat = optimal_network(param, g, I0 = infra_matrix, solve_allocation = true, verbose = true)
 
-# Solve Optimal Network
+# Solve Optimal Network (this can take long - up to 48h)
 @time res_opt = optimal_network(param, g, I0 = infra_matrix, Il = min_mask, Iu = max_mask, verbose = false)
 
 # Check: should be 1
