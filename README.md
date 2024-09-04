@@ -1,6 +1,6 @@
 # Optimal Investments in Africa's Road Network
 
-Replication materials for the paper **Optimal Investments in Africa's Road Network**, published as a World Bank Policy Research Working Paper. Please see the [authors website](https://sebastiankrantz.com/research.html) for the latest version and publication status updates. 
+Replication materials for the paper **Optimal Investments in Africa's Road Network**, preliminarily published as a [Kiel Working Paper](https://www.ifw-kiel.de/publications/optimal-investments-in-africas-road-network-33157/) and [World Bank Policy Research Working Paper](https://documents.worldbank.org/en/publication/documents-reports/documentdetail/099223509042435445/idu1f462ed2f121aa149d0199a913911be1bae24). Please see the [authors website](https://sebastiankrantz.com/research.html) for the latest version and publication status updates. 
 
 **Notes**
 
