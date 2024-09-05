@@ -1388,7 +1388,26 @@ sapply(packages, calc_rates, 4.1) |> t() |> round(4)
 sapply(packages, calc_rates, 3) |> t() |> round(4)
 
 
+#############################################
+# Saving PE Results
+#############################################
 
+nodes_tmp <- nodes |>
+  join(compute(cities_ports, city_port = TRUE,
+               keep = .c(city_country, port_locode, port_name, port_status, outflows)), 
+       on = c("city_country", "city_port"))
+
+list(nodes = nodes_tmp,
+     edges = edges, 
+     add_links = add_links) |>
+  qsave("results/transport_network/PE/PE_results.qs")
+
+nodes_tmp |> transform(set_names(mctl(st_coordinates(geometry)), c("lon", "lat"))) |> 
+  atomic_elem() |> qDT() |> fwrite("results/transport_network/PE/csv/PE_results_nodes.csv")
+edges |> atomic_elem() |> qDT() |> fwrite("results/transport_network/PE/csv/PE_results_edges.csv")
+add_links |> atomic_elem() |> qDT() |> fwrite("results/transport_network/PE/csv/PE_results_add_links.csv")
+
+rm(nodes_tmp)
 
 #############################################
 # Saving Graphs for OTN (GE Analysis)
