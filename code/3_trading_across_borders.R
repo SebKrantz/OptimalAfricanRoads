@@ -56,9 +56,9 @@ qsu(border_time_mat_transit[border_time_mat_transit > 0])
 
 # Save as csv 
 border_time_mat %>% qDF("iso3c") %>% 
-  fwrite("data/QSE/QSE_model_border_time_mat.csv")
+  fwrite("data/QSE/model_border_time_mat.csv")
 border_time_mat_transit %>% qDF("iso3c") %>% 
-  fwrite("data/QSE/QSE_model_border_time_mat_transit.csv")
+  fwrite("data/QSE/model_border_time_mat_transit.csv")
 
 # Now creating trade border distance matrix
 border_dist_mat <- copyv(geodist_mat, 1, 0) %c+% export_dist_cost %r+% import_dist_cost
@@ -70,9 +70,9 @@ qsu(border_dist_mat_transit[border_dist_mat_transit > 0])
 
 # Save as csv 
 border_dist_mat %>% qDF("iso3c") %>% 
-  fwrite("data/QSE/QSE_model_border_dist_mat.csv")
+  fwrite("data/QSE/model_border_dist_mat.csv")
 border_dist_mat_transit %>% qDF("iso3c") %>% 
-  fwrite("data/QSE/QSE_model_border_dist_mat_transit.csv")
+  fwrite("data/QSE/model_border_dist_mat_transit.csv")
 
 
 #####################################################

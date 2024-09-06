@@ -99,7 +99,7 @@ osrmTable(loc = madagascar_to_mainland, measure = c('duration', 'distance'))
 osrmTable(loc = nowhere_to_cape_town, measure = c('duration', 'distance'))
 
 # Load Grid centroids
-calib_data <- qDF(fread("data/QSE/QSE_model_calibration_data.csv"))
+calib_data <- qDF(fread("data/QSE/model_calibration_data.csv"))
 rownames(calib_data) <- calib_data$cell
 source("code/helpers/helpers.R")
 
@@ -115,7 +115,7 @@ qsave(result, "data/full_network/africa_full_distance_matrix_r9.qs")
 # ----------------------------------------------------------------------------------
 
 # Load Grid centroids
-calib_data <- qDF(fread("data/QSE/QSE_model_calibration_data.csv"))
+calib_data <- qDF(fread("data/QSE/model_calibration_data.csv"))
 rownames(calib_data) <- calib_data$cell
 source("code/helpers/helpers.R")
 

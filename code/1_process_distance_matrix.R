@@ -202,6 +202,6 @@ list(distances = spherical_distances,
 durations_adj %>% 
   setColnames(africa_dist$centroids$cell) %>% 
   qDT() %>% 
-  fwrite("data/QSE/QSE_model_durations_matrix.csv")
+  fwrite("data/QSE/model_durations_matrix.csv")
 
 

@@ -188,12 +188,12 @@ dev.off()
 
 # Adding trade costs ----------------------------------------------------------------------
 
-border_time <- fread("data/QSE/QSE_model_border_time_mat.csv") |> qM(1)
+border_time <- fread("data/QSE/model_border_time_mat.csv") |> qM(1)
 border_time_sym <- (border_time + t(border_time)) / 2
-border_dist <- fread("data/QSE/QSE_model_border_dist_mat.csv") |> qM(1)
+border_dist <- fread("data/QSE/model_border_dist_mat.csv") |> qM(1)
 border_dist_sym <- (border_dist + t(border_dist)) / 2
-border_dist_transit <- fread("data/QSE/QSE_model_border_dist_mat_transit.csv") |> qM(1)
-border_time_transit <- fread("data/QSE/QSE_model_border_time_mat_transit.csv") |> qM(1)
+border_dist_transit <- fread("data/QSE/model_border_dist_mat_transit.csv") |> qM(1)
+border_time_transit <- fread("data/QSE/model_border_time_mat_transit.csv") |> qM(1)
 
 # Adding Country Classification
 GADM0_africa <- qread("data/other_inputs/GADM0_africa_simplified.qs")

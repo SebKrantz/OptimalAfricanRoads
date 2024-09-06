@@ -96,14 +96,14 @@ graphs_df |>
   fwrite("data/full_network/full_graph_df.csv")
 
 # Also saving cell-data
-calib_data <- fread("data/QSE/QSE_model_calibration_data_ctry_min_imp.csv") |> 
+calib_data <- fread("data/QSE/model_calibration_data_ctry_min_imp.csv") |> 
   subset(cell %in% unique(graphs_df$from)) |> 
   roworder(cell) |> 
   mutate(id = ckmatch(cell, unique(graphs_df$from))) |> 
   roworder(id) |> 
   colorder(id) 
 
-calib_data |> fwrite("data/QSE/QSE_model_calibration_data_ctry_min_imp_full_graph.csv")
+calib_data |> fwrite("data/QSE/model_calibration_data_ctry_min_imp_full_graph.csv")
 
 
 # Creating Optimal Full Graphs --------------------------------------------------------
@@ -225,7 +225,7 @@ best_param <- list(par = c(29.8834997902231, 1), value = 1.37535288169957,
 
 # Market Access Optimization ----------------------------------------------------------
 
-calib_data <- fread("data/QSE/QSE_model_calibration_data_ctry_min_imp_full_graph.csv")
+calib_data <- fread("data/QSE/model_calibration_data_ctry_min_imp_full_graph.csv")
 
 centroids %<>% join(calib_data, on = "cell", drop = "y")
 

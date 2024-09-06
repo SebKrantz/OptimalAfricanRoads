@@ -8,14 +8,14 @@ using DataFrames, CSV, LinearAlgebra, Statistics, StatsBase, Plots, NaNStatistic
 # **** Parameterization ****
 # **************************
 
-calib_data = CSV.read("data/QSE/QSE_model_calibration_data_ctry_min_imp.csv", DataFrame)
+calib_data = CSV.read("data/QSE/model_calibration_data_ctry_min_imp.csv", DataFrame)
 # TODO: Redding (2016) inly proves existence and uniqueness of equilibrium for symmetric distances. OSRM gives asymmetries. Check robustness to this.
-durations = CSV.read("data/QSE/QSE_model_durations_matrix.csv", DataFrame)
+durations = CSV.read("data/QSE/model_durations_matrix.csv", DataFrame)
 # Check
 string.(calib_data.cell) == names(durations)
 
 # # Travel Time Across Borders based on World Bank Data
-# border_time = CSV.read("data/QSE/QSE_model_border_time_mat_transit.csv", DataFrame)
+# border_time = CSV.read("data/QSE/model_border_time_mat_transit.csv", DataFrame)
 # # Check
 # iso3c = border_time.iso3c
 # unique(calib_data.ISO3) == iso3c

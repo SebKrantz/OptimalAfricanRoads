@@ -12,7 +12,7 @@ names(africa_dist)
 # Loading Network Efficiency Estimates 
 NE <- qread("results/full_network/network_efficiency.qs")
 
-OUTCOMES <- fread("data/QSE/QSE_model_calibration_data_ctry_min_imp.csv") %>%
+OUTCOMES <- fread("data/QSE/model_calibration_data_ctry_min_imp.csv") %>%
             fmutate(total_wealth = IWI * pop_wpop)
 
 centroids <- africa_dist$centroids
@@ -276,7 +276,7 @@ ggsave("figures/full_network/wealth_per_km_theta_3.8.pdf", width = 6, height = 6
 
 # Using Travel Time
 
-border_time <- fread("data/QSE/QSE_model_border_time_mat_transit.csv") |> qM(1)
+border_time <- fread("data/QSE/model_border_time_mat_transit.csv") |> qM(1)
 
 durations_borders <- durations
 
@@ -289,7 +289,7 @@ for (i in rownames(border_time)) {
 
 # Using Travel Distance
 
-border_dist <- fread("data/QSE/QSE_model_border_dist_mat_transit.csv") |> qM(1)
+border_dist <- fread("data/QSE/model_border_dist_mat_transit.csv") |> qM(1)
 
 distances_borders <- distances
 
