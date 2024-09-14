@@ -110,17 +110,17 @@ rho = 0 # inequality aversion: not possible to solve model if enabled (= 2) -> s
 param = init_parameters(annealing = false, labor_mobility = false, cross_good_congestion = true, 
                         a = a, sigma = sigma, N = N, alpha = alpha, beta = beta, gamma = gamma, rho = rho)
 
-param, g = create_graph(param, type = "custom", x = nodes.lon, y = nodes.lat, adjacency = adj_matrix, 
-                        Lj = population, Zjn = productivity, Hj = population .* (1-alpha)) # TG: I normalise this because the general utility function has a (h_j/(1-alpha))^(1-alpha) thing with it
+graph = create_graph(param, type = "custom", x = nodes.lon, y = nodes.lat, adjacency = adj_matrix, 
+                     Lj = population, Zjn = productivity, Hj = population .* (1-alpha)) # TG: I normalise this because the general utility function has a (h_j/(1-alpha))^(1-alpha) thing with it
 
-g[:delta_i] = infra_building_matrix
-g[:delta_tau] = iceberg_matrix
+graph[:delta_i] = infra_building_matrix
+graph[:delta_tau] = iceberg_matrix
 
 # Recommended to use coin HSL linear solvers. See README of OptimalTransportNetworks.jl and Ipopt.jl
 # param[:optimizer_attr] = Dict(:hsllib => "/usr/local/lib/libhsl.dylib", :linear_solver => "ma57") # Use ma86 for optimal performance on big machine 
 
 # Solve allocation from existing infrastructure
-@time res_stat = optimal_network(param, g, I0 = infra_matrix, solve_allocation = true, verbose = true)
+@time res_stat = optimal_network(param, graph, I0 = infra_matrix, solve_allocation = true, verbose = true)
 
 # Naming conventions: if IRS -> 'cgc_irs'; if alpha = 0.1 -> add '_alpha01'; if with_ports = false -> add '_noport'; if frictions -> add '_bc' (border cost)
 filename = "4g_50b_fixed_cgc_sigma15_alpha01" # adjust if sigma != 1.5
@@ -134,7 +134,7 @@ infra_matrix_opt = vec_to_res(n, res_graph.Ijk, graph)
 extrema(res_graph.Ijk ./ res_to_vec(infra_matrix, graph))
 
 # Solve allocation from optimal infrastructure investments
-@time res_opt = optimal_network(param, g, I0 = infra_matrix_opt, solve_allocation = true, verbose = true)
+@time res_opt = optimal_network(param, graph, I0 = infra_matrix_opt, solve_allocation = true, verbose = true)
 
 # File extension 'res_alpha07' means we 'resolved' the problem with alpha = 0.7 (or whatever parameter we changed)
 fileext = "res_alpha07_julia"

@@ -126,11 +126,11 @@ param = init_parameters(annealing = true, labor_mobility = false, cross_good_con
                         a = a, sigma = sigma, N = N, alpha = alpha, beta = beta, gamma = gamma, rho = rho, 
                         K = K, tol = 1e-5, min_iter = 15, max_iter = 45, verbose = true)
 
-param, g = create_graph(param, type = "custom", x = nodes.lon, y = nodes.lat, adjacency = adj_matrix, 
-                        Lj = population, Zjn = productivity, Hj = population .* (1-alpha)); # TG: I normalise this because the general utility function has a (h_j/(1-alpha))^(1-alpha) thing with it
+graph = create_graph(param, type = "custom", x = nodes.lon, y = nodes.lat, adjacency = adj_matrix, 
+                     Lj = population, Zjn = productivity, Hj = population .* (1-alpha)); # TG: I normalise this because the general utility function has a (h_j/(1-alpha))^(1-alpha) thing with it
 
-g[:delta_i] = infra_building_matrix
-g[:delta_tau] = iceberg_matrix
+graph[:delta_i] = infra_building_matrix
+graph[:delta_tau] = iceberg_matrix
 
 # Naming conventions: if IRS -> "cgc_irs"; if alpha = 0.1 -> add "_alpha01"; if with_ports = false -> add "_noport"; if frictions -> add "_bc" (border cost)
 filename = "4g_50b_fixed_cgc_sigma15_julia" # adjust if sigma != 1.5
@@ -140,17 +140,17 @@ println("File extension: $filename")
 # param[:optimizer_attr] = Dict(:hsllib => "/usr/local/lib/libhsl.dylib", :linear_solver => "ma57") # Use ma86 for optimal performance on big machine 
 
 # Solve allocation from existing infrastructure
-@time res_stat = optimal_network(param, g, I0 = infra_matrix, solve_allocation = true, verbose = true)
+@time res_stat = optimal_network(param, graph, I0 = infra_matrix, solve_allocation = true, verbose = true)
 
 # Solve Optimal Network (this can take long - up to 48h)
-@time res_opt = optimal_network(param, g, I0 = infra_matrix, Il = min_mask, Iu = max_mask, verbose = false)
+@time res_opt = optimal_network(param, graph, I0 = infra_matrix, Il = min_mask, Iu = max_mask, verbose = false)
 
 # Check: should be 1
-K / sum(res_opt[:Ijk] .* g[:delta_i])
+K / sum(res_opt[:Ijk] .* graph[:delta_i])
 
 # Plot Network
-plot_graph(g, res_opt[:Ijk], height = 800) # , node_sizes = res_opt[:Cj])
-plot_graph(g, res_opt[:Ijk] - infra_matrix, height = 800)
+plot_graph(graph, res_opt[:Ijk], height = 800) # , node_sizes = res_opt[:Cj])
+plot_graph(graph, res_opt[:Ijk] - infra_matrix, height = 800)
 
 # Saving: Nodes
 res_nodes = deepcopy(nodes)
