@@ -48,6 +48,7 @@ frange(market_access)
 market_access_all$baseline$ttime$GDP_PPP$theta_1 <- drop(market_access)
 cor(market_access, centroids$GDP_PPP)
 
+# <Figure 5: LHS (Top)>
 centroids %>% 
   add_vars(MA = replace_outliers(drop(market_access) / 1e9, 1, NA, "min")) %>% 
   ggplot(aes(x = lon, y = lat, fill = MA)) +
@@ -73,6 +74,7 @@ frange(market_access)
 market_access_all$baseline$ttime$GDP_PPP$theta_3.8 <- drop(market_access)
 cor(market_access, centroids$GDP_PPP)
 
+# <Figure 5: LHS (Bottom)>
 centroids %>% 
   add_vars(MA = drop(market_access) / 1e9) %>% 
   ggplot(aes(x = lon, y = lat, fill = MA)) +
@@ -101,6 +103,7 @@ frange(market_access)
 market_access_all$baseline$tdist$GDP_PPP$theta_1 <- drop(market_access)
 cor(market_access, centroids$GDP_PPP)
 
+# <Figure 5: RHS (Top)>
 centroids %>% 
   add_vars(MA = replace_outliers(drop(market_access) / 1e6, 10, NA, "min")) %>% 
   ggplot(aes(x = lon, y = lat, fill = MA)) +
@@ -127,6 +130,7 @@ frange(market_access)
 market_access_all$baseline$tdist$GDP_PPP$theta_3.8 <- drop(market_access)
 cor(market_access, centroids$GDP_PPP)
 
+# <Figure 5: RHS (Bottom)>
 centroids %>% 
   add_vars(MA = drop(market_access)) %>% 
   ggplot(aes(x = lon, y = lat, fill = MA)) +
@@ -170,6 +174,7 @@ frange(market_access)
 market_access_all$baseline$ttime$total_wealth$theta_1 <- drop(market_access)
 cor(market_access, centroids$total_wealth)
 
+# <Figure A4: LHS (Top)>
 centroids %>% 
   add_vars(MA = replace_outliers(drop(market_access) / 1e6, 10, NA, "min")) %>% 
   ggplot(aes(x = lon, y = lat, fill = MA)) +
@@ -190,6 +195,7 @@ centroids %>%
 ggsave("figures/full_network/wealth_per_hour.pdf", width = 6, height = 6)
 
 # Theta == 3.8 (Jedwab & Storeygard, 2022)
+# <Figure A4: LHS (Bottom)>
 market_access <- (1/durations^3.8) %*% centroids$total_wealth
 frange(market_access)
 market_access_all$baseline$ttime$total_wealth$theta_3.8 <- drop(market_access)
@@ -223,6 +229,7 @@ frange(market_access)
 market_access_all$baseline$tdist$total_wealth$theta_1 <- drop(market_access)
 cor(market_access, centroids$total_wealth)
 
+# <Figure A4: RHS (Top)>
 centroids %>% 
   add_vars(MA = replace_outliers(drop(market_access) / 1e6, 0.1, NA, "min")) %>% 
   ggplot(aes(x = lon, y = lat, fill = MA)) +
@@ -249,6 +256,7 @@ frange(market_access)
 market_access_all$baseline$tdist$total_wealth$theta_3.8 <- drop(market_access)
 cor(market_access, centroids$total_wealth)
 
+# <Figure A4: RHS (Bottom)>
 centroids %>% 
   add_vars(MA = drop(market_access)) %>% 
   ggplot(aes(x = lon, y = lat, fill = MA)) +
@@ -313,6 +321,7 @@ frange(market_access)
 market_access_all$frictions$ttime$GDP_PPP$theta_1 <- drop(market_access)
 cor(market_access, centroids$GDP_PPP)
 
+# <Figure A5: LHS (Top)>
 centroids %>% 
   add_vars(MA = replace_outliers(drop(market_access) / 1e9, 1, NA, "min")) %>% 
   ggplot(aes(x = lon, y = lat, fill = MA)) +
@@ -338,6 +347,7 @@ frange(market_access)
 market_access_all$frictions$ttime$GDP_PPP$theta_3.8 <- drop(market_access)
 cor(market_access, centroids$GDP_PPP)
 
+# <Figure A5: LHS (Bottom)>
 centroids %>% 
   add_vars(MA = drop(market_access) / 1e9) %>% 
   ggplot(aes(x = lon, y = lat, fill = MA)) +
@@ -366,6 +376,7 @@ frange(market_access)
 market_access_all$frictions$tdist$GDP_PPP$theta_1 <- drop(market_access)
 cor(market_access, centroids$GDP_PPP)
 
+# <Figure A5: RHS (Top)>
 centroids %>% 
   add_vars(MA = replace_outliers(drop(market_access) / 1e6, 10, NA, "min")) %>% 
   ggplot(aes(x = lon, y = lat, fill = MA)) +
@@ -392,6 +403,7 @@ frange(market_access)
 market_access_all$frictions$tdist$GDP_PPP$theta_3.8 <- drop(market_access)
 cor(market_access, centroids$GDP_PPP)
 
+# <Figure A5: RHS (Bottom)>
 centroids %>% 
   add_vars(MA = drop(market_access)) %>% 
   ggplot(aes(x = lon, y = lat, fill = MA)) +
@@ -424,6 +436,7 @@ frange(market_access)
 market_access_all$frictions$ttime$total_wealth$theta_1 <- drop(market_access)
 cor(market_access, centroids$total_wealth)
 
+# <Figure A6: LHS (Top)>
 centroids %>% 
   add_vars(MA = replace_outliers(drop(market_access) / 1e6, 10, NA, "min")) %>% 
   ggplot(aes(x = lon, y = lat, fill = MA)) +
@@ -450,6 +463,7 @@ frange(market_access)
 market_access_all$frictions$ttime$total_wealth$theta_3.8 <- drop(market_access)
 cor(market_access, centroids$total_wealth)
 
+# <Figure A6: LHS (Bottom)>
 centroids %>% 
   add_vars(MA = drop(market_access) / 1e6) %>% 
   ggplot(aes(x = lon, y = lat, fill = MA)) +
@@ -479,6 +493,7 @@ frange(market_access)
 market_access_all$frictions$tdist$total_wealth$theta_1 <- drop(market_access)
 cor(market_access, centroids$total_wealth)
 
+# <Figure A6: RHS (Top)>
 centroids %>% 
   add_vars(MA = replace_outliers(drop(market_access) / 1e6, 0.1, NA, "min")) %>% 
   ggplot(aes(x = lon, y = lat, fill = MA)) +
@@ -505,6 +520,7 @@ frange(market_access)
 market_access_all$frictions$tdist$total_wealth$theta_3.8 <- drop(market_access)
 cor(market_access, centroids$total_wealth)
 
+# <Figure A6: RHS (Bottom)>
 centroids %>% 
   add_vars(MA = drop(market_access)) %>% 
   ggplot(aes(x = lon, y = lat, fill = MA)) +
@@ -566,16 +582,17 @@ market_access_all_sum |>
   na_omit()
 
 # Cell-level MA decline
+# <Figures 10 and A7>
 market_access_all_dt |>
   roworder(metric, theta, cell) |>
   tfmv(c(GDP_PPP, total_wealth), fgrowth, 
        g = list(metric, theta, cell), apply = FALSE) |>
   na_omit() |> # descr( ~ metric + theta)
   join(centroids, on = "cell", drop = TRUE) |>
-  fsubset(theta == "theta_1") |>
+  fsubset(theta == "theta_1") |> # Or theta_3.8 (Bottom Panels)
   fmutate(metric = set_attr(metric, "levels", recode_char(levels(metric), ttime = "Travel Time", tdist = "Road Distance"))) |>
   
-  ggplot(aes(x = lon, y = lat, fill = GDP_PPP)) +
+  ggplot(aes(x = lon, y = lat, fill = GDP_PPP)) + # Or total_wealth for Figure A7
   ggstar::geom_star(starshape = "hexagon", size = 1.1, color = NA, angle = 30) +
   coord_fixed() +
   facet_wrap(~ metric) + # facet_grid(metric ~ theta) +

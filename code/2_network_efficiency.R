@@ -20,7 +20,7 @@ rowSums(weights)
 fsum(weights)
 
 # Plot WorldPop Population
-
+# <Figure A1: RHS>
 africa_dist$centroids %>% 
   ggplot(aes(x = lon, y = lat, fill = pop_wpop)) +
   ggstar::geom_star(starshape = "hexagon", size = 1.1, color = NA, angle = 30) +
@@ -64,6 +64,7 @@ qsu(ans, w = africa_dist$centroids$pop_wpop)
 # # frange(ans)
 rm(dd_ratio); gc() # , weights
 
+# <Figure A1: LHS>
 africa_dist$centroids %>% 
   add_vars(ans) %>% 
   ggplot(aes(x = lon, y = lat, fill = ans)) +
@@ -106,6 +107,7 @@ qsu(nre)
 qsu(nre, w = africa_dist$centroids$pop_wpop)
 rm(spherical_ratio)
 
+# <Figure 4: RHS>
 spherical_dist$centroids %>% 
   add_vars(nre) %>% 
   ggplot(aes(x = lon, y = lat, fill = nre)) +
@@ -144,6 +146,7 @@ qsu(nte)
 qsu(nte, w = africa_dist$centroids$pop_wpop)
 rm(spherical_ratio)
 
+# <Figure 4: LHS>
 spherical_dist$centroids %>% 
   add_vars(nte) %>% 
   ggplot(aes(x = lon, y = lat, fill = nte)) +

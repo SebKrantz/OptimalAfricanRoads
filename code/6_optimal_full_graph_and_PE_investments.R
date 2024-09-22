@@ -272,6 +272,7 @@ map_to_palette <- function(vector, option = "turbo") {
 
 settfm(optimized_graph, cost_colour = map_to_palette(cost))
 
+# <Figure A8>
 pdf("figures/full_network/full_network_optimal_duration_graph.pdf", width = 10, height = 10)
 with(calib_data, {
   oldpar <- par(mar = c(0,0,0,0))
@@ -371,6 +372,7 @@ qsu(MA_new)
 fastverse_extend(ggplot2, viridis, install = TRUE)
 
 # Average Travel Time Reduction (Investment)
+# <Figure 17: LHS>
 MA_new %>% 
   ggplot(aes(x = lon, y = lat, fill = Reduction/60/N)) +
   ggstar::geom_star(starshape = "hexagon", size = 1.1, color = NA, angle = 30) +
@@ -390,6 +392,7 @@ MA_new %>%
 ggsave("figures/full_network/average_travel_time_reduction_50kmh.pdf", width = 6, height = 6)
 
 # Total MA Gain (%)
+# <Figure 18: LHS>
 MA_new %>% 
   ggplot(aes(x = lon, y = lat, fill = MA_ratio-1)) +
   ggstar::geom_star(starshape = "hexagon", size = 1.1, color = NA, angle = 30) +
@@ -413,6 +416,7 @@ ggsave("figures/full_network/MA_50kmh_NTE_growth.pdf", width = 6, height = 6)
 
 
 # MA Gain per hour reduction
+# <Figure 17: RHS>
 MA_new %>% 
   mutate(MA_gain_per_minute = (MA - MA/MA_ratio)/Reduction) %>% # descr()
   ggplot(aes(x = lon, y = lat, fill = MA_gain_per_minute/1e6)) +
@@ -445,6 +449,7 @@ qsu(MA_new)
 fastverse_extend(ggplot2, viridis, install = TRUE)
 
 # Average Road Distance Reduction (Investment)
+# <Figure A11: LHS>
 MA_new %>% 
   # st_as_sf(coords = c("lon", "lat"), crs = 4326) %>% select(Reduction) %>% mapview::mapview()
   # subset(Reduction > 0) %>%
@@ -467,6 +472,7 @@ MA_new %>%
 ggsave("figures/full_network/average_road_distance_reduction_0.85.pdf", width = 6, height = 6)
 
 # Total MA Gain (%)
+# <Figure 18: RHS>
 MA_new %>% 
   ggplot(aes(x = lon, y = lat, fill = MA_ratio-1)) +
   ggstar::geom_star(starshape = "hexagon", size = 1.1, color = NA, angle = 30) +
@@ -490,6 +496,7 @@ ggsave("figures/full_network/MA_0.85_NRE_growth.pdf", width = 6, height = 6)
 
 
 # MA Gain per Km reduction
+# <Figure A11: RHS>
 MA_new %>% 
   mutate(MA_gain_per_km = (MA - MA/MA_ratio)/Reduction*1e6) %>% # descr()
   ggplot(aes(x = lon, y = lat, fill = MA_gain_per_km/1e6)) +

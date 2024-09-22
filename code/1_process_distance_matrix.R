@@ -18,6 +18,7 @@ identical(unattrib(africa_dist$sources), slt(africa_dist$centroids, lon, lat))
 # The coordinates are snapped to the grid...
 print(pwcor(africa_dist$sources, slt(africa_dist$centroids, lon, lat)), digits = 5)
 
+# <Figure 3>
 par(mfrow = c(1, 2))
 # This shows the connected points
 africa_dist$centroids[N >= 200, ] %$% plot(lon, lat, pch = 16, cex = 0.25, main = "Grid Centroids")

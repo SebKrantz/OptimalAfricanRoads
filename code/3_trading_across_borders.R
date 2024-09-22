@@ -237,6 +237,7 @@ africa_ctry_shp %<>% join(
   on = "ISO3"
 )
 
+# <Figure 7: LHS>
 pdf("figures/WDI_weighted_average_tariff_map.pdf", width = 8, height = 8)
 # tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
 tm_shape(africa_ctry_shp) + 
@@ -272,6 +273,7 @@ africa_ctry_shp %<>% join(
   on = c("ISO3" = "imp_iso3")
 )
 
+# <Figure 7: RHS>
 pdf("figures/WIIW_NTMs_total_map.pdf", width = 8, height = 8)
 # tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
 tm_shape(africa_ctry_shp) + 

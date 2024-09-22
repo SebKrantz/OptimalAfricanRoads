@@ -227,6 +227,8 @@ p2 = plot(
 )
 
 Plots.gr_cbar_width[] = 0.01 # https://github.com/JuliaPlots/Plots.jl/issues/2345
+
+# <Figure 6>
 p3 = plot(
     scatter_plot_map(res.dtradesh*100, "Panel A: Own Trade Share (%)"; colorbar = true),
     scatter_plot_map((IGFTPW.-1).*100, "Panel B: Immobile Gains from Trade (%)"; colorbar = true),

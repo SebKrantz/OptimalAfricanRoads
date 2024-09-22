@@ -175,11 +175,12 @@ sum(keep_routes)
 #   mapview::mapview(st_as_sf(cities_ports, coords = c("lon", "lat"), crs = st_crs(4326)))
 
 # Plot ideal Network
+# <Figure 14: RHS>
 with(cities_ports, {
   oldpar <- par(mar = c(0,0,0,0))
   plot(lon, lat, cex = sqrt(population)/1e3, pch = 16, col = rgb(0, 0, 0, alpha=0.5), 
        axes = FALSE, xlab = NA, ylab = NA, asp=1)
-  for (r in mrtl(routes_ind[keep_routes, ])) { # & intersects == 2
+  for (r in mrtl(routes_ind[keep_routes, ])) { # Comment loop to get LHS of Figure 14
     lines(lon[r], lat[r])
   }
   par(oldpar)
@@ -212,7 +213,7 @@ dev.off()
 
 # Note: The routes file is about 2.6GB large! you can load it yourself by executing this code. 
 # In this replication package I only provide final segments: the result of intersecting all routes. 
-# As OSM continues to evolve, I cannot guarantee that the result will be identical. Thus better skip this part
+# As OSM continues to evolve, I cannot guarantee that the result will be identical. Thus better skip this part.
 
 routes <- data.table(from_city_country = cities_ports$city_country[routes_ind[, 1]], 
                      to_city_country = cities_ports$city_country[routes_ind[, 2]], 
@@ -388,6 +389,7 @@ nodes_coord <- st_coordinates(nodes) |> qDF() |> setNames(c("lon", "lat"))
 tmap_mode("plot")
 
 # First a plot of just the routes
+# <Figure 12: LHS>
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(segments_simp) + tm_lines(col = "black") +
   tm_shape(subset(nodes, city_port)) + tm_dots(size = 0.2, fill = "orange2") +
@@ -397,6 +399,7 @@ dev.copy(pdf, "figures/transport_network/trans_africa_network_actual.pdf", width
 dev.off()
 
 # Now the plot with the discretized representation
+# <Figure 12: RHS>
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(segments_simp) + tm_lines(col = "black") +
   tm_shape(edges) +
@@ -472,6 +475,7 @@ rm(dmat, add_links_df)
 
 tmap_mode("plot")
 
+# Same as Figure 15 but with discrete edges (Figure 15 with real roads is obtained below)
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(edges) +
   tm_lines(col = "gravity_rd", 
@@ -589,6 +593,7 @@ rm(route, i, r)
 # Draw the updated plot
 edges_real <- qread("data/transport_network/edges_real_simplified.qs")
 
+# <Figure 15>
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(edges_real) +
   tm_lines(col = "gravity_rd",
