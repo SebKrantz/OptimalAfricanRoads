@@ -45,3 +45,34 @@ Replication materials for the paper **Optimal Investments in Africa's Road Netwo
   #> x igraph::union()         masks base::union()
   ```
   <sup>Created on 2024-08-29 with [reprex v2.0.2](https://reprex.tidyverse.org)</sup>
+
+
+**Data Availability**
+
+All data used for this research is publically available. However, the collection, combination, and imputation of high-resolution geospatial data, except for routing information, is beyond the scope of this replication package. In particular, this research partly leverages what I termed the **Africa Infrastructure Database**, which is constructed and described in my working paper [Mapping Africa's Infrastructure Potential with Geospatial Big Data and Causal ML](https://ssrn.com/abstract=4537867). This database will eventually be published alongside that paper, but is currently not public. The replication package thus starts from gridded/aggregated high resolution datasets which are provided in this package. The file `code/aggregation_example.R` is meant to give users an idea of how high-resolution point and raster data can be aggregated into discrete global grids. Notable sources or raw high-resolution geospatial data include: 
+
+- Open Street Map of Africa: https://download.geofabrik.de/africa-latest.osm.pbf
+
+- Overture Maps: https://github.com/OvertureMaps/data. See also [this post](https://walker-data.com/posts/overture-buildings/) for how to access the buildings dataset in R.
+
+- WorldPop 2020 Population (1km): https://hub.worldpop.org/geodata/summary?id=24777
+
+- GPW4 2020 Population (1km): https://sedac.ciesin.columbia.edu/data/set/gpw-v4-population-count-rev11
+
+- Simplemaps World Cities Database: https://simplemaps.com/data/world-cities
+
+- Terrain Ruggedness by Diego Puga (30 arc-seconds): https://diegopuga.org/data/rugged/
+
+- Gridded 2015 GDP PPP (5 arc-min): https://www.nature.com/articles/sdata20184, data: https://datadryad.org/stash/dataset/doi:10.5061/dryad.dk1j0
+
+- International Wealth Index (1.6km): https://www.sciencedirect.com/science/article/abs/pii/S0305750X22002182, data: https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/5OGWYM
+
+Other (Non-High-Resolution/Non-Spatial) Datasets used include:
+
+- Global International Ports (World Bank): https://datacatalog.worldbank.org/search/dataset/0038118/Global---International-Ports
+
+- Tariff Data (World Development Indicators): Accessed through Africamonitor R API: https://africamonitor.ifw-kiel.de/ - see Topic 24. Trade Tariffs.
+
+- World Bank Doing Business Trading Across Borders Data: Accessed through Africamonitor R API: https://africamonitor.ifw-kiel.de/ - see Topic 25. Trade Facilitation. For domestic transport data for African economies see 'Economy Snapshots' at https://archive.doingbusiness.org/en/data.
+
+- World Bank Road Costs Knowledge System (ROCKS) – 2018 Update: https://archive.doingbusiness.org/en/reports/thematic-reports/road-costs-knowledge-system
