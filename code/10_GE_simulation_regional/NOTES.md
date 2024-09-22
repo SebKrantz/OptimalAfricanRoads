@@ -1,7 +1,7 @@
 # Notes
 - The [MATLAB Toolbox](https://github.com/OptimalTransportNetworks/OptimalTransportNetworkToolbox) was used for the results reported in the paper. Please see the [User Guide](https://raw.githubusercontent.com/OptimalTransportNetworks/OptimalTransportNetworkToolbox/main/docs/User%20Guide.pdf) for installation instructions. Use with the file `optimal_regional_transport_networks.m`.
 
-- However, the [Julia Libray](https://github.com/OptimalTransportNetworks/OptimalTransportNetworks.jl) should yield equivalent results. It is easier to set up. Use with the file `optimal_regional_transport_networks.jl`.
+- However, the [Julia Libray](https://github.com/OptimalTransportNetworks/OptimalTransportNetworks.jl) should yield equivalent results. It is easier to install using `import Pkg; Pkg.add("OptimalTransportNetworks")`. Use with the file `optimal_regional_transport_networks.jl`.
 
 - `solve_regional_allocation[.m|.jl]` is only used to resolve trade flows/welfare of a given optimal allocation computed with `optimal_regional_transport_networks[.m|.jl]` under a different set of parameters. In the paper, it is used for the inequality averse planner in Figures 36-40, where inequality aversion was simulated by setting $\alpha = 0.1$ to obtain the network (strongly concave utility). `solve_regional_allocation[.m|.jl]` is then used to solve for consumption and welfare under the default $\alpha = 0.7$.
 
