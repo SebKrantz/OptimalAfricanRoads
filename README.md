@@ -73,6 +73,8 @@ Other (Non-High-Resolution/Non-Spatial) Datasets used include:
 
 - Tariff Data (World Development Indicators): Accessed through Africamonitor R API: https://africamonitor.ifw-kiel.de/ - see Topic 24. Trade Tariffs.
 
+- WIIW NTM Database: https://wiiw.ac.at/wiiw-ntm-data-ds-2.html
+
 - World Bank Doing Business Trading Across Borders Data: Accessed through Africamonitor R API: https://africamonitor.ifw-kiel.de/ - see Topic 25. Trade Facilitation. For domestic transport data for African economies see 'Economy Snapshots' at https://archive.doingbusiness.org/en/data.
 
 - World Bank Road Costs Knowledge System (ROCKS) – 2018 Update: https://archive.doingbusiness.org/en/reports/thematic-reports/road-costs-knowledge-system
