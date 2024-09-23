@@ -127,6 +127,7 @@ MA_new / MA * 1748.128 - 1748.128 # Gain in billion USD'15/minute
 tmap_options(raster.max.cells = 1e6)
 
 # Final Network
+# <Figures 34 and 38: LHS>
 pdf(sprintf("figures/transport_network/GE/regional/trans_africa_network_GE_%s.pdf", res_name), width = 8, height = 8)
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(results$edges) +
@@ -140,6 +141,7 @@ tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
 dev.off()
 
 # Difference (Intensive Margin)
+# <Figures 34 and 38: Middle>
 pdf(sprintf("figures/transport_network/GE/regional/trans_africa_network_GE_%s_diff.pdf", res_name), width = 8, height = 8)
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(mutate(results$edges, diff = pmin(pmax(Ijk - Ijk_orig, 0), 100))) +
@@ -153,6 +155,9 @@ tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
 dev.off()
 
 # Upgrade Percent (Extensive Margin)
+# <Figures 34 and 38: RHS> 
+# <Figures 36, 39, A14, and A18: Top Panels> 
+# <Figures A15 and A19: LHS>
 pdf(sprintf("figures/transport_network/GE/regional/trans_africa_network_GE_%s_perc_ug.pdf", res_name), width = 8, height = 8)
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(mutate(results$edges, perc_ug = pmin(pmax((Ijk - Ijk_orig)/(100 - Ijk_orig)*100, 0), 100))) +
@@ -166,6 +171,8 @@ tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
 dev.off()
 
 # Local Welfare (Utility Per Worker) Gains
+# <Figures 37 and 40: All Panels>
+# <Figures A14 and A18 : Bottom Panels>
 pdf(sprintf("figures/transport_network/GE/regional/trans_africa_network_GE_%s_upw_gain.pdf", res_name), width = 8, height = 8)
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(mutate(results$nodes, ugain = (uj / uj_orig - 1) * 100) |>
@@ -183,6 +190,8 @@ dev.off()
 tmap_options(raster.max.cells = 1e7)
 
 # Flow of Goods
+# <Figures 35 and A17: All Panels>
+# <Figures A14 and A18 : Middle Panels>
 pdf(sprintf("figures/transport_network/GE/regional/trans_africa_network_GE_%s_good_flows.pdf", res_name), width = 10, height = 10)
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(results$edges |> gvr("Qjk_") |> 
@@ -249,6 +258,8 @@ edges_res %<>% join(x = rowbind(select(edges, from, to), select(add_links, from,
 descr(edges_res$perc_ug_diff)
 
 # Different in % Upgraded (Extensive Margin)
+# <Figures 36 and 39: Bottom Panels> 
+# <Figures A15 and A19: RHS> 
 pdf(sprintf("figures/transport_network/GE/regional/trans_africa_network_GE_%s_Ijk_bc_perc_ug_diff.pdf", res_name), width = 8, height = 8)
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(edges_res) +
@@ -278,6 +289,7 @@ edges_res %<>% lapply(join, x = rowbind(select(edges, from, to), select(add_link
 descr(edges_res$Ratio)
 edges_res %>% lapply(. %>% atomic_elem() %>% num_vars() %>% fsum())
 
+# <Figures A16 and A20: All Panels> 
 pdf(sprintf("figures/transport_network/GE/regional/trans_africa_network_GE_%s_good_flows_bc_ratio.pdf", res_name), width = 10, height = 10)
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(edges_res$Ratio |> gvr("Qjk_") |> 

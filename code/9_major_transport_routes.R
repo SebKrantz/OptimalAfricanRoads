@@ -75,6 +75,7 @@ net_main_routes <- filter_smooth2(net_main_routes)
 plot(net_main_routes)
 st_as_sf(net_main_routes, "edges") |> names()
 
+# <Figure 16: LHS>
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(subset(edges, -large_city_paths$edges)) + tm_lines(col = "grey70", lwd = 2) +
   tm_shape(nodes) + tm_dots(size = 0.1, fill = "grey50") +
@@ -144,6 +145,7 @@ net_main_routes <- filter_smooth2(net_main_routes,
 plot(net_main_routes)
 st_as_sf(net_main_routes, "edges") |> fnobs()
 
+# <Figure 16: RHS>
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(edges) + tm_lines(col = "grey70", lwd = 2) +
   tm_shape(nodes) + tm_dots(size = 0.1, fill = "grey50") +
@@ -223,8 +225,9 @@ attr(nodes$product, "levels") <- c("Small City/Node", "City > 200K", "Port", "Ci
 class(nodes$product) <- "factor"
 
 # Plotting
+# <Figure 41: LHS> (Use nname <- "all_routes" above to generate the RHS)
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
-  tm_shape(edges) + # _real
+  tm_shape(edges) + # Use edges_real to generate <Figure A21>
   tm_lines(col = "speed_kmh", 
            col.legend = tm_legend("Speed", position = c("left", "bottom"), stack = "h", 
                                   frame = FALSE, text.size = 1.5, title.size = 2),
