@@ -69,6 +69,8 @@ High-resolution geospatial datasets used include:
 
 - International Wealth Index (1.6km): https://www.sciencedirect.com/science/article/abs/pii/S0305750X22002182, data: https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/5OGWYM
 
+- GADM Country Boundaries: https://gadm.org/download_world.html
+
 Other (non-high-resolution/non-spatial) datasets used include:
 
 - Global International Ports (World Bank): https://datacatalog.worldbank.org/search/dataset/0038118/Global---International-Ports
