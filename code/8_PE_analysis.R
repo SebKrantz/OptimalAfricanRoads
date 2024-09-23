@@ -68,6 +68,7 @@ add_links$nre_gain_perc <- (unattrib(add_links$nre_per_link / nre) - 1) * 100
 descr(add_links$nre_gain_perc)
 
 # Plot percent increase
+# <Figure 19: LHS>
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(edges) +
   tm_lines(lwd = 2, col = "grey70") +
@@ -106,6 +107,7 @@ add_links$nre_wtd_gain_perc <- (unattrib(add_links$nre_wtd_per_link / nre_wtd) -
 descr(add_links$nre_wtd_gain_perc)
 
 # Plot percent increase
+# <Figure 19: RHS>
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(edges) +
   tm_lines(lwd = 2, col = "grey70") +
@@ -146,10 +148,10 @@ fndistinct(atomic_elem(nodes))
 
 # Computing total market access
 (MA_real <- total_MA(dist_ttime_mats$distances, nodes$gdp))
-(MA <- total_MA(distances, nodes$gdp)) # ^3.8
+(MA <- total_MA(distances, nodes$gdp)) # distances^3.8
 
 # Total gain
-(MA_ext <- total_MA(distances_ext, nodes$gdp)) # ^3.8 
+(MA_ext <- total_MA(distances_ext, nodes$gdp)) # distances^3.8 
 
 MA_ext / MA
 
@@ -169,6 +171,7 @@ add_links$MA_per_link <- sapply(seq_row(add_links), function(i) {
 add_links$MA_gain_perc <- (add_links$MA_per_link / MA - 1) * 100
 descr(add_links$MA_gain_perc)
 
+# <Figure 20: LHS> (Use distances^3.8 above to generate RHS)
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(edges) +
   tm_lines(lwd = 2, col = "grey70") +
@@ -255,6 +258,7 @@ add_links$MA_per_link_bc <- sapply(seq_row(add_links), function(i) {
 add_links$MA_gain_perc_bc <- (add_links$MA_per_link_bc / MA_bc - 1) * 100
 descr(add_links$MA_gain_perc_bc)
 
+# <Figure 21: LHS>
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(edges) +
   tm_lines(lwd = 2, col = "grey70") +
@@ -278,6 +282,7 @@ settfm(add_links,
 add_links |> gvr("ratio") |> descr()
 add_links$MA_gain_bc_ratio |> replace_outliers(c(0, 1), "clip", set = TRUE)
 
+# <Figure 21: RHS>
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(edges) +
   tm_lines(lwd = 2, col = "grey70") +
@@ -346,6 +351,7 @@ add_links$MA_per_link_bc_opt <- sapply(seq_row(add_links), function(i) {
 add_links$MA_gain_perc_bc_opt <- (add_links$MA_per_link_bc_opt / MA_bc_opt - 1) * 100
 descr(add_links$MA_gain_perc_bc_opt)
 
+# <Figure 22: LHS>
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(edges) +
   tm_lines(lwd = 2, col = "grey70") +
@@ -369,6 +375,7 @@ settfm(add_links,
 
 add_links |> gvr("ratio") |> descr()
 
+# <Figure 22: RHS>
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(edges) +
   tm_lines(lwd = 2, col = "grey70") +
@@ -387,6 +394,7 @@ dev.off()
 
 # Estimating Network Building Costs -------------------------------------------
 
+## This commented code shows how the 3000m buffer around links is computed and applied
 # add_links_buff_3km <- st_buffer(add_links, as_units(3000, "m"))
 # edges_buff_3km <- st_buffer(edges, as_units(3000, "m"))
 #
@@ -410,6 +418,7 @@ edges %<>% join(rugg_pop$edges)
 rm(rugg_pop)
 
 # Plot Ruggedness
+# <Figure 23: LHS>
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(mutate(rbind(select(edges, rugg), select(add_links, rugg)), rugg = rugg / 1000)) +
   tm_lines(col = "rugg",
@@ -427,6 +436,7 @@ add_links |> gvr("_km2") |> descr()
 edges |> gvr("_km2") |> descr()
 
 # Plot Population Density
+# <Figure 23: RHS>
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(rbind(select(edges, pop_wpop_km2), select(add_links, pop_wpop_km2))) +
   tm_lines(col = "pop_wpop_km2",
@@ -457,6 +467,9 @@ ROCKS <- qread("data/other_inputs/ROCKS_2018.qs")
 continental_africa <- fread("data/other_inputs/continental_africa.csv")
 
 options(scipen = 1000)
+
+# +++ This computes the different parts of <Table 5> and <Table 6> +++
+
 # Aggreaating for Continental Africa
 ROCKS_AFR_AGG <- ROCKS |> 
   mutate(iso3c = countrycode::countryname(country, "iso3c")) |> 
@@ -535,6 +548,7 @@ sum(add_links$distance / 1000) / 1e3
 sum(add_links$cost_km * add_links$distance / 1000) / 1e9
 
 # Plots
+# <Figure A12: LHS>
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(rbind(select(edges, cost_km), select(add_links, cost_km))) +
   tm_lines(col = "cost_km",
@@ -556,6 +570,7 @@ add_links$cost_km_adj[alg_mor] <- add_links$cost_km_adj[alg_mor] / 3
 
 tmap_mode("plot")
 
+# <Figure A12: RHS>
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(edges) +
   tm_lines(lwd = 2, col = "grey70") +
@@ -599,6 +614,7 @@ settfm(add_links, MA_gain_pusd = perch_to_diff(MA_per_link, MA_gain_perc) * 1000
 descr(add_links$MA_gain_pusd)
 proportions(table(add_links$MA_gain_pusd < 1))
 
+# <Figure 24: LHS (Top)>
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(edges) +
   tm_lines(lwd = 2, col = "grey70") +
@@ -618,6 +634,7 @@ dev.off()
 settfm(add_links, MA_gain_pusd_bc = perch_to_diff(MA_per_link_bc, MA_gain_perc_bc) * 1000 / (cost_km * distance / 1000)) # * 1216
 descr(add_links$MA_gain_pusd_bc)
 
+# <Figure 24: RHS (Top)>
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(edges) +
   tm_lines(lwd = 2, col = "grey70") +
@@ -637,6 +654,7 @@ dev.off()
 settfm(add_links, MA_gain_pusd_bc_opt = perch_to_diff(MA_per_link_bc_opt, MA_gain_perc_bc_opt) * 1000 / (cost_km * distance / 1000)) # * 1216
 descr(add_links$MA_gain_pusd_bc_opt)
 
+# <Figure 24: LHS (Bottom)>
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(edges) +
   tm_lines(lwd = 2, col = "grey70") +
@@ -657,6 +675,7 @@ settfm(add_links,
        consensus = MA_gain_pusd > 1 & (MA_gain_pusd_bc > 1 | MA_gain_pusd_bc_opt > 1),
        MA_gain_pusd_cons = pmean(MA_gain_pusd, MA_gain_pusd_bc, MA_gain_pusd_bc_opt))
 
+# <Figure 24: RHS (Bottom)>
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(edges) +
   tm_lines(lwd = 2, col = "grey70") +
@@ -708,6 +727,8 @@ ma_gain_per_km_cons / sum(with(subset(add_links, consensus), cost_km_adj * dista
 
 settfm(edges, speed_kmh = (distance / 1000) / (duration / 60))
 descr(edges$speed_kmh)
+
+# <Figure 25: LHS>
 hist(edges$speed_kmh, breaks = 80, xlab = "Average Link Speed in km/h", main = NULL)
 dev.copy(pdf, "figures/transport_network/trans_africa_network_average_link_speed_hist.pdf", width = 8, height = 8)
 dev.off()
@@ -716,6 +737,7 @@ dev.off()
 # edges |> select(speed_kmh) |> mapview::mapview() 
 
 # Plot
+# <Figure 25: RHS>
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(edges) +
   tm_lines(col = "speed_kmh", 
@@ -760,6 +782,7 @@ edges$MA_100_min_speed <- sapply(seq_row(edges), function(i) {
 edges$MA_100_min_speed_perc <- (edges$MA_100_min_speed / MA - 1) * 100
 descr(edges$MA_100_min_speed_perc)
 
+# <Figure 26: A>
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(edges) +
   tm_lines(col = "MA_100_min_speed_perc", 
@@ -808,6 +831,7 @@ add_links$MA_per_link_100kmh <- sapply(seq_row(add_links), function(i) {
 add_links$MA_per_link_100kmh_perc <- (add_links$MA_per_link_100kmh / MA - 1) * 100
 descr(add_links$MA_per_link_100kmh_perc)
 
+# <Figure 26: B>
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(edges) +
   tm_lines(lwd = 2, col = "grey70") +
@@ -837,6 +861,7 @@ add_links$MA_per_link_100kmh_imp <- sapply(seq_row(add_links), function(i) {
 add_links$MA_per_link_100kmh_imp_perc <- (add_links$MA_per_link_100kmh_imp / MA_imp - 1) * 100
 descr(add_links$MA_per_link_100kmh_imp_perc)
 
+# <Figure 26: C>
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(edges) +
   tm_lines(lwd = 2, col = "grey70") +
@@ -861,6 +886,7 @@ settfm(add_links,
 
 descr(add_links$MA_per_link_100kmh_perc_ratio)
 
+# <Figure 26: D>
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(edges) +
   tm_lines(lwd = 2, col = "grey70") +
@@ -911,6 +937,7 @@ edges$MA_100_min_speed_bt <- sapply(seq_row(edges), function(i) {
 edges$MA_100_min_speed_bt_perc <- (edges$MA_100_min_speed_bt / MA_bt - 1) * 100
 descr(edges$MA_100_min_speed_bt_perc)
 
+# <Figure 27: LHS>
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(edges) +
   tm_lines(col = "MA_100_min_speed_bt_perc", 
@@ -933,6 +960,7 @@ settfm(edges,
 descr(edges$MA_100_min_speed_bt_ratio)
 edges$MA_100_min_speed_bt_ratio |> replace_outliers(c(0, 1), "clip", set = TRUE)
 
+# <Figure 27: RHS>
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(edges) +
   tm_lines(col = "MA_100_min_speed_bt_ratio", 
@@ -985,6 +1013,7 @@ edges$MA_100_min_speed_bt_opt <- sapply(seq_row(edges), function(i) {
 edges$MA_100_min_speed_bt_opt_perc <- (edges$MA_100_min_speed_bt_opt / MA_bt_opt - 1) * 100
 descr(edges$MA_100_min_speed_bt_opt_perc)
 
+# <Figure 28: LHS>
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(edges) +
   tm_lines(col = "MA_100_min_speed_bt_opt_perc", 
@@ -1007,6 +1036,7 @@ settfm(edges,
 
 descr(edges$MA_100_min_speed_bt_opt_ratio)
 
+# <Figure 28: RHS>
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(edges) +
   tm_lines(col = "MA_100_min_speed_bt_opt_ratio", 
@@ -1031,6 +1061,7 @@ settfm(edges, upgrade_cat = nif(speed_kmh < 60, "Upgrade", speed_kmh >= 60 & spe
          factor(levels = c("Nothing", "Asphalt Mix Resurfacing", "Mixed Works", "Upgrade")))
 table(edges$upgrade_cat)
 
+# <Figure 29: LHS>
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(edges) +
   tm_lines(col = "upgrade_cat", 
@@ -1064,6 +1095,7 @@ descr(edges$ug_cost_km)
 descr(edges, ug_cost_km ~ upgrade_cat)
 hist(edges$ug_cost_km, breaks = 80)
 
+# <Figure 29: RHS>
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(edges) +
   tm_lines(col = "ug_cost_km", 
@@ -1100,6 +1132,7 @@ settfm(edges, MA_gain_pusd = perch_to_diff(MA_100_min_speed, MA_100_min_speed_pe
 descr(edges$MA_gain_pusd)
 proportions(table(edges$MA_gain_pusd < 1))
 
+# <Figure 30: LHS (Top)>
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(edges) + 
   tm_lines(col = "MA_gain_pusd", 
@@ -1119,6 +1152,7 @@ settfm(edges, MA_gain_pusd_bt = perch_to_diff(MA_100_min_speed_bt, MA_100_min_sp
 descr(edges$MA_gain_pusd_bt)
 proportions(table(edges$MA_gain_pusd_bt < 1))
 
+# <Figure 30: RHS (Top)>
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(edges) +
   tm_lines(col = "MA_gain_pusd_bt", 
@@ -1138,6 +1172,7 @@ settfm(edges, MA_gain_pusd_bt_opt = perch_to_diff(MA_100_min_speed_bt_opt, MA_10
 descr(edges$MA_gain_pusd_bt_opt)
 proportions(table(edges$MA_gain_pusd_bt_opt < 1))
 
+# <Figure 30: LHS (Bottom)>
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(edges) +
   tm_lines(col = "MA_gain_pusd_bt_opt", 
@@ -1157,6 +1192,7 @@ settfm(edges,
        consensus = MA_gain_pusd > 1 & (MA_gain_pusd_bt > 1 | MA_gain_pusd_bt_opt > 1), 
        MA_gain_pusd_cons = pmean(MA_gain_pusd, MA_gain_pusd_bt, MA_gain_pusd_bt_opt))
 
+# <Figure 30: RHS (Bottom)>
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(subset(edges, !consensus)) + tm_lines(lwd = 2, col = "grey70") +
   tm_shape(subset(edges, consensus, MA_gain_pusd_cons)) +
@@ -1212,10 +1248,13 @@ all_costs <- rowbind(existing = select(edges, cost_km = ug_cost_km, distance, du
                      idcol = "type")
 
 descr(all_costs$cost_km)
+
+# <Figure 31: LHS>
 hist(all_costs$cost_km / 1000, breaks = 80, xlab = "Cost per Km in Thousands of 2015 USD", main = NULL)
 dev.copy(pdf, "figures/transport_network/trans_africa_network_all_costs_hist.pdf", width = 8, height = 8)
 dev.off()
 
+# <Figure 31: RHS>
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(all_costs) +
   tm_lines(col = "cost_km", 
@@ -1273,6 +1312,7 @@ descr(all_cb_ratios)
 
 for (v in .c(pusd, pusd_bt, pusd_bt_opt)) {
   print(v)
+  # <Figure 32: First 3 Plots>
   pl <- tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
     tm_shape(all_cb_ratios) + 
     tm_lines(col = paste0("MA_gain_", v), 
@@ -1297,6 +1337,7 @@ settfm(all_cb_ratios,
        consensus = MA_gain_pusd > i & (MA_gain_pusd_bt > i | MA_gain_pusd_bt_opt > i), # 1, 2, or 4
        MA_gain_pusd_cons = pmean(MA_gain_pusd, MA_gain_pusd_bt, MA_gain_pusd_bt_opt))
 
+# <Figure 32: Last 3 Plots>
 pl <- tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(subset(all_cb_ratios, !consensus)) + tm_lines(lwd = 2, col = "grey70") +
   tm_shape(subset(all_cb_ratios, consensus, MA_gain_pusd_cons)) +
@@ -1366,6 +1407,7 @@ inv_PDV <- function(PDV = 40e9, ...) {
 # Test
 inv_PDV(my_PDV())
 
+# +++ This builds the components of <Table 7> +++
 packages <- c(
   "Full Extension" = 56.1e9, # sum(add_links$cost_km * add_links$distance / 1000) 
   "Consensus Extension" = 12.1e9,
@@ -1505,8 +1547,9 @@ graph_nodes %<>%
 with(graph_nodes, sum(prod_in*population)/sum(IWI*population))
 with(graph_nodes, sum(prod*population)/sum(IWI*population))
 
-# Table
 table(graph_nodes$citys)
+
+# <Table 8>
 graph_nodes |> qDT() |> 
   collap(prod_in ~ citys, list(fsum, fmean, fmedian), give.names = FALSE) |> 
   transpose(make.names = "citys", keep.names = "stat") |> 
@@ -1516,6 +1559,7 @@ graph_nodes |> qDT() |>
 # load("data/transport_network/trans_africa_network.RData")
 edges_real <- qread("data/transport_network/edges_real_simplified.qs")
 
+# <Figure 33>
 pdf("figures/transport_network/trans_africa_network_GE_parameterization_latest.pdf", width = 12, height = 12)
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(mutate(edges_real, speed_kmh = (edges$distance/1000)/(edges$duration/60)) |> 
