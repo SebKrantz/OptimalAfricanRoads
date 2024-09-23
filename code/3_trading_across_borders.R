@@ -75,9 +75,9 @@ border_dist_mat_transit %>% qDF("iso3c") %>%
   fwrite("data/QSE/model_border_dist_mat_transit.csv")
 
 
-#####################################################
-# Trading Across Borders Summary Table (Tables 3 & 4)
-#####################################################
+#######################################################
+# Trading Across Borders Summary Table (<Tables 3 & 4>)
+#######################################################
 
 SERIES = am_series()
 exc = SERIES[startsWith(Topic, "25"), Series]
