@@ -513,7 +513,7 @@ nodes$population[!nodes$city_port] <- rowSums(m %r*% WC24_Africa$population[!use
 WC24_Africa[, pop_cap := 5^as.integer(factor(capital, levels = c("", "admin", "minor", "primary"))) * population]
 nodes$city_country <- NA_character_
 nodes$city_country[!nodes$city_port] <- WC24_Africa |> 
-  with(paste(city, country, sep = " - ")) |> 
+  extract(!used, paste(city, country, sep = " - "))
   extract(dapply(m %r*% WC24_Africa$pop_cap[!used], 
                  function(x) if(any(x > 0.1)) which.max(x) else NA_integer_, MARGIN = 1))
 # Now adding port cities (closest matches)
