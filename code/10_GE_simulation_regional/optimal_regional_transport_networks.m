@@ -5,34 +5,34 @@ addpath("code/OptimalTransportNetworkToolbox/lib")
 addpath("code/helpers")
 
 % Read Undirected Graph
-graph_orig = readtable('data/transport_network/csv/graph_orig.csv');
-graph_orig.add = false(height(graph_orig), 1);
-graph_orig.Properties.VariableNames{'ug_cost_km'} = 'cost_per_km';
+edges_orig = readtable('data/transport_network/csv/graph_orig.csv');
+edges_orig.add = false(height(edges_orig), 1);
+edges_orig.Properties.VariableNames{'ug_cost_km'} = 'cost_per_km';
 
 % Read Additional Links 
-graph_add = readtable('data/transport_network/csv/graph_add.csv');
-graph_add.add = true(height(graph_add), 1);
-graph_add.Properties.VariableNames{'duration_100kmh'} = 'duration';
-graph_add.Properties.VariableNames{'cost_km'} = 'cost_per_km';
+edges_add = readtable('data/transport_network/csv/graph_add.csv');
+edges_add.add = true(height(edges_add), 1);
+edges_add.Properties.VariableNames{'duration_100kmh'} = 'duration';
+edges_add.Properties.VariableNames{'cost_km'} = 'cost_per_km';
 
 % Combining
-graph = [graph_orig(:, {'add', 'from', 'to', 'distance', 'duration', 'cost_per_km', 'border_dist'}); ...
-         graph_add(:, {'add', 'from', 'to', 'distance', 'duration', 'cost_per_km', 'border_dist'})];
+edges = [edges_orig(:, {'add', 'from', 'to', 'distance', 'duration', 'cost_per_km', 'border_dist'}); ...
+         edges_add(:, {'add', 'from', 'to', 'distance', 'duration', 'cost_per_km', 'border_dist'})];
 
 % Adjusting 
-graph.distance = graph.distance / 1000;          % Convert to km
-graph.border_dist = graph.border_dist / 1000;    % Convert to km
-graph.duration = graph.duration / 60;            % Convert to hours
-graph.cost_per_km = graph.cost_per_km / 1000000; % Convert to millions
-graph.total_cost = graph.cost_per_km .* graph.distance
+edges.distance = edges.distance / 1000;          % Convert to km
+edges.border_dist = edges.border_dist / 1000;    % Convert to km
+edges.duration = edges.duration / 60;            % Convert to hours
+edges.cost_per_km = edges.cost_per_km / 1000000; % Convert to millions
+edges.total_cost = edges.cost_per_km .* edges.distance
 
-n = max([max(graph.from); max(graph.to)]);
+n = max([max(edges.from); max(edges.to)]);
 
 % Create Adjacency Matrix
 adj_matrix = false(n, n);
-for i = 1:height(graph)
-    adj_matrix(graph.from(i), graph.to(i)) = true;
-    adj_matrix(graph.to(i), graph.from(i)) = true;
+for i = 1:height(edges)
+    adj_matrix(edges.from(i), edges.to(i)) = true;
+    adj_matrix(edges.to(i), edges.from(i)) = true;
 end
 
 % Read Nodes Data
@@ -43,31 +43,31 @@ summary(nodes);
 
 % Create Infrastructure Matrix: Following Graff (2024) = average speed in km/h: length of route is accounted for in cost function
 infra_matrix = zeros(n, n);
-for i = 1:height(graph)
-    if graph.add(i)
-        infra_matrix(graph.from(i), graph.to(i)) = 0.0;
-        infra_matrix(graph.to(i), graph.from(i)) = 0.0;
+for i = 1:height(edges)
+    if edges.add(i)
+        infra_matrix(edges.from(i), edges.to(i)) = 0.0;
+        infra_matrix(edges.to(i), edges.from(i)) = 0.0;
     else
-        speed = graph.distance(i) / graph.duration(i);
-        infra_matrix(graph.from(i), graph.to(i)) = speed;
-        infra_matrix(graph.to(i), graph.from(i)) = speed;
+        speed = edges.distance(i) / edges.duration(i);
+        infra_matrix(edges.from(i), edges.to(i)) = speed;
+        infra_matrix(edges.to(i), edges.from(i)) = speed;
     end
 end
 
 % Create Iceberg Trade Cost Matrix: Following Graff (2024)
-% graph.distance = graph.distance + graph.border_dist; % uncomment to enable frictions
+% edges.distance = edges.distance + edges.border_dist; % uncomment to enable frictions
 iceberg_matrix = zeros(n, n);
-for i = 1:height(graph)
-    iceberg_matrix(graph.from(i), graph.to(i)) = 0.1158826 * log(graph.distance(i) / 1.609);
-    iceberg_matrix(graph.to(i), graph.from(i)) = 0.1158826 * log(graph.distance(i) / 1.609);
+for i = 1:height(edges)
+    iceberg_matrix(edges.from(i), edges.to(i)) = 0.1158826 * log(edges.distance(i) / 1.609);
+    iceberg_matrix(edges.to(i), edges.from(i)) = 0.1158826 * log(edges.distance(i) / 1.609);
 end
 iceberg_matrix(iceberg_matrix < 0) = 0;
 
 % Create Infrastructure Building Cost Matrix: Following Graff (2024)
 infra_building_matrix = zeros(n, n);
-for i = 1:height(graph)
-    infra_building_matrix(graph.from(i), graph.to(i)) = graph.total_cost(i);
-    infra_building_matrix(graph.to(i), graph.from(i)) = graph.total_cost(i);
+for i = 1:height(edges)
+    infra_building_matrix(edges.from(i), edges.to(i)) = edges.total_cost(i);
+    infra_building_matrix(edges.to(i), edges.from(i)) = edges.total_cost(i);
 end
 
 % Basic characteristics of the economy
@@ -151,15 +151,15 @@ param = init_parameters('Annealing', 'on', 'ADiGator', 'off', 'LaborMobility', '
                         'a', a, 'sigma', sigma, 'N', N, 'alpha', alpha, 'beta', beta, 'gamma', gamma, 'rho', rho, ...
                         'verbose', 'on', 'K', K, 'TolKappa', 1e-5);
 
-[param, g] = create_graph(param,[],[],'X',nodes.lon,'Y',nodes.lat,'Type','custom','Adjacency',adj_matrix);
+[param, graph] = create_graph(param,[],[],'X',nodes.lon,'Y',nodes.lat,'Type','custom','Adjacency',adj_matrix);
 
 param.Lj = population; 
 param.Zjn = productivity;
 % param.omegaj = weights; % In case want to give more weight to specific locations
 param.Hj = population .* (1-alpha); % TG: I normalise this because the general utility function has a (h_j/(1-alpha))^(1-alpha) thing with it
 
-g.delta_i = infra_building_matrix;
-g.delta_tau = iceberg_matrix;
+graph.delta_i = infra_building_matrix;
+graph.delta_tau = iceberg_matrix;
 
 % Naming conventions: if IRS -> 'cgc_irs'; if alpha = 0.1 -> add '_alpha01'; if with_ports = false -> add '_noport'; if frictions -> add '_bc' (border cost)
 filename = '4g_50b_fixed_cgc_sigma15'; % adjust if sigma != 1.5
@@ -167,20 +167,20 @@ fprintf('File extension: %s\n', filename)
 
 % Solve allocation from existing infrastructure
 strcat("Started P_stat on ", datestr(datetime('now')))
-res_stat = solve_allocation(param, g, infra_matrix, true);
+res_stat = solve_allocation(param, graph, infra_matrix, true);
 
 % Solve Optimal Network (this can take long - up to 48h)
 strcat("Started P_opt on ", datestr(datetime('now')))
-res_opt = optimal_network(param, g, infra_matrix, min_mask, max_mask, false);
-% res_ann = annealing(param,g,res.Ijk,'Il',min_mask,'Iu',max_mask); % Annealing is enabled by default if gamma > beta
+res_opt = optimal_network(param, graph, infra_matrix, min_mask, max_mask, false);
+% res_ann = annealing(param,graph,res.Ijk,'Il',min_mask,'Iu',max_mask); % Annealing is enabled by default if gamma > beta
 
 % Check: should be 1
-K / sum(sum(res_opt.Ijk .* g.delta_i))
+K / sum(sum(res_opt.Ijk .* graph.delta_i))
 
 % Plot Network
-plot_graph(param, g, res_opt.Ijk, 'Margin', 0.01);
+plot_graph(param, graph, res_opt.Ijk, 'Margin', 0.01);
 axis equal;
-plot_graph(param, g, res_opt.Ijk - infra_matrix, 'Margin', 0.01);
+plot_graph(param, graph, res_opt.Ijk - infra_matrix, 'Margin', 0.01);
 axis equal;
 
 % Saving: Nodes
@@ -205,11 +205,11 @@ end
 writetable(res_nodes, sprintf('results/transport_network/GE/regional/nodes_results_%s.csv', filename))
 
 % Saving: Graph / Edges
-res_graph = graph;
-res_graph.Ijk_orig = res_to_vec(infra_matrix, graph);
-res_graph.Ijk = res_to_vec(res_opt.Ijk, graph);
+res_edges = edges;
+res_edges.Ijk_orig = res_to_vec(infra_matrix, edges);
+res_edges.Ijk = res_to_vec(res_opt.Ijk, edges);
 for n=1:N
-   res_graph = setfield(res_graph, ['Qjk_', num2str(n)], res_to_vec(res_opt.Qjkn(:,:,n), graph));
+   res_edges = setfield(res_edges, ['Qjk_', num2str(n)], res_to_vec(res_opt.Qjkn(:,:,n), edges));
 end
-writetable(res_graph, sprintf('results/transport_network/GE/regional/edges_results_%s.csv', filename));
+writetable(res_edges, sprintf('results/transport_network/GE/regional/edges_results_%s.csv', filename));
 

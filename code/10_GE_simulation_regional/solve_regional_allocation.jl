@@ -9,29 +9,29 @@ using OptimalTransportNetworks
 include("../helpers/helpers.jl")
 
 # Read Undirected Graph
-graph_orig = CSV.read("data/transport_network/csv/graph_orig.csv", DataFrame)
-graph_orig.add .= false
+edges_orig = CSV.read("data/transport_network/csv/graph_orig.csv", DataFrame)
+edges_orig.add .= false
 # Read Additional Links 
-graph_add = CSV.read("data/transport_network/csv/graph_add.csv", DataFrame)
-graph_add.add .= true
+edges_add = CSV.read("data/transport_network/csv/graph_add.csv", DataFrame)
+edges_add.add .= true
 # Combining
-graph = vcat(select(graph_orig, :add, :from, :to, :distance, :duration, :ug_cost_km => :cost_per_km, :border_dist), 
-             select(graph_add, :add, :from, :to, :distance, :duration_100kmh => :duration, :cost_km => :cost_per_km, :border_dist))
-histogram(graph.cost_per_km, bins=100)
+edges = vcat(select(edges_orig, :add, :from, :to, :distance, :duration, :ug_cost_km => :cost_per_km, :border_dist), 
+             select(edges_add, :add, :from, :to, :distance, :duration_100kmh => :duration, :cost_km => :cost_per_km, :border_dist))
+histogram(edges.cost_per_km, bins=100)
 
 # Adjusting 
-graph.distance /= 1000    # Convert to km
-graph.border_dist /= 1000 # Convert to km
-graph.duration /= 60      # Convert to hours
-graph.cost_per_km /= 1e6  # Convert to millions
-graph.total_cost = graph.cost_per_km .* graph.distance
+edges.distance /= 1000    # Convert to km
+edges.border_dist /= 1000 # Convert to km
+edges.duration /= 60      # Convert to hours
+edges.cost_per_km /= 1e6  # Convert to millions
+edges.total_cost = edges.cost_per_km .* edges.distance
 
-n = maximum([maximum(graph.from), maximum(graph.to)])
+n = maximum([maximum(edges.from), maximum(edges.to)])
 
 # Create Adjacency Matrix
 adj_matrix = falses(n, n)
-for i in 1:size(graph, 1)
-    adj_matrix[graph.from[i], graph.to[i]] = adj_matrix[graph.to[i], graph.from[i]] = true
+for i in 1:size(edges, 1)
+    adj_matrix[edges.from[i], edges.to[i]] = adj_matrix[edges.to[i], edges.from[i]] = true
 end
 
 # Read Nodes Data
@@ -42,27 +42,27 @@ describe(nodes)
 
 # Create Infrastructure Matrix: Following Graff (2024) = average speed in km/h: length of route is accounted for in cost function
 infra_matrix = zeros(n, n)
-for i in 1:size(graph, 1)
-    if graph.add[i]
-        infra_matrix[graph.from[i], graph.to[i]] = infra_matrix[graph.to[i], graph.from[i]] = 0.0
+for i in 1:size(edges, 1)
+    if edges.add[i]
+        infra_matrix[edges.from[i], edges.to[i]] = infra_matrix[edges.to[i], edges.from[i]] = 0.0
     else
-        speed = graph.distance[i] / graph.duration[i]
-        infra_matrix[graph.from[i], graph.to[i]] = infra_matrix[graph.to[i], graph.from[i]] = speed
+        speed = edges.distance[i] / edges.duration[i]
+        infra_matrix[edges.from[i], edges.to[i]] = infra_matrix[edges.to[i], edges.from[i]] = speed
     end
 end
 
 # Create Iceberg Trade Cost Matrix: Following Graff (2024)
-# graph.distance += graph.border_dist # uncomment to enable frictions
+# edges.distance += edges.border_dist # uncomment to enable frictions
 iceberg_matrix = zeros(n, n)
-for i in 1:size(graph, 1)
-    iceberg_matrix[graph.from[i], graph.to[i]] = iceberg_matrix[graph.to[i], graph.from[i]] = 0.1158826 * log(graph.distance[i] / 1.609)
+for i in 1:size(edges, 1)
+    iceberg_matrix[edges.from[i], edges.to[i]] = iceberg_matrix[edges.to[i], edges.from[i]] = 0.1158826 * log(edges.distance[i] / 1.609)
 end
 iceberg_matrix[iceberg_matrix .< 0] .= 0
 
 # Create Infrastructure Building Cost Matrix: Following Graff (2024)
 infra_building_matrix = zeros(n, n)
-for i in 1:size(graph, 1)
-    infra_building_matrix[graph.from[i], graph.to[i]] = infra_building_matrix[graph.to[i], graph.from[i]] = graph.total_cost[i]
+for i in 1:size(edges, 1)
+    infra_building_matrix[edges.from[i], edges.to[i]] = infra_building_matrix[edges.to[i], edges.from[i]] = edges.total_cost[i]
 end
 
 # Basic characteristics of the economy
@@ -127,11 +127,11 @@ filename = "4g_50b_fixed_cgc_sigma15_alpha01" # adjust if sigma != 1.5
 println("Input file: $filename")
 
 # Read optimal infrastructure investments and generate matrix
-res_graph = CSV.read("results/transport_network/GE/regional/edges_results_$(filename).csv", DataFrame)
-infra_matrix_opt = vec_to_res(n, res_graph.Ijk, graph)
+res_edges = CSV.read("results/transport_network/GE/regional/edges_results_$(filename).csv", DataFrame)
+infra_matrix_opt = vec_to_res(n, res_edges.Ijk, edges)
 
 # Check: should be >= 1
-extrema(res_graph.Ijk ./ res_to_vec(infra_matrix, graph))
+extrema(res_edges.Ijk ./ res_to_vec(infra_matrix, edges))
 
 # Solve allocation from optimal infrastructure investments
 @time res_opt = optimal_network(param, graph, I0 = infra_matrix_opt, solve_allocation = true, verbose = true)
@@ -162,11 +162,11 @@ end
 res_nodes |> CSV.write("results/transport_network/GE/regional/nodes_results_$(filename)_$(fileext).csv")
 
 # Saving: Graph / Edges
-res_graph = deepcopy(graph)
-res_graph.Ijk_orig = res_to_vec(infra_matrix, graph)
-res_graph.Ijk = res_to_vec(infra_matrix_opt, graph)
+res_edges = deepcopy(edges)
+res_edges.Ijk_orig = res_to_vec(infra_matrix, edges)
+res_edges.Ijk = res_to_vec(infra_matrix_opt, edges)
 for n in 1:N
-   res_graph[!, Symbol("Qjk_$(n)")] = res_to_vec(res_opt[:Qjkn][:,:,n], graph)
+   res_edges[!, Symbol("Qjk_$(n)")] = res_to_vec(res_opt[:Qjkn][:,:,n], edges)
 end
-res_graph |> CSV.write("results/transport_network/GE/regional/edges_results_$(filename)_$(fileext).csv")
+res_edges |> CSV.write("results/transport_network/GE/regional/edges_results_$(filename)_$(fileext).csv")
 
