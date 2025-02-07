@@ -1534,6 +1534,30 @@ save(list = ls(TAN_env), file = "data/transport_network/trans_africa_network_par
 graph_nodes <- fread("data/transport_network/csv/graph_nodes.csv") 
 graph_edges <- fread("data/transport_network/csv/graph_orig.csv") 
 
+# 47 largest cities
+settfm(graph_nodes, major_city_port = population > 2e6 | outflows > 1e6)
+sum(graph_nodes$major_city_port)
+largest <- c("Dakar - Senegal", "Casablanca - Morocco", "Abidjan - Cote d'Ivoire", 
+             "Kumasi - Ghana", "Algiers - Algeria", "Lagos - Nigeria", "Kano - Nigeria", 
+             "Yaounde - Cameroon", "Luanda - Angola", "Kinshasa - Congo (Kinshasa)", 
+             "Johannesburg - South Africa", "Cape Town - South Africa", "Cairo - Egypt", 
+             "Khartoum - Sudan", "Nairobi - Kenya", "Addis Ababa - Ethiopia", 
+             "Dar es Salaam - Tanzania")
+length(largest)
+
+settfm(graph_nodes, product = nif(major_city_port & base::match(city_country, largest, 0L) > 0L, NA_integer_, # Heterogeneous products
+                            population > 1e6 & outflows > 1e6, 5L, # Large Port-City
+                            population > 2e6, 4L,   # Large City
+                            outflows > 0, 3L,       # Port
+                            population > 2e5, 2L,   # Medium-Sized City
+                            default = 1L))          # Town/Node
+table(graph_nodes$product, na.exclude = FALSE)
+setv(graph_nodes$product, whichNA(graph_nodes$product), seq_along(largest) + 5L)
+# Need to write this to ensure product classification is available for GE simulation !!!!
+graph_nodes |> atomic_elem() |> qDT() |> fwrite("data/transport_network/csv/graph_nodes.csv")
+attr(graph_nodes$product, "levels") <- c("Small City/Node", "City > 200K", "Port", "City > 2M", "Large Port-City", paste("Megacity", seq_along(largest)))
+class(graph_nodes$product) <- "factor"
+
 # Now: Plotting Productivity
 graph_nodes %<>%
   mutate(citys = nif(outflows > 0, 4L, population >= 1e6, 3L, population >= 2e5, 2L, population >= 1, 1L, default = 0L), 
@@ -1559,7 +1583,48 @@ graph_nodes |> qDT() |>
 # load("data/transport_network/trans_africa_network.RData")
 edges_real <- qread("data/transport_network/edges_real_simplified.qs")
 
-# <Figure 33>
+# <Figure 33> (New)
+pdf("figures/transport_network/trans_africa_network_GE_parameterization_latest_22prod.pdf", width = 12, height = 12)
+tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
+  tm_shape(mutate(edges_real, speed_kmh = (edges$distance/1000)/(edges$duration/60)) |> 
+             rowbind(mutate(add_links, speed_kmh = 0) |> st_cast("MULTILINESTRING"), fill = TRUE)) +
+  tm_lines(col = "speed_kmh", 
+           col.legend = tm_legend("Speed (km/h)", position = tm_pos_in(0, 0.51), stack = "h", frame = FALSE, text.size = 1.3, title.size = 1.6),
+           col.scale = tm_scale_continuous(values = "turbo"), # 7, 
+           lwd = 2) + 
+  tm_shape(subset(graph_nodes, citys == 4L) |>
+             mutate(ofl = round(outflows / 1e6, 1))) + 
+  tm_dots(size = "ofl", 
+          size.scale = tm_scale_intervals(5, style = "jenks", values.scale = 2), # 
+          size.legend = tm_legend("Port Outflows (M)", position = tm_pos_in(0, 0.51), frame = FALSE, text.size = 1.3, title.size = 1.6),
+          fill = scales::alpha("black", 0.25)) +
+  
+  tm_shape(subset(graph_nodes, population > 0) |> 
+             mutate(pop = population / 1000, 
+                    product = fifelse(unclass(product) > 5L, NA, product)) |>
+             droplevels()) + 
+  tm_dots(size = "pop", 
+          size.scale = tm_scale_intervals(breaks = c(0, 500, 2000, Inf),
+                                          values = c(1, 3, 5)*0.12),
+          size.legend = tm_legend("City Population (K)", position = tm_pos_in(0, 0.23), stack = "h", # ticks.col = "grey20",
+                                  frame = FALSE, text.size = 1.3, title.size = 1.6),
+          fill = "product",
+          size.free = TRUE,
+          fill.scale = tm_scale_categorical(values = "turbo", value.na = "purple3", label.na = "Megacity (Own Product)"),
+          fill.legend = tm_legend("Product", position = tm_pos_in(0, 0.23), # stack = "h", 
+                                  frame = FALSE, text.size = 1.3, title.size = 1.6)) +  
+  # tm_shape(droplevels(mutate(graph_nodes, product = fifelse(unclass(product) > 5L, NA, product)))) + 
+  # tm_dots(fill = "product", size = 0.25, 
+  #         fill.scale = tm_scale_categorical(values = "turbo", value.na = "purple3", label.na = "Megacity (Own Product)"),
+  #         fill.legend = tm_legend("Product", position = tm_pos_in(0.169, 0.25), # stack = "h", 
+  #                                 frame = FALSE, text.size = 1.3, title.size = 1.6)) +
+  # tm_shape(subset(graph_nodes, unclass(product) > 5L)) + tm_dots(size = 0.5, fill = "purple3") +
+  tm_shape(subset(nodes, population <= 0)) + tm_dots(size = 0.1, fill = "grey70") +
+  tm_layout(frame = FALSE)
+dev.off()
+
+
+# <Figure 33> (Old)
 pdf("figures/transport_network/trans_africa_network_GE_parameterization_latest.pdf", width = 12, height = 12)
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(mutate(edges_real, speed_kmh = (edges$distance/1000)/(edges$duration/60)) |> 
