@@ -210,6 +210,7 @@ largest <- c("Dakar - Senegal", "Casablanca - Morocco", "Abidjan - Cote d'Ivoire
              "Johannesburg - South Africa", "Cape Town - South Africa", "Cairo - Egypt", 
              "Khartoum - Sudan", "Nairobi - Kenya", "Addis Ababa - Ethiopia", 
              "Dar es Salaam - Tanzania")
+length(largest)
 
 settfm(nodes, product = nif(major_city_port & base::match(city_country, largest, 0L) > 0L, NA_integer_, # Heterogeneous products
                             population > 1e6 & outflows > 1e6, 5L, # Large Port-City
