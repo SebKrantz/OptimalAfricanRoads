@@ -142,17 +142,17 @@ println("File extension: $fileext")
 
 # Saving: Nodes
 res_nodes = deepcopy(nodes)
-res_nodes.uj_orig = res_stat[:uj]
-res_nodes.Lj_orig = res_stat[:Lj]
-res_nodes.Cj_orig = res_stat[:Cj]
-res_nodes.Dj_orig = res_stat[:Dj]
-res_nodes.PCj_orig = res_stat[:PCj]
+res_nodes.uj_orig = vec(res_stat[:uj])
+res_nodes.Lj_orig = vec(res_stat[:Lj])
+res_nodes.Cj_orig = vec(res_stat[:Cj])
+res_nodes.Dj_orig = vec(res_stat[:Dj])
+res_nodes.PCj_orig = vec(res_stat[:PCj])
 # res_nodes.welfare = res_opt.welfare; # Same as: sum(res_opt.Lj .* res_opt.uj)
-res_nodes.uj = res_opt[:uj]
-res_nodes.Lj = res_opt[:Lj]
-res_nodes.Cj = res_opt[:Cj]
-res_nodes.Dj = res_opt[:Dj]
-res_nodes.PCj = res_opt[:PCj]
+res_nodes.uj = vec(res_opt[:uj])
+res_nodes.Lj = vec(res_opt[:Lj])
+res_nodes.Cj = vec(res_opt[:Cj])
+res_nodes.Dj = vec(res_opt[:Dj])
+res_nodes.PCj = vec(res_opt[:PCj])
 for n in 1:N
    res_nodes[!, Symbol("Lj_$(n)")] = res_opt[:Ljn][:,n]
    res_nodes[!, Symbol("Dj_$(n)")] = res_opt[:Djn][:,n]
