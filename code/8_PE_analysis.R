@@ -1385,6 +1385,111 @@ print(ma_gain_per_min_cons / 1e9) # MA gain in billions
 print(ma_gain_per_min_cons / sum(with(subset(all_cb_ratios, consensus), cost_km * distance / 1000))) 
 }
 
+# Optimizing Border Posts ------------------------------------------------------------------------------------------
+
+# Two Scenarios: 50% or 100% Reduction
+edges_real <- qread("data/transport_network/edges_real_simplified.qs") |> 
+  select(from, to) |> rmapshaper::ms_simplify(keep = 0.06) |> st_make_valid()
+tfm(edges_real) <- atomic_elem(edges_param)
+edges <- edges_param
+nodes <- nodes_param
+
+# edges_real |> subset(from_ctry != to_ctry) |> mapview::mapview()
+edges |> subset(from_ctry != to_ctry) |> with(descr(border_time/60))
+
+if(!net |> activate("edges") |> tidygraph::as_tibble() |> select(from, to) |> 
+   atomic_elem() |> all.equal(atomic_elem(select(edges, from, to)))) stop("Mismatch") # Check
+
+# Optimizing Agents
+times_bt <- st_network_cost(net, weights = edges$total_time)
+(MA_bt_opt <- total_MA(times_bt, nodes$gdp)) / 1e9
+
+# 50% reduction ++++++++++++++++++++++++++++++++++++++++++++++
+edges$MA_bt_50perc_red <- sapply(seq_row(edges), function(i) {
+  w = copyv(edges$total_time, i, edges$duration[i] + 0.5 * edges$border_time[i], vind1 = TRUE)
+  inv_dur = 1 / unclass(st_network_cost(net, weights = w))
+  diag(inv_dur) = 0 
+  sum(inv_dur %*% nodes$gdp) 
+})
+# Percent increase
+edges$MA_bt_50perc_red_perc <- (edges$MA_bt_50perc_red / MA_bt_opt - 1) * 100
+edges$MA_bt_50perc_red_perc[edges$MA_bt_50perc_red_perc < 1e-5] <- NA
+descr(edges$MA_bt_50perc_red_perc)
+
+# tfm(edges_real) <- atomic_elem(edges)
+pdf("figures/transport_network/PE/trans_africa_network_MA_bt_50perc_red_perc.pdf", width = 10, height = 10)
+tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
+  tm_shape(edges) +
+  tm_lines(col = "MA_bt_50perc_red_perc", 
+           col.scale = tm_scale_continuous(7, values = "brewer.yl_or_rd", label.na = ""), # trans = "log1p"
+           col.legend = tm_legend(expression(Delta~"%"~"MA [GDP/min]"), 
+                                  position = c("left", "bottom"), frame = FALSE, 
+                                  text.size = 1.5, title.size = 2, height = 16, item.width = 0.6), lwd = 2) + 
+  tm_shape(subset(nodes, population > 0)) + tm_dots(size = 0.1) +
+  tm_shape(subset(nodes, population <= 0)) + tm_dots(size = 0.1, fill = "grey70") +
+  tm_layout(frame = FALSE)
+dev.off()
+
+
+# 90% reduction to 12 hours ++++++++++++++++++++++++++++++++++++++++++++++
+
+edges$border_time |> unique(sort = TRUE) |> extract(-1) |> median() |> divide_by(60)
+
+edges$MA_bt_90percto12h_red <- sapply(seq_row(edges), function(i) {
+  w = copyv(edges$total_time, i, edges$duration[i] + 12*60, vind1 = TRUE)
+  inv_dur = 1 / unclass(st_network_cost(net, weights = w))
+  diag(inv_dur) = 0 
+  sum(inv_dur %*% nodes$gdp) 
+})
+# Percent increase
+edges$MA_bt_90percto12h_red_perc <- (edges$MA_bt_90percto12h_red / MA_bt_opt - 1) * 100
+edges$MA_bt_90percto12h_red_perc[edges$MA_bt_90percto12h_red_perc < 1e-5] <- NA
+descr(edges$MA_bt_90percto12h_red_perc)
+
+# tfm(edges_real) <- atomic_elem(edges)
+pdf("figures/transport_network/PE/trans_africa_network_MA_bt_90percto12h_red_perc.pdf", width = 10, height = 10)
+tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
+  tm_shape(edges) +
+  tm_lines(col = "MA_bt_90percto12h_red_perc", 
+           col.scale = tm_scale_continuous(8, values = "brewer.yl_or_rd", label.na = ""), # trans = "log1p"
+           col.legend = tm_legend(expression(Delta~"%"~"MA [GDP/min]"), 
+                                  position = c("left", "bottom"), frame = FALSE, 
+                                  text.size = 1.5, title.size = 2, height = 16, item.width = 0.6), lwd = 2) + 
+  tm_shape(subset(nodes, population > 0)) + tm_dots(size = 0.1) +
+  tm_shape(subset(nodes, population <= 0)) + tm_dots(size = 0.1, fill = "grey70") +
+  tm_layout(frame = FALSE)
+dev.off()
+
+
+# 100% reduction ++++++++++++++++++++++++++++++++++++++++++++++
+
+edges$MA_bt_100perc_red <- sapply(seq_row(edges), function(i) {
+  w = copyv(edges$total_time, i, edges$duration[i], vind1 = TRUE)
+  inv_dur = 1 / unclass(st_network_cost(net, weights = w))
+  diag(inv_dur) = 0 
+  sum(inv_dur %*% nodes$gdp) 
+})
+# Percent increase
+edges$MA_bt_100perc_red_perc <- (edges$MA_bt_100perc_red / MA_bt_opt - 1) * 100
+edges$MA_bt_100perc_red_perc[edges$MA_bt_100perc_red_perc < 1e-5] <- NA
+descr(edges$MA_bt_100perc_red_perc)
+
+tfm(edges_real) <- atomic_elem(edges)
+pdf("figures/transport_network/PE/trans_africa_network_MA_bt_100perc_red_perc.pdf", width = 10, height = 10)
+tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
+  tm_shape(edges) +
+  tm_lines(col = "MA_bt_100perc_red_perc", 
+           col.scale = tm_scale_continuous(7, values = "brewer.yl_or_rd", label.na = ""), # trans = "log1p"
+           col.legend = tm_legend(expression(Delta~"%"~"MA [GDP/min]"), 
+                                  position = c("left", "bottom"), frame = FALSE, 
+                                  text.size = 1.5, title.size = 2, height = 16, item.width = 0.6), lwd = 2) + 
+  tm_shape(subset(nodes, population > 0)) + tm_dots(size = 0.1) +
+  tm_shape(subset(nodes, population <= 0)) + tm_dots(size = 0.1, fill = "grey70") +
+  tm_layout(frame = FALSE)
+dev.off()
+
+
+
 # Macroeconomic Cost-Benefit Analysis (Minimal Required Growth Returns) --------------------------------------------
 
 AFRGDP22 <- 2811259831806 # Affrica GDP 2022 in constant 2015 USD
@@ -1570,6 +1675,9 @@ graph_nodes %<>%
 # Check: This is imports divided by African GDP: 26.5%
 with(graph_nodes, sum(prod_in*population)/sum(IWI*population))
 with(graph_nodes, sum(prod*population)/sum(IWI*population))
+
+# data <- am_data(series = c("BM_GSR_MRCH_CD", "NY_GDP_MKTP_CD"))
+# data |> na_omit() |> group_by(Date) |> num_vars() |> fsum() |> mutate(ratio = BM_GSR_MRCH_CD / NY_GDP_MKTP_CD)
 
 table(graph_nodes$citys)
 
