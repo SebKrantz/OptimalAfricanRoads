@@ -1535,6 +1535,114 @@ sapply(packages, calc_rates, 4.1) |> t() |> round(4)
 sapply(packages, calc_rates, 3) |> t() |> round(4)
 
 
+# Economic Returns to Market Access ------------------------------------------------
+
+library(s2)
+nodes_dmat <- nodes |> st_distance() |> set_units("km")
+nodes_dmat[nodes_dmat > as_units(2000, "km")] <- NA
+diag(nodes_dmat) <- NA
+nodes_dmat[upper.tri(nodes_dmat)] <- NA
+
+# Routes to be calculated
+routes_ind <- which(!is.na(nodes_dmat), arr.ind = TRUE)
+nrow(routes_ind)
+
+# Determining Ideal Hypothetical Network 
+# See: https://christopherwolfram.com/projects/efficiency-of-road-networks/
+
+# EU Route Efficiency  
+keep_routes <- !intercepted_routes(routes_ind, nodes_coord, NULL, alpha = 45, mr = 1/0.767) 
+sum(keep_routes)
+
+# Plot ideal Network
+with(nodes, {
+  oldpar <- par(mar = c(0,0,0,0))
+  plot(lon, lat, cex = population^0.33 / 1e2, pch = 16, col = rgb(0, 0, 0, alpha=0.5), 
+       axes = FALSE, xlab = NA, ylab = NA, asp=1)
+  for (r in mrtl(routes_ind[keep_routes, ])) { # Comment loop to get LHS of Figure 14
+    lines(lon[r], lat[r])
+  }
+  par(oldpar)
+})
+
+dev.copy(pdf, "figures/transport_network/trans_africa_network_EU_45deg_nodes.pdf", width = 10, height = 10)
+dev.off()
+
+# Hypothetical Network
+hyp_links <- with(nodes_coord, lapply(mrtl(routes_ind[keep_routes, ]), function(r) st_linestring(cbind(lon[r], lat[r])))) |> 
+  st_sfc(crs = 4326) |> data.frame(geometry = _) |> st_as_sf(sf_column_name = "geometry") |> 
+  mutate(sp_distance = st_length(geometry), 
+         distance = sp_distance / aere)
+
+hyp_net <- as_sfnetwork(hyp_links, directed = FALSE)
+plot(hyp_net)
+
+ind_hyp <- ckmatch(nodes_coord, mctl(st_coordinates(st_geometry(hyp_net, "nodes"))))
+sp_distances_hyp <- st_distance(st_geometry(hyp_net, "nodes"))[ind_hyp, ind_hyp]
+identical(sp_distances_hyp, sp_distances)
+
+distances_hyp <- st_network_cost(hyp_net, weights = "distance")[ind_hyp, ind_hyp]
+
+# Compare Total MA
+total_MA(distances_hyp, nodes$gdp) / total_MA(distances, nodes$gdp)
+total_MA(distances_hyp, nodes$wealth) / total_MA(distances, nodes$wealth)
+
+# MA
+nodes$MA_dist <- nodes_MA(distances, nodes$gdp)
+nodes$MA_time <- nodes_MA(times, nodes$gdp)
+nodes$MA_dist_hyp <- nodes_MA(distances_hyp, nodes$gdp)
+nodes$MA_dist_wealth <- nodes_MA(distances, nodes$wealth)
+nodes$MA_time_wealth <- nodes_MA(times, nodes$wealth)
+nodes$MA_dist_wealth_hyp <- nodes_MA(distances_hyp, nodes$wealth)
+
+# Now regressions
+fastverse_extend(fixest)
+# Levels
+feols(gdp ~ MA_dist + population + outflows + city_port | iso3c, nodes)
+feols(gdp ~ population + outflows + city_port | iso3c | MA_dist ~ MA_dist_hyp, nodes)
+# Logs (much better)
+feols(log(gdp) ~ log(MA_dist) + log(outflows+1) | iso3c, nodes)
+feols(log(gdp) ~ log(outflows+1) | iso3c | log(MA_dist) ~ log(MA_dist_hyp), nodes)
+feols(log(gdp) ~ log(MA_dist) + log(population+1) + log(outflows+1) | iso3c, nodes)
+feols(log(gdp) ~ log(population+1) + log(outflows+1) | iso3c | log(MA_dist) ~ log(MA_dist_hyp), nodes)
+feols(log(wealth) ~ log(MA_dist_wealth) + log(population+1) + log(outflows+1) | iso3c, nodes)
+feols(log(wealth) ~ log(population+1) + log(outflows+1) | iso3c | log(MA_dist_wealth) ~ log(MA_dist_wealth_hyp), nodes)
+
+# Distances
+models_dist <- list(
+  # GDP per Capita
+  log_gdp_cap_ols = feols(log(gdp_cap) ~ log(MA_dist) + log(outflows+1) | iso3c, nodes),
+  log_gdp_cap_iv = feols(log(gdp_cap) ~ log(outflows+1) | iso3c | log(MA_dist) ~ log(MA_dist_hyp), nodes),
+  # IWI Levels
+  IWI_ols = feols(IWI ~ log(MA_dist_wealth) + log(outflows+1) | iso3c, nodes),
+  IWI_iv = feols(IWI ~ log(outflows+1) | iso3c | log(MA_dist_wealth) ~ log(MA_dist_wealth_hyp), nodes),
+  # IWI Logs
+  log_IWI_ols = feols(log(IWI) ~ log(MA_dist_wealth) + log(outflows+1) | iso3c, nodes),
+  log_IWI_iv = feols(log(IWI) ~ log(outflows+1) | iso3c | log(MA_dist_wealth) ~ log(MA_dist_wealth_hyp), nodes)
+)
+
+etable(models_dist)
+esttex(models_dist, digits.stats = 4, fixef_sizes = TRUE, fixef_sizes.simplify = TRUE, 
+       headers = names(models_dist), fitstat = ~ . + wh.p + ivwald1.p)
+
+# Travel Times
+models_time <- list(
+  # GDP per Capita
+  log_gdp_cap_ols = feols(log(gdp_cap) ~ log(MA_time) + log(outflows+1) | iso3c, nodes),
+  log_gdp_cap_iv = feols(log(gdp_cap) ~ log(outflows+1) | iso3c | log(MA_time) ~ log(MA_dist_hyp), nodes),
+  # IWI Levels
+  IWI_ols = feols(IWI ~ log(MA_time_wealth) + log(outflows+1) | iso3c, nodes),
+  IWI_iv = feols(IWI ~ log(outflows+1) | iso3c | log(MA_time_wealth) ~ log(MA_dist_wealth_hyp), nodes),
+  # IWI Logs
+  log_IWI_ols = feols(log(IWI) ~ log(MA_time_wealth) + log(outflows+1) | iso3c, nodes),
+  log_IWI_iv = feols(log(IWI) ~ log(outflows+1) | iso3c | log(MA_time_wealth) ~ log(MA_dist_wealth_hyp), nodes)
+)
+
+etable(models_time)
+esttex(models_time, digits.stats = 4, fixef_sizes = TRUE, fixef_sizes.simplify = TRUE,
+       headers = names(models_time), fitstat = ~ . + wh.p + ivwald1.p)
+
+
 #############################################
 # Saving PE Results
 #############################################
