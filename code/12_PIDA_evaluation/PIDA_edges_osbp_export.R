@@ -78,6 +78,12 @@ PIDA_ind <- c(
 edges_all_param$PIDA <- "No"
 edges_all_param$PIDA[PIDA_ind] <- "Yes"
 
+bridge_path <- "data/PIDA/PIDA_edges_bridge.csv"
+edges_all_param |> qDT() |> 
+  select(from, to, PIDA) |> 
+  fwrite(bridge_path)
+message("Wrote PIDA edges bridge to: ", bridge_path)
+
 # -------------------------------------------------------------------
 # Merge harmonized OSBP (excluding wrong rows) with distant map-export borders
 # -------------------------------------------------------------------
