@@ -78,12 +78,6 @@ PIDA_ind <- c(
 edges_all_param$PIDA <- "No"
 edges_all_param$PIDA[PIDA_ind] <- "Yes"
 
-bridge_path <- "data/PIDA/PIDA_edges_bridge.csv"
-edges_all_param |> qDT() |> 
-  select(from, to, PIDA) |> 
-  fwrite(bridge_path)
-message("Wrote PIDA edges bridge to: ", bridge_path)
-
 # -------------------------------------------------------------------
 # Merge harmonized OSBP (excluding wrong rows) with distant map-export borders
 # -------------------------------------------------------------------
@@ -142,6 +136,18 @@ merged_path <- "data/PIDA/PIDA_OSBP_border_merged.qs2"
 qs_save(PIDA_OSBP_all, merged_path)
 message("Wrote merged OSBP + border points: ", merged_path)
 
+border_edges <- which(with(edges_all_param, from_ctry != to_ctry))
+border_edges <- border_edges[st_distance(edges_all_param[border_edges, ], PIDA_OSBP_all) |> dapply(which.min)]
+edges_all_param$OSBP <- "No"
+edges_all_param$OSBP[border_edges] <- "Yes"
+
+# Bridge edges
+bridge_path <- "data/PIDA/PIDA_edges_bridge.csv"
+edges_all_param |> qDT() |> 
+  select(from, to, PIDA, OSBP) |> 
+  fwrite(bridge_path)
+message("Wrote PIDA edges bridge to: ", bridge_path)
+
 # -------------------------------------------------------------------
 # Map: PIDA edges and nodes
 # -------------------------------------------------------------------
@@ -164,6 +170,7 @@ pid_map <- tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
     ),
     lwd = 2
   ) +
+  # tm_shape(edges_all_param[border_edges, ]) + tm_lines(col = "red") +
   tm_shape(subset(nodes, population > 0)) +
   tm_dots(size = 0.1) +
   tm_shape(subset(nodes, population <= 0)) +
