@@ -714,9 +714,9 @@ How do the PIDA projects compare to a cost-equivalent package of links selected 
 To control for different aggregation levels, I repeat the comparison on the trans-African routes network (RHS): the 330 condensed corridor segments between the 47 largest port-cities introduced in Section \ref{ss:TAGE}. Of these 330 edges, 58 ($\approx$17.6\%) coincide with PIDA projects (matched by geometric coverage---each trans-African edge whose length runs $\geq$50\% within a 25\,km buffer of the union of all PIDA real-road geometries).%; see \texttt{code/12\_PIDA\_evaluation/match\_PIDA\_to\_trans\_african.R}).
 \footnote{The PIDA project locations are taken from the harmonized AUDA-NEPAD PIDA Map Export \citep{audanepad_aid_2026, auda_nepad_pida_2023} and from \citet{fontagne2023trade}, snapped to the existing 2,344-edge network graph (Figure \ref{fig:PIDA_map}) and then carried onto the 330-edge trans-African network by the coverage criterion above. %Coverage matching replaces a naive centroid-nearest assignment, which returns 83 edges including many spurious near-perpendicular matches. 
 The matched count is not highly sensitive to the two tuning parameters: across buffer widths of 15--30\,km and coverage thresholds of 40--50\%, the matched set ranges from 46 to 63 of the 330 edges (13.9\%--19.1\%), bracketing the chosen 58 (17.6\%). % the qualitative PE and GE conclusions---PIDA's slightly-below-pro-rata share and the roughly 2--3$\times$ optimal MA improvement---hold throughout this range.
-} The PIDA-on-trans-African package then costs only \$6.76B (the remaining \$3.3B of PIDA road lies between intermediate cities outside the 47-city corridor system) and yields a 7.3\% frictionless MA gain (2.5\,\$/min/\$). A cost-matched optimal allocation on the same network (top 128 links by \$/min/\$, total cost \$6.75B) yields 22.4\% (7.7\,\$/min/\$)---a 3.1$\times$ improvement. The two packages overlap on 22 strategic corridors. \newline 
+} The PIDA-on-trans-African package then costs only \$6.76B (the remaining \$3.3B of PIDA road lies between intermediate cities outside the 47-city corridor system) and yields a 7.3\% frictionless MA gain (2.5\,\$/min/\$). A cost-matched optimal allocation on the same network (top 128 links by \$/min/\$, total cost \$6.75B) yields 22.4\% (7.7\,\$/min/\$)---a 3.1$\times$ improvement. The two packages overlap on 22 strategic corridor links. \newline 
 
-Both panels of Figure \ref{fig:PIDA_vs_Top10B} thus tell the same story: PIDA captures part of the high-yield corridor network but leaves substantial economic value on the table, particularly along the Lagos--Abidjan coastal axis, the Yaounde/Douala-Luanda axis, and populated regions in Algeria/Tunisia, Egypt, and around Johannesburg. PIDA's extensive road upgrades spanning DR Congo/CAR, Sudan/Chad, and Algeria/Niger therewhile, while likely conducive towards long-run regional trade integration, appear highly suboptimal considering the current allocation of economic activity.  % The cost-effectiveness gap is consistent with an analogous evaluation for the \href{https://www.dropbox.com/scl/fi/67nwybv21px11r5bnqoek/optimal_CEMAC_roads.pdf?rlkey=x7q71wzfxjddtushojo4w4rec&e=1&dl=0}{CEMAC region} (companion work by the author, prepared as part of a World Bank regional infrastructure assessment), where planned regional projects yield 28.6\% MA at 2.14\,\$/min/\$ versus 44\% at 2.8\,\$/min/\$ for the cost-matched PE-optimal package. \newline
+Both panels of Figure \ref{fig:PIDA_vs_Top10B} thus tell the same story: PIDA captures part of the high-yield corridor network but leaves substantial economic value on the table, particularly along the Lagos--Abidjan coastal axis, the Yaounde/Douala-Luanda axis, and populated regions in Algeria/Tunisia, Egypt, and around Johannesburg. PIDA's extensive road upgrades spanning DR Congo/CAR, Sudan/Chad, and Algeria/Niger, while likely conducive towards long-run regional trade integration, appear highly suboptimal considering the current allocation of economic activity.  % The cost-effectiveness gap is consistent with an analogous evaluation for the \href{https://www.dropbox.com/scl/fi/67nwybv21px11r5bnqoek/optimal_CEMAC_roads.pdf?rlkey=x7q71wzfxjddtushojo4w4rec&e=1&dl=0}{CEMAC region} (companion work by the author, prepared as part of a World Bank regional infrastructure assessment), where planned regional projects yield 28.6\% MA at 2.14\,\$/min/\$ versus 44\% at 2.8\,\$/min/\$ for the cost-matched PE-optimal package. \newline
 
 \begin{figure}[H] \vspace{-2mm}
 \caption{\label{fig:PIDA_vs_Top10B} PIDA Projects vs. Cost-Matched Top-N Consensus Package}
@@ -743,7 +743,7 @@ Full continental network (\$10.1B budget) & Trans-African routes (\$6.8B budget)
 
 To complement the PE assessment, I also evaluate PIDA against the welfare-maximising planner of \citet{fajgelbaum2020optimal} at exactly the PIDA-equivalent budget of $K_i = \$10.089$B USD'15. The natural comparison set is the trans-African routes network introduced in Section \ref{ss:TAGE}, connecting the 47 largest African port-cities along their fastest routes.  \newline % Using the same geometric-coverage matching as in Figure \ref{fig:PIDA_vs_Top10B}, 58 of these 330 edges ($\approx 17.6\%$) coincide with a PIDA project. \newline
 
-As established in Section \ref{sec:GE}, trans-African connections plausibly exhibit weak congestion and IR ($\gamma^\ast = \beta^2/\gamma$). Figure \ref{fig:PIDA_GE_main} below therefore reports the IR case; the standard-congestion (DR) case is provided in Figure \ref{fig:PIDA_GE_DR}. For each planner I show the utilitarian ($\rho = 0$) and inequality-averse ($\rho = 2$) social welfare functions, and both the Armington baseline ($\sigma = 3.8$) and the lower elasticity ($\sigma = 2$) consistent with the MA gain of 1 ($\theta = \sigma - 1$; Footnote~\ref{fn:theta_sigma}). Frictions are intentionally omitted in all runs: as established in Section \ref{ss:TAGE}, border frictions have only minor effects on the GE-optimal allocation. The OSBP component, whose effect is precisely identified in the PE analysis above, is thus left aside in the GE counterfactual. \newline
+As established in Section \ref{sec:GE}, trans-African connections plausibly exhibit weak congestion and IR ($\gamma^\ast = \beta^2/\gamma$). Figure \ref{fig:PIDA_GE_main} below therefore reports the IR case; the standard-congestion (DR) case is provided in Figure \ref{fig:PIDA_GE_DR}. For each planner I show the utilitarian ($\rho = 0$) and inequality-averse ($\rho = 2$) social welfare functions, and both the Armington baseline ($\sigma = 3.8$) and the lower elasticity ($\sigma = 2$) consistent with the MA gain of 1 ($\theta = \sigma - 1$; Footnote~\ref{fn:theta_sigma}). Frictions are intentionally omitted in all runs: as established in Section \ref{ss:TAGE}, border frictions have only minor effects on the GE-optimal allocation. The OSBP component is thus left aside in the GE counterfactual. \newline
 
 Figure \ref{fig:PIDA_GE_main} overlays the PIDA-flagged subset of the trans-African network (navy dotted) on each planner's optimal upgrading allocation. All four IR variants spend the full \$10.089B budget on upgrading between 38.0K and 40.7K\,km. The spatial pattern is broadly consistent with Figure \ref{fig:TA_GE_Comp_IRS} where equivalent planners spend a \$15B budget on the same network. \newline % across the four variants: the highest-intensity upgrades fall on the Lagos--Abidjan and Lagos--Kano corridors, the Nairobi--Mombasa--Dar es Salaam axis, the trans-Saharan north--south spine, and the southern African network around Johannesburg and Cape Town. \newline
 
@@ -775,13 +775,13 @@ The DR case is reported in Appendix Figure \ref{fig:PIDA_GE_DR}. \vspace{-5mm}
 \end{figure}
 
 The headline finding is that the IR planners route between 13.6\% and 15.5\% of their budgets to PIDA corridors. Set against the network edge-count floor of $58/330 = 17.6\%$, this indicates that the welfare-maximising planner mildly under-weights PIDA's selection relative to the rest of the strategic network. 
-The overlap rises modestly with lower trade elasticity ($\sigma = 2$: 14.0\%--15.5\%) because less-substitutable goods push the planner to spread spending more evenly across the strategic-corridor system. The inequality-averse planner ($\rho = 2$) yields very similar PIDA-overlap shares, suggesting PIDA's selection criteria incorporate some implicit weight on remote regions. \newline
+The overlap rises modestly with lower trade elasticity ($\sigma = 2$: 14.0\%--15.5\%) because less-substitutable goods push the planner to spread spending more evenly across the strategic-corridor system. The inequality-averse planner ($\rho = 2$) yields slightly higher PIDA-overlap, suggesting PIDA's selection criteria incorporate some implicit weight on remote regions. \newline
 
-In terms of both welfare and MA gains achieved, the GE-optimal allocation outperforms PIDA substantially. The frictionless MA gain on the resulting GE network is 19.9\%--21.3\% across the four IR variants, against PIDA's PE-derived gain of 7.3\% on the same 330-edge trans-African network (8.5\% on the full continental one)---the welfare-optimal use of the budget thus nearly triples the MA gain of PIDA's corridors.\footnote{The two figures are not on an identical footing: the GE planner deploys the full \$10.089B on the 330-edge network, whereas PIDA's projects on those same corridors cost only \$6.76B (the remaining \$3.3B of PIDA road lies off the 47-city corridor system; cf.\ Figure \ref{fig:PIDA_vs_Top10B}). The gap therefore reflects both a superior \textit{allocation} of spending and the planner's freedom to concentrate the entire PIDA-equivalent budget on the strategic network. The cost-matched PE comparison in Figure \ref{fig:PIDA_vs_Top10B}, which holds the budget fixed at \$6.75B, isolates the pure allocation effect and still finds a $3.1\times$ MA improvement. The PE market-access gain ($\theta$) and the GE welfare allocation ($\sigma$) are governed by the same elasticity primitive ($\theta = \sigma - 1$; Footnote~\ref{fn:theta_sigma}), so these figures are consistent under $\sigma = 2$.} Aggregate welfare gains range from 0.18\% (IR, $\sigma = 3.8$, $\rho = 2$) to 2.78\% (IR, $\sigma = 2$, $\rho = 0$); lower trade elasticity raises the gains by an order of magnitude because each city's good is more uniquely valuable when substitution is harder, amplifying the welfare benefit of upgrading any given corridor. Inequality aversion typically lowers aggregate welfare by a few tenths of a percentage point as the planner trades off mean for variance. \newline
+In terms of both welfare and MA gains achieved, the GE-optimal allocation outperforms PIDA substantially. The frictionless MA gain on the resulting GE network is 19.9\%--21.3\% across the four IR variants, against PIDA's PE-derived gain of 7.3\% on the trans-African network (8.5\% on the full one)---the welfare-optimal use of the budget thus nearly triples the MA gain of PIDA's corridors.\footnote{The two figures are not on an identical footing: the GE planner deploys the full \$10.089B on the 330-edge network, whereas PIDA's projects on those same corridors cost only \$6.76B (the remaining \$3.3B of PIDA road lies off the 47-city corridor system; cf.\ Figure \ref{fig:PIDA_vs_Top10B}). The gap therefore reflects both a superior \textit{allocation} of spending and the planner's freedom to concentrate the entire PIDA-equivalent budget on the strategic network. The cost-matched PE comparison in Figure \ref{fig:PIDA_vs_Top10B}, which holds the budget fixed at \$6.75B, isolates the pure allocation effect and still finds a $3.1\times$ MA improvement. The PE market-access gain ($\theta$) and the GE welfare allocation ($\sigma$) are governed by the same elasticity primitive ($\theta = \sigma - 1$; Footnote~\ref{fn:theta_sigma}), so these figures are consistent under $\sigma = 2$.} Aggregate welfare gains range from 0.18\% ($\sigma = 3.8$, $\rho = 2$) to 2.78\% ($\sigma = 2$, $\rho = 0$). \newline % lower trade elasticity raises the gains by an order of magnitude because each city's good is more uniquely valuable when substitution is harder, amplifying the welfare benefit of upgrading any given corridor. Inequality aversion typically lowers aggregate welfare by a few tenths of a percentage point as the planner trades off mean for variance. \newline
 
-Putting PE and GE together, PIDA emerges as a partially-targeted but materially under-optimal package. A planner with the same \$10.089B budget optimally allocated would upgrade the Lagos--Abidjan coastal corridor, the Mombasa--Nairobi axis, the trans-Saharan north--south spine, and several southern African links that PIDA underweights---roughly doubling the full-grid MA return (8.5\%~$\to$~18.4\%, against the PE-optimal benchmark) and nearly triple it on the strategic network (7.3\%~$\to$~19.9--21.3\%, against the GE-optimal allocation), while unlocking substantially larger welfare gains ranging from 0.18\% to 2.78\% depending on the assumed trade elasticity and social-welfare function. Combining this re-allocation with the OSBP component (3.6 pp. PE gain) would push the joint return higher still. \newline
+Putting PE and GE together, PIDA thus emerges as a partially-targeted but materially under-optimal package. A planner with the same \$10.089B budget optimally allocated would upgrade the Lagos--Abidjan coastal corridor, the Mombasa--Nairobi axis, the trans-Saharan north--south spine, and several southern African links that PIDA underweights---roughly doubling the full-grid MA return (8.5\%~$\to$~18.4\%, against the PE-optimal benchmark) and nearly triple it on the strategic network (7.3\%~$\to$~19.9--21.3\%, against the GE-optimal allocation), while unlocking substantial welfare gains ranging from 0.18\% to 2.78\% depending on the assumed trade elasticity and social-welfare function. The OSBP component (3.6 pp. MA gain) would push the joint return higher still. \newline
 
-An important caveat tempers the normative reading of this efficiency gap. The planners in this paper only maximize aggregate welfare or MA. But many of the PIDA corridors that the optimal allocation would deprioritize---trans-Saharan links, Central-African connections, and roads serving landlocked and fragile states such as Chad, the Central African Republic, and South Sudan---advance regional integration under the AfCFTA, support state presence and humanitarian access in remote areas, and must remain politically feasible across the African Union's member governments with divergent national interests. %%That planned projects score lower on aggregate market-access efficiency may be precisely because they pursue these non-modelled goals. 
+An important caveat tempers the normative reading of this efficiency gap. The planners in this paper only maximize aggregate welfare or MA. But many of the PIDA corridors that the optimal allocation would deprioritize---trans-Saharan links, Central-African connections, and roads serving landlocked and fragile states such as Chad, the Central African Republic, and South Sudan---advance regional integration under the AfCFTA, support state presence and humanitarian access in remote areas, and must remain politically feasible across the African Union's member governments. %%That planned projects score lower on aggregate market-access efficiency may be precisely because they pursue these non-modelled goals. 
 The gap is therefore better read not as evidence of poor planning, but as a measure of the price---in forgone MA---that the continent pays for connectivity to its most remote and fragile regions and for the political viability of a six-decade, multi-country investment programme. Quantifying that price is itself valuable policy information: the figures above tell decision-makers roughly how much aggregate MA is being traded for the broader integration and equity objectives the welfare model does not capture, and where the two objectives are most complementary and least in tension. % \newline
 
 
@@ -796,12 +796,12 @@ In PE, I find that upgrading all links to $\geq$100km/h yields a 42\% MA gain---
 
 In GE, welfare-maximizing planners with \$35B focus on connecting large cities and ports to surrounding areas, with about 30\% of spending on new links. An inequality-averse planner invests more in poorer Central African and Horn of Africa regions. Under increasing returns to infrastructure, planners invest more in road upgrading and less in new construction, increasing welfare gains. Trans-African planners with \$15B primarily improve regional connectivity; making central African cross-continental links a priority requires unrealistically low trade elasticities ($\sigma = 1.5$) combined with inequality aversion. Border frictions further reduce investments along these links. \newline
 
-Benchmarking the African Union's PIDA pipeline against these frameworks (\S\ref{sec:PIDAeval}) reveals a partially-targeted but materially under-optimal package. At its \$10.1B budget, PIDA delivers an 8.5\% frictionless MA gain against 18.4\% for the cost-matched PE-optimal benchmark, and the welfare-maximizing GE planner directs only 13.6--15.5\% of the same budget to PIDA-flagged corridors---slightly below the 17.6\% pro-rata edge-count share. Reallocating spending from remote trans-Saharan and Central-African segments toward the Lagos--Abidjan, Mombasa--Nairobi, and southern-African corridors, and broadening the one-stop-border-post component (an additional 3.6 percentage points of MA at minimal cost), would roughly double the package's market-access return. \newline
+Benchmarking the African Union's PIDA pipeline against these frameworks reveals a partially-targeted but materially under-optimal package. At its \$10.1B budget, PIDA delivers an 8.5\% frictionless MA gain against 18.4\% for the cost-matched PE-optimal benchmark, and the welfare-maximizing GE planner directs only 13.6--15.5\% of the same budget to PIDA-flagged corridors---slightly below the 17.6\% pro-rata edge-count share. Reallocating spending from remote trans-Saharan and Central-African segments toward the Lagos--Abidjan, Mombasa--Nairobi, and southern-African corridors, and broadening the one-stop-border-post component (an additional 3.6 percentage points of MA at minimal cost), would roughly double the package's market-access return. \newline
 
 The overarching finding is that trans-African roads are neither MA nor welfare maximizing compared to improved local connectivity in populated areas or between nearby cities and coastal ports. This is especially true under border frictions, which reduce the value of trans-African links. Yet, these links are essential for trans-African trade under AfCFTA to pick up. A general policy recommendation is thus to prioritize regional connectivity improvements, reduce border frictions, and invest in trans-African roads along specific high-yield corridors. The graphical results provided in the paper and appendix should be helpful in prioritizing continental and regional investments, with detailed data and results available \href{https://github.com/SebKrantz/OptimalAfricanRoads}{on GitHub}. The multi-level approach combining routing engines, PE, and GE analysis can also be adapted to examine specific regions---as demonstrated for the \href{https://www.dropbox.com/scl/fi/67nwybv21px11r5bnqoek/optimal_CEMAC_roads.pdf?rlkey=x7q71wzfxjddtushojo4w4rec&e=1&dl=0}{CEMAC region} as part of a World Bank regional infrastructure assessment. The \href{https://github.com/OptimalTransportNetworks/OptimalTransportNetworks.jl}{Julia library} and \href{https://github.com/SebKrantz/OptimalAfricanRoads}{reproducibility package} should be useful in this regard.
 
 % \vspace{1cm}
-\newpage
+% \newpage
 
 \bibliographystyle{apacite}
 \bibliography{quant_spatial_econ} 
@@ -811,34 +811,6 @@ The overarching finding is that trans-African roads are neither MA nor welfare m
 \renewcommand{\thetable}{A\arabic{table}}
 \setcounter{figure}{0}
 \renewcommand{\thefigure}{A\arabic{figure}}
-
-% === PIDA GE robustness: DR (standard congestion) counterpart of main figure ===
-
-\begin{figure}[H] \vspace{-2mm}
-\caption{\label{fig:PIDA_GE_DR} Welfare-Maximising GE Investments at \$10.1B with PIDA Overlay (DR Planner)}
-\vspace{2mm}
-\resizebox{\textwidth}{!}{
-\begin{tabular}{@{}c@{}c@{}}
-%\textbf{Standard ($\rho = 0$), $\sigma = 3.8$} & \textbf{Inequality-averse ($\rho = 2$), $\sigma = 3.8$} \\
-%WG: 0.08\%  |  CG: 0.10\%  |  MA: 19.8\% &
-%WG: 0.04\%  |  CG: 0.06\%  |  MA: 20.7\% \\
-% PIDA-share: 13.9\% & PIDA-share: 14.1\% \\
-Non-Inequality Averse Planner, $\sigma = 3.8$ & Inequality Averse Planner, $\sigma = 3.8$ \\
-\includegraphics[width=0.48\textwidth, trim = {2cm 0 0.5cm 0}, clip]{../figures/transport_network/PIDA/GE_trans_african/trans_africa_network_GE_22g_10089m_fixed_cgc_sigma3.8_rho0_duality_julia_perc_ug_with_PIDA.pdf} &
-\includegraphics[width=0.48\textwidth, trim = {2cm 0 0.5cm 0}, clip]{../figures/transport_network/PIDA/GE_trans_african/trans_africa_network_GE_22g_10089m_fixed_cgc_sigma3.8_rho2_duality_julia_perc_ug_with_PIDA.pdf} \\
-%\textbf{Standard ($\rho = 0$), $\sigma = 2$} & \textbf{Inequality-averse ($\rho = 2$), $\sigma = 2$} \\
-%WG: 1.11\%  |  CG: 1.52\%  |  MA: 20.8\%   &
-%WG: 0.69\%  |  CG: 0.99\%  |  MA: 21.1\%  \\
-%PIDA-share: 15.4\% & PIDA-share: 16.1\% \\
-Non-Inequality Averse Planner, $\sigma = 2$ & Inequality Averse Planner, $\sigma = 2$ \\
-\includegraphics[width=0.48\textwidth, trim = {2cm 0 0.5cm 0}, clip]{../figures/transport_network/PIDA/GE_trans_african/trans_africa_network_GE_22g_10089m_fixed_cgc_sigma2.0_rho0_duality_julia_perc_ug_with_PIDA.pdf} &
-\includegraphics[width=0.48\textwidth, trim = {2cm 0 0.5cm 0}, clip]{../figures/transport_network/PIDA/GE_trans_african/trans_africa_network_GE_22g_10089m_fixed_cgc_sigma2.0_rho2_duality_julia_perc_ug_with_PIDA.pdf} \\
-\end{tabular}
-}
-\raggedright
-\scriptsize
-\emph{Notes:} Counterpart of Figure \ref{fig:PIDA_GE_main} under the standard decreasing-returns (DR) congestion calibration $\gamma = \beta = 1$ derived from U.S. urban-congestion studies, rather than the IRS calibration $\gamma^\ast = \beta^2/\gamma$ used in the main figure. The spatial allocation is qualitatively similar to IRS---highest-intensity upgrades fall on the same Lagos--Abidjan, Lagos--Kano, Nairobi--Mombasa, and trans-Saharan corridors---but aggregate welfare gains are substantially smaller (0.04\%--1.11\%, vs.\ 0.18\%--2.78\% under IRS); MA gains and the PIDA-overlap share are essentially unchanged. The pattern reinforces the broader paper finding that the IRS regime is the more realistic and welfare-favourable parameterisation for continental-scale African transport. \vspace{-1mm}
-\end{figure}
 
 
 % === Tables moved from main text ===
@@ -1594,7 +1566,7 @@ Budget $=$ \$20B, $\sigma = 3.8$ & Budget $=$ \$20B, $\sigma = 2$ \\
 \end{figure}
 
 
-\begin{figure}[h!] %\vspace{-2mm}
+\begin{figure}[H] %\vspace{-2mm}
 \centering
 \caption{\label{fig:TA_GE_Comp_FR} Optimal \$15B Network Investments under Frictions: Difference}
 \vspace{2mm}
@@ -1611,6 +1583,38 @@ $\beta>\gamma$ (DR), $\sigma = 2$ & $\beta<\gamma$ (IR), $\sigma = 2$ \\
 \scriptsize 
 \emph{Notes:} Figure compares optimal \$15B allocations with/without border frictions as the difference in \% of work completed. 
 \end{figure}
+
+\newpage
+
+% === PIDA GE robustness: DR (standard congestion) counterpart of main figure ===
+
+\begin{figure}[H] \vspace{-2mm}
+\caption{\label{fig:PIDA_GE_DR} Welfare-Maximising GE Investments at \$10.1B with PIDA Overlay (DR Planner)}
+\vspace{2mm}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{@{}c@{}c@{}}
+%\textbf{Standard ($\rho = 0$), $\sigma = 3.8$} & \textbf{Inequality-averse ($\rho = 2$), $\sigma = 3.8$} \\
+%WG: 0.08\%  |  CG: 0.10\%  |  MA: 19.8\% &
+%WG: 0.04\%  |  CG: 0.06\%  |  MA: 20.7\% \\
+% PIDA-share: 13.9\% & PIDA-share: 14.1\% \\
+Non-Inequality Averse Planner, $\sigma = 3.8$ & Inequality Averse Planner, $\sigma = 3.8$ \\
+\includegraphics[width=0.48\textwidth, trim = {2cm 0 0.5cm 0}, clip]{../figures/transport_network/PIDA/GE_trans_african/trans_africa_network_GE_22g_10089m_fixed_cgc_sigma3.8_rho0_duality_julia_perc_ug_with_PIDA.pdf} &
+\includegraphics[width=0.48\textwidth, trim = {2cm 0 0.5cm 0}, clip]{../figures/transport_network/PIDA/GE_trans_african/trans_africa_network_GE_22g_10089m_fixed_cgc_sigma3.8_rho2_duality_julia_perc_ug_with_PIDA.pdf} \\
+%\textbf{Standard ($\rho = 0$), $\sigma = 2$} & \textbf{Inequality-averse ($\rho = 2$), $\sigma = 2$} \\
+%WG: 1.11\%  |  CG: 1.52\%  |  MA: 20.8\%   &
+%WG: 0.69\%  |  CG: 0.99\%  |  MA: 21.1\%  \\
+%PIDA-share: 15.4\% & PIDA-share: 16.1\% \\
+Non-Inequality Averse Planner, $\sigma = 2$ & Inequality Averse Planner, $\sigma = 2$ \\
+\includegraphics[width=0.48\textwidth, trim = {2cm 0 0.5cm 0}, clip]{../figures/transport_network/PIDA/GE_trans_african/trans_africa_network_GE_22g_10089m_fixed_cgc_sigma2.0_rho0_duality_julia_perc_ug_with_PIDA.pdf} &
+\includegraphics[width=0.48\textwidth, trim = {2cm 0 0.5cm 0}, clip]{../figures/transport_network/PIDA/GE_trans_african/trans_africa_network_GE_22g_10089m_fixed_cgc_sigma2.0_rho2_duality_julia_perc_ug_with_PIDA.pdf} \\
+\end{tabular}
+}
+\raggedright
+\scriptsize
+\emph{Notes:} Counterpart of Figure \ref{fig:PIDA_GE_main} under the standard decreasing-returns (DR) congestion calibration $\gamma = \beta = 1$ derived from U.S. urban-congestion studies, rather than the IRS calibration $\gamma^\ast = \beta^2/\gamma$ used in the main figure. The spatial allocation is qualitatively similar to IRS---highest-intensity upgrades fall on the same Lagos--Abidjan, Lagos--Kano, Nairobi--Mombasa, and trans-Saharan corridors---but aggregate welfare gains are substantially smaller (0.04\%--1.11\%, vs.\ 0.18\%--2.78\% under IRS); MA gains and the PIDA-overlap share are essentially unchanged. The pattern reinforces the broader paper finding that the IRS regime is the more realistic and welfare-favourable parameterisation for continental-scale African transport. \vspace{-1mm}
+\end{figure}
+
+
  
 
 
