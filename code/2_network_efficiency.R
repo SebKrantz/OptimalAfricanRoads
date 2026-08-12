@@ -3,11 +3,11 @@
 #######################################################
 
 library(fastverse)
-fastverse_extend(qs, ggplot2, install = TRUE)
+fastverse_extend(qs2, ggplot2, install = TRUE)
 
-africa_dist <- qread("data/full_network/africa_full_distance_matrix_r9_adjusted.qs")
+africa_dist <- qs_read("data/full_network/africa_full_distance_matrix_r9_adjusted.qs2")
 
-spherical_dist <- qread("data/full_network/africa_full_spherical_distance_matrix_r9.qs")
+spherical_dist <- qs_read("data/full_network/africa_full_spherical_distance_matrix_r9.qs2")
 identical(spherical_dist$centroids, africa_dist$centroids)
 
 # TRA(spherical_dist$distances, africa_dist$centroids$pop_wpop, "fill") %/=%
@@ -167,8 +167,8 @@ ggsave("figures/full_network/network_time_efficiency.pdf", width = 6, height = 6
 
 # Saving Estimates --------------------
 
-qsave(add_vars(spherical_dist$centroids, ANS = ans, NRE = nre, NTE = nte), 
-      file = "results/full_network/network_efficiency.qs")
+qs_save(add_vars(spherical_dist$centroids, ANS = ans, NRE = nre, NTE = nte), 
+      file = "results/full_network/network_efficiency.qs2")
 
 
 ##################################################

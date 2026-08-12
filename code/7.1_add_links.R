@@ -8,12 +8,12 @@
 
 library(fastverse)
 set_collapse(mask = c("manip", "helper", "special"), nthreads = 4)
-fastverse_extend(qs, sf, s2, units, sfnetworks, stplanr, install = TRUE)
+fastverse_extend(qs2, sf, s2, units, sfnetworks, stplanr, install = TRUE)
 source("code/helpers/helpers.R")
 fastverse_conflicts()
 
-net <- qread("data/transport_network/old/net_discrete_final.qs")
-dist_ttime_mats <- qread("data/transport_network/old/net_dist_ttime_mats.qs")
+net <- qs_read("data/transport_network/old/net_discrete_final.qs2")
+dist_ttime_mats <- qs_read("data/transport_network/old/net_dist_ttime_mats.qs2")
 sym_dist_mat <- (dist_ttime_mats$distances + t(dist_ttime_mats$distances)) / 2
 
 ## Plotting
@@ -46,8 +46,8 @@ nrow(add_links) - sum(m)
 add_links <- add_links[!m, ]
 rm(add_links_df, edges_df)
 
-add_links |> qsave("data/transport_network/add_links_network_30km_alpha45_mrEU_fmr15.qs")
-add_links <- qread("data/transport_network/add_links_network_30km_alpha45_mrEU_fmr15.qs")
+add_links |> qs_save("data/transport_network/add_links_network_30km_alpha45_mrEU_fmr15.qs2")
+add_links <- qs_read("data/transport_network/add_links_network_30km_alpha45_mrEU_fmr15.qs2")
 
 # Manual Adjustments: Removing links crossing waterbodies or protected areas
 # mapview(edges, map.types = c(mapviewGetOption("basemaps"), "Esri.WorldStreetMap", "Esri.WorldTerrain")) + mapview(nodes) + mapview(add_links, color = "green") # [remove, ]
@@ -60,4 +60,4 @@ add_links <- rbind(add_links[-remove, ],
 
 nrow(add_links)
 if(nrow(add_links) != 481) stop("File should have 481 rows")
-add_links |> qsave("data/transport_network/add_links_network_30km_alpha45_mrEU_fmr15_adjusted.qs")
+add_links |> qs_save("data/transport_network/add_links_network_30km_alpha45_mrEU_fmr15_adjusted.qs2")

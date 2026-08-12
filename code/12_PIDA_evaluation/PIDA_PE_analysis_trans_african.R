@@ -206,8 +206,31 @@ tmap_save(pl,
   width = 10, height = 10)
 
 # --- Map 3: PIDA vs Top-N comparison -------------------------------
+# Overlap statistics (link counts + km) for the on-figure text block
+km_both_TA   <- sum(edges$distance[both_inds]) / 1e3
+km_pida_o_TA <- sum(edges$distance[pida_only]) / 1e3
+km_top_o_TA  <- sum(edges$distance[top_only])  / 1e3
+
+overlap_text_TA <- paste0(
+  "Overlap Statistics\n",
+  sprintf("Both:        %d links (%s km)\n",
+          length(both_inds),
+          format(round(km_both_TA),   big.mark = ",")),
+  sprintf("PIDA only:   %d links (%s km)\n",
+          length(pida_only),
+          format(round(km_pida_o_TA), big.mark = ",")),
+  sprintf("Top-N only:  %d links (%s km)\n",
+          length(top_only),
+          format(round(km_top_o_TA),  big.mark = ",")),
+  sprintf("PIDA MA gain:   %.1f%%  |  $%.2fB\n",
+          PIDA_perc, cost_PIDA_B),
+  sprintf("Top-N MA gain:  %.1f%%  |  $%.2fB",
+          top_perc, cost_top / 1e9)
+)
+
 pl <- tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
-  tm_shape(subset(e_real, which_pkg == "Neither")) + tm_lines(col = "grey80", lwd = 0.6) +
+  tm_shape(subset(e_real, which_pkg == "Neither")) +
+    tm_lines(col = "grey80", lwd = 0.6) +
   tm_shape(subset(e_real, which_pkg != "Neither")) +
   tm_lines(col = "which_pkg",
            col.scale = tm_scale_categorical(
@@ -216,9 +239,16 @@ pl <- tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
                         "Top-N only"          = "royalblue3",
                         "Neither"             = "grey80")),
            col.legend = tm_legend("Package",
-                                  position = c("left", "bottom"), frame = FALSE,
+                                  position = c("left", "bottom"),
+                                  frame = FALSE, bg.alpha = 0,
                                   text.size = 1.0, title.size = 1.3),
            lwd = 2.5) +
+  # Place overlap text ABOVE the Package legend (tm_credits is top-anchored).
+  # Larger font: this panel has less clutter than the full-grid panel.
+  tm_credits(overlap_text_TA,
+             position = tm_pos_in(0.02, 0.45),
+             size = 1.25, fontface = "plain",
+             bg.color = "white", bg.alpha = 0) +
   tm_layout(frame = FALSE)
 tmap_save(pl,
   "figures/transport_network/PIDA/PE_trans_african/trans_africa_network_PE_TA_PIDA_vs_topN_consensus.pdf",

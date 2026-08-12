@@ -166,7 +166,8 @@ pid_map <- tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
       position = c("left", "bottom"),
       frame = FALSE,
       text.size = 1.5,
-      title.size = 2
+      title.size = 2,
+      bg.alpha = 0
     ),
     lwd = 2
   ) +

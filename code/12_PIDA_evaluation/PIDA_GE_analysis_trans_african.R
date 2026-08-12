@@ -117,6 +117,20 @@ compute_stats <- function(res, spec) {
   share_pida_bud <- budget_pida / budget_total
   share_pida_km  <- km_pida     / km_total
 
+  # km / budget split by add type (FALSE/NA = upgrade, TRUE = new construction).
+  # In the trans-African fastest-routes network `add` is logical with only
+  # FALSE (154) and NA (176) values; treat both as upgrade.
+  if ("add" %in% names(e)) {
+    is_new        <- !is.na(e$add) & as.logical(e$add)
+    km_upgrade    <- sum(dist_vec[!is_new], na.rm = TRUE)
+    km_new        <- sum(dist_vec[ is_new], na.rm = TRUE)
+    bud_upgrade   <- sum(cost_vec[!is_new], na.rm = TRUE)
+    bud_new       <- sum(cost_vec[ is_new], na.rm = TRUE)
+  } else {
+    km_upgrade  <- km_total ; km_new  <- 0
+    bud_upgrade <- budget_total ; bud_new <- 0
+  }
+
   # Welfare gain (utility-weighted, population-weighted)
   wg <- sum(n$uj * n$Lj, na.rm = TRUE) /
         sum(n$uj_orig * n$Lj_orig, na.rm = TRUE) - 1
@@ -132,6 +146,10 @@ compute_stats <- function(res, spec) {
     km_total       = km_total,
     km_pida        = km_pida,
     km_nonpida     = km_nonpida,
+    km_upgrade     = km_upgrade,
+    km_new         = km_new,
+    bud_upgrade    = bud_upgrade,
+    bud_new        = bud_new,
     share_pida_bud = share_pida_bud,
     share_pida_km  = share_pida_km,
     wg_perc        = wg * 100,
@@ -177,6 +195,42 @@ make_perc_ug_map_PIDA <- function(res, spec, st) {
   # Mark PIDA edges
   e_real$is_PIDA <- seq_len(nrow(e_real)) %in% PIDA_ind
 
+  # Nodes: rebuild `product` factor (levels come from analyze_trans_african_results.R L52-54)
+  n <- res$nodes
+  largest <- with(subset(qDT(n), unclass(product) > 5L),
+                  set_names(product, city_country)) |> sort() |> names()
+  attr(n$product, "levels") <- c("Small City/Node", "City > 200K", "Port",
+                                 "City > 2M", "Large Port-City", largest)
+  class(n$product) <- "factor"
+  # Compact display factor: strip "/Node" and "Large ", drop megacities to NA
+  # so the legend labels them "Megacity (Own)" via label.na.
+  n <- n |> mutate(
+    prod2 = set_attr(product, "levels",
+                     gsub("/Node|Large ", "", levels(product))),
+    prod2 = droplevels(fifelse(unclass(prod2) > 5L, NA, prod2))
+  )
+  n_sf <- st_as_sf(n, coords = c("lon", "lat"), crs = 4326)
+
+  # Statistics box (mirrors stats_legend in analyze_trans_african_results.R L157-160)
+  # Budget & km are millions & km respectively; gains are already in %.
+  stats_legend <- c(
+    sprintf("Budget: $%.2fB",     st$budget_total / 1e3),
+    sprintf("Upgraded: %s km (%.2fB)",
+            format(round(st$km_upgrade), big.mark = ","),
+            st$bud_upgrade / 1e3)
+  )
+  if (st$km_new > 0.5) {
+    stats_legend <- c(stats_legend,
+      sprintf("New: %s km (%.2fB)",
+              format(round(st$km_new), big.mark = ","),
+              st$bud_new / 1e3))
+  }
+  stats_legend <- c(stats_legend,
+    sprintf("PIDA share: %.1f%%b, %.1f%%km",
+            st$share_pida_bud * 100, st$share_pida_km * 100),
+    sprintf("Gains: %.1f%%C, %.1f%%W, %.1f%%MA",
+            st$cg_perc, st$wg_perc, st$ma_perc))
+
   pl <- tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
     tm_shape(e_real) +
     tm_lines(col = "perc_ug",
@@ -184,25 +238,63 @@ make_perc_ug_map_PIDA <- function(res, spec, st) {
                                               values = "brewer.yl_or_rd"),
              col.legend = tm_legend(expression(Delta~"%"~"UG"),
                                     position = c("left", "bottom"),
-                                    frame = FALSE, height = 16,
-                                    item.width = 0.5,
-                                    text.size = 1.1, title.size = 1.4),
+                                    stack = "h", frame = FALSE, bg.alpha = 0,
+                                    height = 16, item.width = 0.5,
+                                    text.size = 1.2, title.size = 1.5,
+                                    title.padding = c(-0.5, 0, 0, 0)),
              lwd = 2) +
     # PIDA overlay: dotted navy
     tm_shape(subset(e_real, is_PIDA)) +
     tm_lines(col = "navy", lwd = 1.1, lty = "dotted") +
+    # Populated nodes (sized by population, colored by product type)
+    tm_shape(subset(n_sf, population > 0)) +
+    tm_dots(size = "population",
+            size.scale = tm_scale_intervals(
+              breaks = c(0, 0.5e3, 2e3, Inf),
+              values = c(1, 2, 3) * 0.1,
+              labels = c("0 to 500", "500 to 2,000", "2,000 or more")),
+            size.legend = tm_legend("Population (K)",
+                                    position = tm_pos_in(0.79, 0.15),
+                                    frame = FALSE, bg.alpha = 0,
+                                    text.size = 1.1,
+                                    item.width = 0.4, title.size = 1.1),
+            fill = "prod2",
+            fill.scale = tm_scale_categorical(values = "turbo",
+                                              value.na = "purple3",
+                                              label.na = "Megacity (Own)"),
+            fill.legend = tm_legend("Product",
+                                    position = c("left", "bottom"),
+                                    size = 0.8, frame = FALSE, bg.alpha = 0,
+                                    text.size = 1.2, title.size = 1.5,
+                                    title.padding = c(0, 0, 0, 0),
+                                    item.width = 1)) +
+    # Small unpopulated nodes (from the graph, not res$nodes)
+    tm_shape(subset(nodes_sf, population <= 0)) +
+    tm_dots(size = 0.07, fill = "grey70") +
+    # PIDA overlay legend - top-right corner. Use tm_pos_in() with
+    # just.h/just.v to anchor the top-right corner of the legend at
+    # (0.99, 0.99) of the map area, so text sits tight to the edge
+    # instead of getting clipped or dropped low.
     tm_add_legend(type = "lines", labels = "PIDA-overlap link",
                   col = "navy", lty = "dotted", lwd = 2,
-                  title = "Overlay", position = c("right", "bottom"),
-                  text.size = 1.0, title.size = 1.3, frame = FALSE) +
-    tm_shape(subset(nodes_sf, !is.na(population) & population > 0)) +
-    tm_dots(size = 0.15, fill = "grey30") +
+                  title = "Overlay",
+                  position = tm_pos_in(0.99, 0.99,
+                                       just.h = "right", just.v = "top"),
+                  text.size = 1, title.size = 1.3,
+                  frame = FALSE, bg.alpha = 0) +
+    # Statistics legend
+    tm_add_legend(title = "Statistics", type = "lines",
+                  labels = stats_legend,
+                  position = tm_pos_in(0.133, 0.23),
+                  text.size = 1, title.size = 1.5,
+                  item.width = 0.2, item.space = 0.2,
+                  frame = FALSE, bg.alpha = 0) +
     tm_layout(frame = FALSE)
 
   out <- sprintf(
     "figures/transport_network/PIDA/GE_trans_african/trans_africa_network_GE_%s_perc_ug_with_PIDA.pdf",
     spec)
-  tmap_save(pl, out, width = 10, height = 10)
+  tmap_save(pl, out, width = 8, height = 8.3)
   invisible(out)
 }
 

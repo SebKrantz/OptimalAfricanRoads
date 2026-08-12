@@ -3,13 +3,13 @@
 #######################################################
 
 library(fastverse)
-fastverse_extend(dggridR, s2, cppRouting, qs, install = TRUE)
+fastverse_extend(dggridR, s2, cppRouting, qs2, install = TRUE)
 set_collapse(mask = c("manip", "helper", "special"), nthreads = 4, sort = FALSE)
 fastverse_conflicts()
 
 # Finding nearest cells and removing some cells --------------------------------------------------------
 
-spherical_dist <- qread("data/full_network/africa_full_spherical_distance_matrix_r9.qs")
+spherical_dist <- qs_read("data/full_network/africa_full_spherical_distance_matrix_r9.qs2")
 sp_distances <- spherical_dist$distances
 centroids <- spherical_dist$centroids
 diag(sp_distances) <- NA
@@ -59,7 +59,7 @@ nn_cell_list %<>% lapply(function(i) centroids$cell[i])
 # Adjusting
 
 # Simple graph based on distances
-africa_dist <- qread("data/full_network/africa_full_distance_matrix_r9_adjusted.qs")
+africa_dist <- qs_read("data/full_network/africa_full_distance_matrix_r9_adjusted.qs2")
 africa_dist[c("sources", "centroids")] %<>% lapply(ss, !(cow_ind | mdg_ind))
 africa_dist[c("distances", "durations", "distances_nosphere")] %<>% lapply(ss, !(cow_ind | mdg_ind), !(cow_ind | mdg_ind))
 
@@ -324,7 +324,7 @@ MA_new$MA_growth = (MA_new$MA_ratio - 1)*100
 descr(MA_new$Reduction)
 descr(MA_new$MA_growth * 100)
 
-qsave(MA_new, "results/full_network/africa_full_MA_0.85_NRE.qs")
+qs_save(MA_new, "results/full_network/africa_full_MA_0.85_NRE.qs2")
 
 # Time efficiency: use only if cost is duration (road_distances variable on line 141 is a travel time measure)
 descr(optimized_graph$sp_distance)
@@ -353,13 +353,13 @@ MA_new$MA_growth = (MA_new$MA_ratio - 1)*100
 descr(MA_new$Reduction)
 descr(MA_new$MA_growth * 100)
 
-qsave(MA_new, "results/full_network/africa_full_MA_50kmh_NTE.qs")
+qs_save(MA_new, "results/full_network/africa_full_MA_50kmh_NTE.qs2")
 
 
 
 # Visual Exploration: Travel Time ---------------------------------
 
-MA_new <- qread("results/full_network/africa_full_MA_50kmh_NTE.qs")
+MA_new <- qs_read("results/full_network/africa_full_MA_50kmh_NTE.qs2")
 graph_count <- fread("data/full_network/full_graph_df.csv") %>%
   subset(from_cell %in% MA_new$cell & to_cell %in% MA_new$cell) %>% {
     join(count(., cell = from_cell), count(., cell = to_cell), on = "cell") %>% 
@@ -443,7 +443,7 @@ ggsave("figures/full_network/MA_50kmh_NTE_gain_per_minute.pdf", width = 6, heigh
 
 # Visual Exploration: Road Distance ---------------------------------
 
-MA_new <- qread("results/full_network/africa_full_MA_0.85_NRE.qs")
+MA_new <- qs_read("results/full_network/africa_full_MA_0.85_NRE.qs2")
 qsu(MA_new)
 
 fastverse_extend(ggplot2, viridis, install = TRUE)

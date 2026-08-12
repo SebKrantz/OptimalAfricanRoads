@@ -11,7 +11,7 @@
 # Or follow one of the two options below to generate an updated version. 
 
 library(fastverse)
-fastverse_extend(osrm, qs, install = TRUE)
+fastverse_extend(osrm, qs2, install = TRUE)
 
 # ------------------------------------------------------------------
 # Option 1: Run your own OSRM Server (Fastest, but need 50-60GB RAM)
@@ -107,7 +107,7 @@ source("code/helpers/helpers.R")
 result <- split_large_dist_matrix(fselect(calib_data, lon, lat), chunk_size = 3000, verbose = TRUE)
 
 result$centroids <- fselect(calib_data, cell, ISO3, lon, lat, pop_gpw4, pop_wpop)
-qsave(result, "data/full_network/africa_full_distance_matrix_r9.qs")
+qs_save(result, "data/full_network/africa_full_distance_matrix_r9.qs2")
 
 
 # ----------------------------------------------------------------------------------
@@ -123,6 +123,6 @@ source("code/helpers/helpers.R")
 result <- split_large_dist_matrix(fselect(calib_data, lon, lat), chunk_size = 100, verbose = TRUE)
 
 result$centroids <- fselect(calib_data, cell, ISO3, lon, lat, pop_gpw4, pop_wpop)
-qsave(result, "data/full_network/africa_full_distance_matrix_r9.qs")
+qs_save(result, "data/full_network/africa_full_distance_matrix_r9.qs2")
 
 

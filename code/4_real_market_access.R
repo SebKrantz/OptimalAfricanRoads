@@ -3,14 +3,14 @@
 #########################
 
 library(fastverse)
-fastverse_extend(qs, dggridR, ggplot2, viridis, install = TRUE)
+fastverse_extend(qs2, dggridR, ggplot2, viridis, install = TRUE)
 
 # Loading Distance Matrix
-africa_dist <- qread("data/africa_full_distance_matrix_r9_adjusted.qs")
+africa_dist <- qs_read("data/africa_full_distance_matrix_r9_adjusted.qs2")
 names(africa_dist)
 
 # Loading Network Efficiency Estimates 
-NE <- qread("results/full_network/network_efficiency.qs")
+NE <- qs_read("results/full_network/network_efficiency.qs2")
 
 OUTCOMES <- fread("data/QSE/model_calibration_data_ctry_min_imp.csv") %>%
             fmutate(total_wealth = IWI * pop_wpop)
@@ -568,7 +568,7 @@ market_access_all_cor <- market_access_all |>
 list(RAW = market_access_all_dt, 
      SUM = market_access_all_sum, 
      COR = market_access_all_cor) |>
-  qsave("results/full_network/real_market_access.qs")
+  qs_save("results/full_network/real_market_access.qs2")
 
 # MA in billions of min or km
 options(scipen = 1000)

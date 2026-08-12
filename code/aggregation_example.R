@@ -1,11 +1,11 @@
 library(fastverse)
-fastverse_extend(qs, dggridR)
+fastverse_extend(qs2, dggridR)
 
 wld50kmhex <- dgconstruct(res = 9)
 
 # Example on how model_calibration_data is computed from higher-resolution geospatial data
 
-model_calibration_data <- qread("data/other_inputs/imputed_wealth_GDP_10km_hex.qs") |> 
+model_calibration_data <- qs_read("data/other_inputs/imputed_wealth_GDP_10km_hex.qs2") |> 
   fmutate(cell = dgGEO_to_SEQNUM(wld50kmhex, lon, lat)$seqnum) |> 
   fgroup_by(cell) |> 
   fsummarise(across(c(IWI, RWI, GDP_per_capita_PPP, log_GDP_per_capita_PPP), fmean), 

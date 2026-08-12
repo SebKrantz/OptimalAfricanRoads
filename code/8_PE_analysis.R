@@ -4,7 +4,7 @@
 
 library(fastverse)
 set_collapse(mask = c("manip", "helper", "special"), nthreads = 4)
-fastverse_extend(qs, sf, units, sfnetworks, tmap, install = TRUE)
+fastverse_extend(qs2, sf, units, sfnetworks, tmap, install = TRUE)
 source("code/helpers/helpers.R")
 fastverse_conflicts()
 
@@ -130,7 +130,7 @@ dev.off()
 fastverse_extend(dggridR)
 
 # Matching to grid, and choosing distance-weiighted nearest cell value within 30km
-OUTCOMES <- qread("data/other_inputs/imputed_wealth_GDP_10km_hex.qs")
+OUTCOMES <- qs_read("data/other_inputs/imputed_wealth_GDP_10km_hex.qs2")
 outcomes_coords <- OUTCOMES |> select(lon, lat) |> qM()
 nodes_coord_mat <- st_coordinates(nodes) # graph_nodes |> select(lon, lat) |> qM() 
 nodes$gdp_cap <- nodes$IWI <- NA_real_
@@ -199,7 +199,7 @@ border_dist_transit <- fread("data/QSE/model_border_dist_mat_transit.csv") |> qM
 border_time_transit <- fread("data/QSE/model_border_time_mat_transit.csv") |> qM(1)
 
 # Adding Country Classification
-GADM0_africa <- qread("data/other_inputs/GADM0_africa_simplified.qs")
+GADM0_africa <- qs_read("data/other_inputs/GADM0_africa_simplified.qs2")
 # GADM0_africa <- st_read("/Users/sebastiankrantz/Documents/Data/GADM/gadm_410-levels.gpkg", layer = "ADM_0") %>%
 #   subset(GID_0 %in% africamonitor::am_countries$ISO3) %>% st_make_valid()
 # GADM0_africa %<>% rmapshaper::ms_simplify(keep = 0.2) %>% st_make_valid()
@@ -412,7 +412,7 @@ dev.off()
 # edges$pop_wpop_km2 <- unattrib(edges$pop_wpop / (st_area(edges_buff_3km) / 1e6))
 
 # Loading precomputed version
-rugg_pop <- qread("data/transport_network/edges_rugg_pop.qs")
+rugg_pop <- qs_read("data/transport_network/edges_rugg_pop.qs2")
 add_links %<>% join(rugg_pop$add_links)
 edges %<>% join(rugg_pop$edges)
 rm(rugg_pop)
@@ -461,9 +461,9 @@ dev.off()
 #   transformv(c(cost_m_usd, unit_costs_m_usd_per_km), `/`, ny_gdp_defl_zs / 100)
 # 
 # ROCKS %<>% get_vars(varying(.))
-# qsave(ROCKS, "data/ROCKS_2018.qs")
+# qs_save(ROCKS, "data/ROCKS_2018.qs2")
 
-ROCKS <- qread("data/other_inputs/ROCKS_2018.qs")
+ROCKS <- qs_read("data/other_inputs/ROCKS_2018.qs2")
 continental_africa <- fread("data/other_inputs/continental_africa.csv")
 
 options(scipen = 1000)
@@ -1388,7 +1388,7 @@ print(ma_gain_per_min_cons / sum(with(subset(all_cb_ratios, consensus), cost_km 
 # Optimizing Border Posts ------------------------------------------------------------------------------------------
 
 # Two Scenarios: 50% or 100% Reduction
-edges_real <- qread("data/transport_network/edges_real_simplified.qs") |> 
+edges_real <- qs_read("data/transport_network/edges_real_simplified.qs2") |> 
   select(from, to) |> rmapshaper::ms_simplify(keep = 0.06) |> st_make_valid()
 tfm(edges_real) <- atomic_elem(edges_param)
 edges <- edges_param
@@ -1655,7 +1655,7 @@ nodes_tmp <- nodes |>
 list(nodes = nodes_tmp,
      edges = edges, 
      add_links = add_links) |>
-  qsave("results/transport_network/PE/PE_results.qs")
+  qs_save("results/transport_network/PE/PE_results.qs2")
 
 nodes_tmp |> transform(set_names(mctl(st_coordinates(geometry)), c("lon", "lat"))) |> 
   atomic_elem() |> qDT() |> fwrite("results/transport_network/PE/csv/PE_results_nodes.csv")
@@ -1797,7 +1797,7 @@ graph_nodes |> qDT() |>
   xtable::xtable() |> print(include.r = FALSE, booktabs = TRUE)
 
 # load("data/transport_network/trans_africa_network.RData")
-edges_real <- qread("data/transport_network/edges_real_simplified.qs")
+edges_real <- qs_read("data/transport_network/edges_real_simplified.qs2")
 
 # <Figure 33> (New)
 pdf("figures/transport_network/trans_africa_network_GE_parameterization_latest_22prod.pdf", width = 12, height = 12)

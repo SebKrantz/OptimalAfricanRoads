@@ -115,14 +115,15 @@ end
 # Parameters
 alpha = 0.7 # Spending share on traded goods in utility (curvature parameter)
 gamma = 0.946 # F&S: 0.1 ; TG: 0.946; Parameter governing intensity of congestion in transport
-beta = 1.2446 * gamma # F&S: 0.13 ; TG: 1.2446 * gamma; Parameter governing returns to scale in infrastructure investment
-# gamma = beta^2/gamma # IRS case
+beta_old = 1.2446 * gamma
+beta = 1 # 1.2446 * gamma # F&S: 0.13 ; TG: 1.2446 * gamma; Parameter governing returns to scale in infrastructure investment
+gamma = beta_old^2/gamma # IRS case
 sigma = 1.5 #5; # Elasticity of substitution parameter
 a = 1 # F&S: 1; TG: 0.7; Returns to scale to labor in production function Zn * Ln^a
 rho = 0 # inequality aversion: not possible to solve model if enabled (= 2) -> set alpha = 0.1 instead and resolve allocation afterwards
 
 # Initialise geography
-param = init_parameters(annealing = true, labor_mobility = false, cross_good_congestion = true, 
+param = init_parameters(annealing = true, labor_mobility = false, cross_good_congestion = true, duality = true,
                         a = a, sigma = sigma, N = N, alpha = alpha, beta = beta, gamma = gamma, rho = rho, 
                         K = K, tol = 1e-5, min_iter = 15, max_iter = 45, verbose = true)
 
@@ -154,17 +155,17 @@ plot_graph(graph, res_opt[:Ijk] - infra_matrix, height = 800)
 
 # Saving: Nodes
 res_nodes = deepcopy(nodes)
-res_nodes.uj_orig = res_stat[:uj]
-res_nodes.Lj_orig = res_stat[:Lj]
-res_nodes.Cj_orig = res_stat[:Cj]
-res_nodes.Dj_orig = res_stat[:Dj]
-res_nodes.PCj_orig = res_stat[:PCj]
+res_nodes.uj_orig = vec(res_stat[:uj])
+res_nodes.Lj_orig = vec(res_stat[:Lj])
+res_nodes.Cj_orig = vec(res_stat[:Cj])
+res_nodes.Dj_orig = vec(res_stat[:Dj])
+res_nodes.PCj_orig = vec(res_stat[:PCj])
 # res_nodes.welfare = res_opt.welfare; # Same as: sum(res_opt.Lj .* res_opt.uj)
-res_nodes.uj = res_opt[:uj]
-res_nodes.Lj = res_opt[:Lj]
-res_nodes.Cj = res_opt[:Cj]
-res_nodes.Dj = res_opt[:Dj]
-res_nodes.PCj = res_opt[:PCj]
+res_nodes.uj = vec(res_opt[:uj])
+res_nodes.Lj = vec(res_opt[:Lj])
+res_nodes.Cj = vec(res_opt[:Cj])
+res_nodes.Dj = vec(res_opt[:Dj])
+res_nodes.PCj = vec(res_opt[:PCj])
 for n in 1:N
    res_nodes[!, Symbol("Lj_$(n)")] = res_opt[:Ljn][:,n]
    res_nodes[!, Symbol("Dj_$(n)")] = res_opt[:Djn][:,n]

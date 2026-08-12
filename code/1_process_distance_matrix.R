@@ -3,10 +3,10 @@
 ############################################
 
 library(fastverse)
-fastverse_extend(qs, s2, install = TRUE)
+fastverse_extend(qs2, s2, install = TRUE)
 
 # Note: need to generate using '0_get_distance_matrix.R' or download from https://drive.google.com/file/d/1oE_9i3SdqvYKcdl880uS9q774dD9KXmS/view?usp=sharing
-africa_dist <- qread("data/full_network/africa_full_distance_matrix_r9.qs")
+africa_dist <- qs_read("data/full_network/africa_full_distance_matrix_r9.qs2")
 fnobs.default(africa_dist$durations)
 fnobs.default(africa_dist$distances)
 N <- fnobs(africa_dist$durations)
@@ -193,11 +193,11 @@ list(durations = durations_adj,
      distances_nosphere = distances_adj_nosphere, 
      sources = sources_adj, 
      centroids = africa_dist$centroids) %>% 
-  qsave("data/full_network/africa_full_distance_matrix_r9_adjusted.qs")
+  qs_save("data/full_network/africa_full_distance_matrix_r9_adjusted.qs2")
 
 list(distances = spherical_distances, 
      centroids = africa_dist$centroids) %>% 
-  qsave("data/full_network/africa_full_spherical_distance_matrix_r9.qs")
+  qs_save("data/full_network/africa_full_spherical_distance_matrix_r9.qs2")
 
 # Save as csv 
 durations_adj %>% 

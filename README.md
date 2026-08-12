@@ -20,11 +20,11 @@ Replication materials for the paper **Optimal Investments in Africa's Road Netwo
   #> -- Attaching packages --------------------------------------- fastverse 0.3.3 --
   #> v data.table 1.15.4     v kit        0.0.17
   #> v magrittr   2.0.3      v collapse   2.0.16
-  fastverse_extend(qs, sf, units, s2, sfnetworks, tidygraph, igraph, cppRouting, geodist, stplanr, tmap, 
+  fastverse_extend(qs2, sf, units, s2, sfnetworks, tidygraph, igraph, cppRouting, geodist, stplanr, tmap, 
                    osrm, ggplot2, ggstar, viridis, africamonitor, dggridR, fixest, xtable, mapview, 
                    dbscan, leaderCluster)
   #> -- Attaching extension packages ----------------------------- fastverse 0.3.3 --
-  #> v qs            0.25.5        v osrm          4.1.1    
+  #> v qs2           0.2.1         v osrm          4.1.1    
   #> v sf            1.0.16        v ggplot2       3.5.0    
   #> v units         0.8.5         v ggstar        1.0.4    
   #> v s2            1.1.6         v viridis       0.6.3    

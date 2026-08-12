@@ -4,13 +4,13 @@
 
 library(fastverse)
 set_collapse(mask = c("manip", "helper", "special"))
-fastverse_extend(qs, sf, units, sfnetworks, tmap, install = TRUE)
+fastverse_extend(qs2, sf, units, sfnetworks, tmap, install = TRUE)
 source("code/helpers/helpers.R")
 fastverse_conflicts()
 
 # Load essential network data
 load("data/transport_network/trans_africa_network_param.RData")
-edges_real <- qread("data/transport_network/edges_real_simplified.qs") |> 
+edges_real <- qs_read("data/transport_network/edges_real_simplified.qs2") |> 
   select(from, to) |> rmapshaper::ms_simplify(keep = 0.06) |> st_make_valid()
 
 res_name <- "add_22g_35b_fixed_irs1.2_na_sigma3.8_rho2_julia"

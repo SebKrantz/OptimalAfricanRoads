@@ -182,33 +182,35 @@ all_cb_ratios_sf <- st_sf(all_cb_ratios,
 
 # Consensus pusd metric for ranking (used in Step 7 too)
 all_cb_ratios$MA_gain_pusd_cons <- with(all_cb_ratios,
-  pmean(MA_gain_pusd, MA_gain_pusd_bt, MA_gain_pusd_bt_opt))
+  pmean(MA_gain_pusd, pmax(MA_gain_pusd_bt, MA_gain_pusd_bt_opt)))
 
 # Six maps (3 percent + 3 $/min/$, NoFR / FR-opt / Ratio)
-make_pida_map <- function(col, breaks, legend_label, file_suffix) {
+make_pida_map <- function(col, breaks, legend_label, file_suffix, save = TRUE) {
   pl <- tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
     tm_shape(all_cb_ratios_sf) + tm_lines(lwd = 1, col = "grey80") +
     tm_shape(subset(all_cb_ratios_sf, PIDA == "Yes")) +
     tm_lines(col = col,
-             col.scale  = tm_scale_intervals(values = "turbo", breaks = breaks),
+             col.scale  = tm_scale_intervals(values = "turbo", breaks = breaks, 
+                                             values.range = c(0.15, 0.85)),
              col.legend = tm_legend(legend_label, position = c("left", "bottom"),
-                                    frame = FALSE, text.size = 1.3, title.size = 1.6),
+                                    frame = FALSE, text.size = 1.3, title.size = 1.6,
+                                    bg.alpha = 0),
              lwd = 2) +
     tm_shape(subset(nodes, population > 0))  + tm_dots(size = 0.1) +
     tm_shape(subset(nodes, population <= 0)) + tm_dots(size = 0.1, fill = "grey70") +
     tm_layout(frame = FALSE)
-  tmap_save(pl, sprintf("figures/transport_network/PIDA/trans_africa_network_PIDA_%s.pdf", file_suffix),
+  if(save) tmap_save(pl, sprintf("figures/transport_network/PIDA/trans_africa_network_PIDA_%s.pdf", file_suffix),
             width = 10, height = 10)
   invisible(pl)
 }
 
 # Δ%-MA breaks (continent-scale gains per link are small)
 ma_pct_breaks  <- c(0, 0.005, 0.01, 0.025, 0.1, 0.25, Inf)
-# $/min/$ breaks copied from CEMAC L2150
-ma_usd_breaks  <- c(0, 0.1, 0.2, 0.5, 1, 2, 5, Inf)
+# $/min/$ breaks 
+ma_usd_breaks  <- c(0, 1, 2, 5, 10, 20, 50, 100, Inf)
 
 make_pida_map("MA_100_min_speed_perc",        ma_pct_breaks,
-              expression(Delta~"%"~"MA [GDP/min]"), "MA_100_min_speed_perc")
+              expression(Delta~"%"~"MA [GDP/min]"), "MA_100_min_speed_perc") # |> print()
 make_pida_map("MA_100_min_speed_bt_opt_perc", ma_pct_breaks,
               expression(Delta~"%"~"MA [GDP/min]"), "MA_100_min_speed_bt_opt_perc")
 # Ratio of friction-to-frictionless gain
@@ -326,6 +328,10 @@ cost_Top10B <- sum(all_cb_ratios$cost_total[top_idx], na.rm = TRUE)
 cat(sprintf("\nTop-N consensus benchmark: N = %d links, cost = %.3e (PIDA = %.3e)\n",
             N_top, cost_Top10B, cost_PIDA))
 
+# Composition
+all_cb_ratios$add <- !is.na(fmatch(slt(all_cb_ratios, from, to), slt(qDT(add_links), from, to)))
+fsum(all_cb_ratios$distance[top_idx], all_cb_ratios$add[top_idx]) / 1e3
+
 # Joint MA for the Top-N package (same canonical pattern as PIDA above).
 is_Top10B <- all_cb_ratios$top10B
 dur_A_top <- with(edges_all, fifelse(is_Top10B, duration_imp, duration))
@@ -368,6 +374,30 @@ all_cb_ratios_sf$which_pkg <- with(all_cb_ratios_sf,
   fifelse(PIDA == "Yes",           "PIDA only",
   fifelse(top10B,                  "Top-N only", "Neither"))))
 
+# Overlap statistics box (link counts + km)
+n_both     <- sum(all_cb_ratios_sf$which_pkg == "Both",       na.rm = TRUE)
+n_pida_o   <- sum(all_cb_ratios_sf$which_pkg == "PIDA only",  na.rm = TRUE)
+n_top_o    <- sum(all_cb_ratios_sf$which_pkg == "Top-N only", na.rm = TRUE)
+km_both    <- sum(all_cb_ratios$distance[all_cb_ratios$PIDA == "Yes" &  all_cb_ratios$top10B], na.rm = TRUE) / 1e3
+km_pida_o  <- sum(all_cb_ratios$distance[all_cb_ratios$PIDA == "Yes" & !all_cb_ratios$top10B], na.rm = TRUE) / 1e3
+km_top_o   <- sum(all_cb_ratios$distance[all_cb_ratios$PIDA != "Yes" &  all_cb_ratios$top10B], na.rm = TRUE) / 1e3
+
+# One block of multi-line text works reliably; tm_add_legend clips
+# labels when the anchor is close to the bottom of the plot.
+overlap_text <- paste0(
+  "Overlap Statistics\n",
+  sprintf("Both:        %d links (%s km)\n",
+          n_both,   format(round(km_both),   big.mark = ",")),
+  sprintf("PIDA only:   %d links (%s km)\n",
+          n_pida_o, format(round(km_pida_o), big.mark = ",")),
+  sprintf("Top-N only:  %d links (%s km)\n",
+          n_top_o,  format(round(km_top_o),  big.mark = ",")),
+  sprintf("PIDA MA gain:   %.1f%%  |  $%.2fB\n",
+          res_PIDA$NoFR$perc_gain, cost_PIDA / 1e9),
+  sprintf("Top-N MA gain:  %.1f%%  |  $%.2fB",
+          res_Top10B$NoFR$perc_gain, cost_Top10B / 1e9)
+)
+
 pl_cmp <- tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
   tm_shape(subset(all_cb_ratios_sf, which_pkg == "Neither")) +
   tm_lines(lwd = 1, col = "grey85") +
@@ -376,10 +406,18 @@ pl_cmp <- tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +
            col.scale  = tm_scale_categorical(
              values = c("Both" = "purple3", "PIDA only" = "orange", "Top-N only" = "steelblue")),
            col.legend = tm_legend("Package", position = c("left", "bottom"),
-                                  frame = FALSE, text.size = 1.3, title.size = 1.6),
+                                  frame = FALSE, bg.alpha = 0,
+                                  text.size = 1.3, title.size = 1.6),
            lwd = 2) +
   tm_shape(subset(nodes, population > 0))  + tm_dots(size = 0.1) +
   tm_shape(subset(nodes, population <= 0)) + tm_dots(size = 0.1, fill = "grey70") +
+  # tm_credits text is TOP-anchored - it extends DOWNWARD from position.
+  # Anchor at y = 0.45 so the block sits just above the Package legend
+  # (which occupies y ~ [0.02, 0.22] at bottom-left).
+  tm_credits(overlap_text,
+             position = tm_pos_in(0.02, 0.45),
+             size = 1.20, fontface = "plain",
+             bg.color = "white", bg.alpha = 0) +
   tm_layout(frame = FALSE)
 tmap_save(pl_cmp, "figures/transport_network/PIDA/trans_africa_network_PIDA_vs_top10B_consensus.pdf",
           width = 10, height = 10)

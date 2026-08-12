@@ -4,7 +4,7 @@
 
 library(fastverse)
 set_collapse(mask = c("manip", "helper", "special"), nthreads = 4)
-fastverse_extend(qs, sf, s2, units, stplanr, sfnetworks, osrm, tmap, install = TRUE)
+fastverse_extend(qs2, sf, s2, units, stplanr, sfnetworks, osrm, tmap, install = TRUE)
 source("code/helpers/helpers.R")
 fastverse_conflicts()
 
@@ -130,7 +130,7 @@ fndistinct(cities_ports)
 
 # Saving
 cities_ports |> fwrite("data/transport_network/cities_ports.csv")
-dist_ttime_mats |> qsave("data/transport_network/cities_ports_dist_ttime_mats.qs")
+dist_ttime_mats |> qs_save("data/transport_network/cities_ports_dist_ttime_mats.qs2")
 
 # Cleanup
 rm(list = ls())
@@ -143,7 +143,7 @@ fastverse_conflicts()
 
 # Reading again
 cities_ports <- fread("data/transport_network/cities_ports.csv")
-dist_ttime_mats <- qread("data/transport_network/cities_ports_dist_ttime_mats.qs")
+dist_ttime_mats <- qs_read("data/transport_network/cities_ports_dist_ttime_mats.qs2")
 
 # As spatial data frame
 cities_ports_sf <- cities_ports |> st_as_sf(coords = c("lon", "lat"), crs = 4326)
@@ -232,7 +232,7 @@ for (r in mrtl(routes_ind)) {
 routes <- routes |> st_as_sf(crs = st_crs(route))
 
 # Saving
-routes |> qsave("data/transport_network/routes_raw.qs")
+routes |> qs_save("data/transport_network/routes_raw.qs2")
 
 # Adding Gravity to Routes (https://en.wikipedia.org/wiki/Newton%27s_law_of_universal_gravitation)
 dmat <- st_distance(cities_ports_sf)
@@ -265,12 +265,12 @@ segments <- overline2(segments, attrib = c("passes", "gravity", "gravity_rd", "g
 segments %<>% ss(!is_linepoint(.)) %>% st_make_valid()
 
 # Saving
-segments |> qsave("data/transport_network/segments.qs")
+segments |> qs_save("data/transport_network/segments.qs2")
 
 
 # Loading Segments --------------------------------------------------------------------
 
-segments <- qread("data/transport_network/segments.qs")
+segments <- qs_read("data/transport_network/segments.qs2")
 
 # First Round of subdivision
 segments <- rmapshaper::ms_simplify(segments, keep = 0.5, snap_interval = deg_m(500)) |> 
@@ -319,7 +319,7 @@ net <- filter_smooth(net)
 # mapview(st_geometry(net, "edges")) + mapview(st_geometry(net, "nodes"))
 
 # Saving Smoothed Version (pre contraction)
-net |> qsave("data/transport_network/net_smoothed.qs")
+net |> qs_save("data/transport_network/net_smoothed.qs2")
 
 ## Contracting network: Manually 
 segments <- net |> activate("edges") |> tidygraph::as_tibble() |> mutate(.tidygraph_edge_index = NULL)
@@ -366,11 +366,11 @@ net <- filter_smooth(net)
 # mapview(st_geometry(net, "edges")) + mapview(st_geometry(net, "nodes")) # mapview(st_geometry(net_smoothed, "edges"))
 
 ## Saving 
-net |> qsave("data/transport_network/net_discrete_final.qs")
+net |> qs_save("data/transport_network/net_discrete_final.qs2")
 
 ## Loading Final Network -----------------------------------------
 
-net <- qread("data/transport_network/net_discrete_final.qs")
+net <- qs_read("data/transport_network/net_discrete_final.qs2")
 
 ## Plotting
 plot(net)
@@ -435,11 +435,11 @@ pwcor(unattrib(dist_ttime_mats$distances), unattrib(dist_ttime_mats$durations))
 # Now finding places that are on islands (e.g. Zanzibar City): should not exist here
 if(any(which(fnobs(dist_ttime_mats$durations) < 200))) stop("Found Islands")
 
-dist_ttime_mats |> qsave("data/transport_network/net_dist_ttime_mats.qs")
+dist_ttime_mats |> qs_save("data/transport_network/net_dist_ttime_mats.qs2")
 
 # Loading again -----------------------------------
 
-dist_ttime_mats <- qread("data/transport_network/net_dist_ttime_mats.qs")
+dist_ttime_mats <- qs_read("data/transport_network/net_dist_ttime_mats.qs2")
 
 # Check
 all.equal(st_as_sf(net, "nodes")$geometry, nodes$geometry)
@@ -458,7 +458,7 @@ edges$duration <- sym_time_mat[edges_ind]
 
 # -> To generate the 'add_links' file, execute '7.1_add_links.R' in a clean R session
 
-add_links <- qread("data/transport_network/add_links_network_30km_alpha45_mrEU_fmr15_adjusted.qs")
+add_links <- qs_read("data/transport_network/add_links_network_30km_alpha45_mrEU_fmr15_adjusted.qs2")
 add_links_df <- line2points(add_links)
 dmat <- st_distance(nodes$geometry, add_links_df$geometry)
 add_links_df$node <- dapply(dmat, which.min)
@@ -587,11 +587,11 @@ for (r in mrtl(edges_ind)) {
   i <- i + 1L
 }
 edges_real <- edges_real |> st_as_sf(crs = st_crs(route)) |> st_make_valid()
-edges_real |> qsave("data/transport_network/edges_real_simplified.qs")
+edges_real |> qs_save("data/transport_network/edges_real_simplified.qs2")
 rm(route, i, r)
 
 # Draw the updated plot
-edges_real <- qread("data/transport_network/edges_real_simplified.qs")
+edges_real <- qs_read("data/transport_network/edges_real_simplified.qs2")
 
 # <Figure 15>
 tm_basemap("Esri.WorldGrayCanvas", zoom = 4) +

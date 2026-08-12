@@ -4,9 +4,9 @@
 
 library(fastverse)
 set_collapse(mask = "manip")
-fastverse_extend(africamonitor, tmap, sf, qs, install = TRUE) # tmap >= 3.99
+fastverse_extend(africamonitor, tmap, sf, qs2, install = TRUE) # tmap >= 3.99
 
-africa_ctry_shp <- qread("data/other_inputs/africa_countries.qs")
+africa_ctry_shp <- qs_read("data/other_inputs/africa_countries.qs2")
   
 ################################
 # Doing Business 
@@ -23,7 +23,7 @@ time_transit <- 48 * (60 / 4) # time_border_compliance %>% num_vars() %>% fmedia
 dist_transit <- 48 * 4 * (1000 / 1.6) # Multiply by 1000 since meters
 
 # Getting export and import time vectors
-africa_dist <- qread("data/full_network/africa_full_distance_matrix_r9_adjusted.qs")
+africa_dist <- qs_read("data/full_network/africa_full_distance_matrix_r9_adjusted.qs2")
 iso3c <- unique(africa_dist$centroids$ISO3)
 export_time_cost <- exc_data %$% set_names(IC_EXP_TMBC * (60 / 4) + IC_EXP_TMDC * (60 / 10), ISO3) %>% extract(iso3c) %>% set_names(iso3c)
 import_time_cost <- exc_data %$% set_names(IC_IMP_TMBC * (60 / 4) + IC_IMP_TMDC * (60 / 10), ISO3) %>% extract(iso3c) %>% set_names(iso3c)
@@ -255,7 +255,7 @@ dev.off()
 ######################################
 
 # WIIW NTM Database
-NTM_AGG <- qread("data/other_inputs/WIIW_NTM_AGG.qs")
+NTM_AGG <- qs_read("data/other_inputs/WIIW_NTM_AGG.qs2")
 frange(NTM_AGG$NTM_AGG$year)
 
 NTM_AGG$NTM_AGG |> subset(year == flast(year, imp_iso3, "fill") & aff_iso3 == "WTO") |>
