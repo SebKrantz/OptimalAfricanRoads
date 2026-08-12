@@ -461,7 +461,7 @@ dev.off()
 #   transformv(c(cost_m_usd, unit_costs_m_usd_per_km), `/`, ny_gdp_defl_zs / 100)
 # 
 # ROCKS %<>% get_vars(varying(.))
-# qs_save(ROCKS, "data/ROCKS_2018.qs2")
+# qs_save(ROCKS, "data/other_inputs/ROCKS_2018.qs2")
 
 ROCKS <- qs_read("data/other_inputs/ROCKS_2018.qs2")
 continental_africa <- fread("data/other_inputs/continental_africa.csv")
